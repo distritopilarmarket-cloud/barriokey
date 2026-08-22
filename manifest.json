@@ -1,0 +1,32 @@
+{
+  "name": "BarrioKey",
+  "short_name": "BarrioKey",
+  "description": "Conectá con oficios y vecinos de tu barrio cerrado. Encontrá cerrajeros, plomeros, electricistas y mucho más, o publicá lo que vendés u ofrecés.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0F2E27",
+  "theme_color": "#0F2E27",
+  "lang": "es-AR",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

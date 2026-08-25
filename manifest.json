@@ -1,7 +1,7 @@
 {
   "name": "BarrioKey",
   "short_name": "BarrioKey",
-  "description": "Conectá con oficios y vecinos de tu barrio cerrado. Encontrá cerrajeros, plomeros, electricistas y mucho más, o publicá lo que vendés u ofrecés.",
+  "description": "Conectamos vecinos de barrios cerrados: oficios, servicios y emprendimientos de la comunidad, todo en un solo lugar.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

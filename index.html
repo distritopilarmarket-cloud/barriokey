@@ -1,0 +1,2946 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#14372B">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAIAAAB7GkOtAAAIiUlEQVR42u3dTW4iSxqFYbCYs4yc5QZgY6yAjcG+PLDkAU5Z/AUZ8Z3nGbb6dl0TcF4Cqqq3+3naAJDny0MAIAAACAAAAgCAAAAgAAAIAAACAIAAACAAAAgAAAIAgAAAIAAACAAAAgCAAAAgAAAIAAACAIAAACAAAAgAAAIAIAAACAAAAgCAAAAgAAAIAAACAIAAACAAAAgAAAIAgAAAIAAACAAAAgCAAAAgAAAIAAACAIAAACAAAAgAAAIAIAAACAAAAgCAAAAgAAAIAAACAIAAACAAAAgAAAIAgAAAIAAACAAAAgCAAAAgAAAIAAACAIAAACAAAAgAAAIAgAAACAAAAgCAAAAgAAAIAAACAIAAACAAAAgAAAIAgAAAIAAACAAAAgCAAAAgAAAIAAACAIAAACAAAAgAAAIAgAAACAAAAgCAAAAgAAAIAAACAIAAACAAAAgAAAIAgAAAIAAACAAAAgCAAAAgAAAIAAACAIAAACAAAAgAAAIAgAAAIAAAAgCAAAAgAAAIAAACAIAAACAAAAgAAAIAgAAAIAAACAAAAgCAAAAgAAAIAAACAIAAACAAAAgAAAIAgAAAIAAAAgCAAAAgAAAIAAACAIAAACAAAAgAAAIAgAAAIAAACAAAAgCAAAAgAAAIAAACAIAAACAAAAgAAAIAgAAAIAAACACAAAAgAAAIAAACAIAAACAAAAgAAAIAgAAAIAAACAAAAgCAAAAgAAAIAAAN7DwEjOh6Od38J4fj2cMCD9nu58mjwNDTLwMgAERPvwzAo3wHQLX1f/S/DAIARdZfA0AAyF1/QACIXn/lAAHAe39ggd8FRPHp9zuCwA0Ab/wBAcD6AwKA9QcBAOsPAgDWHwQAhl5/vwUIBADv/YFb/v8AKDv93v6DGwDe+AMCQMz6e/sPAoD1B5b5DoBS62/6QQCIW3/TDwJA3PqbfniO7wCw/iAAYP0hiY+AGHL6rT+4AWD9AQHA+gMCgPUHBADrDyzzJTBjrL/pBzcArD8gAFh/QACw/sCjfAdAp9Nv/cENAOsPCADWHxAArD8gAFh/4Bm+BKaX9Tf94AaA9QcEAOsPNOMjINacfusPbgBYf0AAsP6AAGD9AQHA+gMCgPUH3sHvAuJz62/6wQ0A6w8IANYfWImPgGg7/dYf3ACw/oAAYP2BDvgIyPpb/4iTdRz8td3Pk0fBRlj/kGN1LggAfsNP7rE6IH75DsBMWP+sY21680MAsP50fawawA8fAdkI6x96so4MAbAR1j/6ZJ1dMh8B2QjrH32yPg4SAGyE9c89WQ2I5SMgG2H9HavTFADMhL1wrI5VADATNiJw/Z1vGt8BmAnr4FhX+FVwA8D60+koO2sBwExYhMT1d+ghfARkJgyB9e/0V0cAsP6ONf3fgUZ8BGQmrL/p9zRwA8BSeNlbf/cANwAshek3tZ4YbgBYf6y/q4AbANYfw+pJ4gaA9Sf5bbV7gBsA1V541r9kzj1nEABL4ZUcfZlza0QALIXXcO6BagACkD4NXr3JOdcABMDue93WPOh7TtNVEgEw/V6rievvKoAAWH+v0moH/cSBagACEDf9Xp/WXwMQAOvP8Gf9+mn6SiCZPwmcxQvS+n/yKeEPDLsB0MsLw/pXOuW3n6aPg9wAsP4krn/TZ4h7gACwJutfZv0Px3O709SAND4Cqv/23/pXWn93FwTAOnixxR3uh0/TVwIJfARUlpeZ9e/zV/RxkBuAjbD+TnaAo3QPcAPAe39CV7LpPcBVwA3AUlh/BzrAUboKuAEAieu/8ZVAUTsPAZj+O//FGv3gP/+zrgJuAND79Cf/NvnWf3GQ24AAQOIb/1HeAjf9o8gbnwgJQGGtX+Eu0da/xlXA800AIGL9W7+n1gAEADpdfzdaDRCAFCP+VY44Ms86AQBv/03nwg/S6GdxCRAA7/u8ESv4BKh3Xp6BAsA6rxavPUPpR0MAwET6ARGAmJeKl5xx7O3H9JwUAD6xCF5pNlHtEAAQaQ8dAgDeCPvxEQAwfx4EBAAAAQBAAAAEAAABAEAAABAAAAQAAAEAQAAAEAAABAAAAQBAAAAQAAAEAAABAEAAABAAAAQAAAEAQAAAEAAABAAAAQBAAAAEAAABAEAAABAAAAQAAAEAQAAAEAAABAAAAQBAAAAQAAAEAAABAEAAABAAAAQAAAEAQAAAEAAABAAAAQBAAAAQAAABAEAAABAAAAQAAAEAQAB4wfVy8iA4Izz4AgCAAAAgAAAIAAACAIAADO1wPK/4j9P0QXY6HkMBAEAA8OYo5oycjsdQACBxvyyXx1AA8OYo8ZgcjcdQAPDmKPGYHI3HcCzb/Tx5FPrx/19+4rXR7TE5Go+hAOC1AQgAAH3zHQCAAAAgAAAIAAACAIAAACAAAAgAAAIAgAAAIAAACAAAAgCAAAAgAAAIAAACAIAAACAAAAgAAAIAgAAAIAAACACAAAAgAAAIAAACAIAAACAAAAgAAAIAgAAAIAAACAAAAgCAAAAgAAAIAAACAIAAACAAAAgAAAIAgAAAIAAACACAAHgIAAQAAAEAQAAAEAAABAAAAQBAAAAQAAAEAAABAEAAABAAAAQAAAEAQAAAEAAABAAAAQBAAAAQAAAEAAABAEAAAAQAAAEAQAAAEAAABAAAAQBAAAAQAAAEAAABAEAAABAAAAQAAAEAQAAAEAAABAAAAQBAAAAQAAAEAAABAEAAAAQAAAEAQAAAEAAABAAAAQBAAAAQAAAEAAABAEAAABAAAAQAAAEAQAAAEAAABAAAAQBAAAAQAAAEAAABAEAAABAAAAEAQAAAEAAABAAAAQBAAAAQAAAEAAABAEAAABAAAAQAAAEAQAAAEAAABAAAAQBAAAAQAAAEAAABAEAAABAAAAEAQAAAEAAABAAAAQBAAAAQAADG8w2X1XHCV6qT3AAAAABJRU5ErkJggg==">
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAIAAAB7GkOtAAAIiUlEQVR42u3dTW4iSxqFYbCYs4yc5QZgY6yAjcG+PLDkAU5Z/AUZ8Z3nGbb6dl0TcF4Cqqq3+3naAJDny0MAIAAACAAAAgCAAAAgAAAIAAACAIAAACAAAAgAAAIAgAAAIAAACAAAAgCAAAAgAAAIAAACAIAAACAAAAgAAAIAIAAACAAAAgCAAAAgAAAIAAACAIAAACAAAAgAAAIAgAAAIAAACAAAAgCAAAAgAAAIAAACAIAAACAAAAgAAAIAIAAACAAAAgCAAAAgAAAIAAACAIAAACAAAAgAAAIAgAAAIAAACAAAAgCAAAAgAAAIAAACAIAAACAAAAgAAAIAgAAACAAAAgCAAAAgAAAIAAACAIAAACAAAAgAAAIAgAAAIAAACAAAAgCAAAAgAAAIAAACAIAAACAAAAgAAAIAgAAACAAAAgCAAAAgAAAIAAACAIAAACAAAAgAAAIAgAAAIAAACAAAAgCAAAAgAAAIAAACAIAAACAAAAgAAAIAgAAAIAAAAgCAAAAgAAAIAAACAIAAACAAAAgAAAIAgAAAIAAACAAAAgCAAAAgAAAIAAACAIAAACAAAAgAAAIAgAAAIAAAAgCAAAAgAAAIAAACAIAAACAAAAgAAAIAgAAAIAAACAAAAgCAAAAgAAAIAAACAIAAACAAAAgAAAIAgAAAIAAACACAAAAgAAAIAAACAIAAACAAAAgAAAIAgAAAIAAACAAAAgCAAAAgAAAIAAAN7DwEjOh6Od38J4fj2cMCD9nu58mjwNDTLwMgAERPvwzAo3wHQLX1f/S/DAIARdZfA0AAyF1/QACIXn/lAAHAe39ggd8FRPHp9zuCwA0Ab/wBAcD6AwKA9QcBAOsPAgDWHwQAhl5/vwUIBADv/YFb/v8AKDv93v6DGwDe+AMCQMz6e/sPAoD1B5b5DoBS62/6QQCIW3/TDwJA3PqbfniO7wCw/iAAYP0hiY+AGHL6rT+4AWD9AQHA+gMCgPUHBADrDyzzJTBjrL/pBzcArD8gAFh/QACw/sCjfAdAp9Nv/cENAOsPCADWHxAArD8gAFh/4Bm+BKaX9Tf94AaA9QcEAOsPNOMjINacfusPbgBYf0AAsP6AAGD9AQHA+gMCgPUH3sHvAuJz62/6wQ0A6w8IANYfWImPgGg7/dYf3ACw/oAAYP2BDvgIyPpb/4iTdRz8td3Pk0fBRlj/kGN1LggAfsNP7rE6IH75DsBMWP+sY21680MAsP50fawawA8fAdkI6x96so4MAbAR1j/6ZJ1dMh8B2QjrH32yPg4SAGyE9c89WQ2I5SMgG2H9HavTFADMhL1wrI5VADATNiJw/Z1vGt8BmAnr4FhX+FVwA8D60+koO2sBwExYhMT1d+ghfARkJgyB9e/0V0cAsP6ONf3fgUZ8BGQmrL/p9zRwA8BSeNlbf/cANwAshek3tZ4YbgBYf6y/q4AbANYfw+pJ4gaA9Sf5bbV7gBsA1V541r9kzj1nEABL4ZUcfZlza0QALIXXcO6BagACkD4NXr3JOdcABMDue93WPOh7TtNVEgEw/V6rievvKoAAWH+v0moH/cSBagACEDf9Xp/WXwMQAOvP8Gf9+mn6SiCZPwmcxQvS+n/yKeEPDLsB0MsLw/pXOuW3n6aPg9wAsP4krn/TZ4h7gACwJutfZv0Px3O709SAND4Cqv/23/pXWn93FwTAOnixxR3uh0/TVwIJfARUlpeZ9e/zV/RxkBuAjbD+TnaAo3QPcAPAe39CV7LpPcBVwA3AUlh/BzrAUboKuAEAieu/8ZVAUTsPAZj+O//FGv3gP/+zrgJuAND79Cf/NvnWf3GQ24AAQOIb/1HeAjf9o8gbnwgJQGGtX+Eu0da/xlXA800AIGL9W7+n1gAEADpdfzdaDRCAFCP+VY44Ms86AQBv/03nwg/S6GdxCRAA7/u8ESv4BKh3Xp6BAsA6rxavPUPpR0MAwET6ARGAmJeKl5xx7O3H9JwUAD6xCF5pNlHtEAAQaQ8dAgDeCPvxEQAwfx4EBAAAAQBAAAAEAAABAEAAABAAAAQAAAEAQAAAEAAABAAAAQBAAAAQAAAEAAABAEAAABAAAAQAAAEAQAAAEAAABAAAAQBAAAAEAAABAEAAABAAAAQAAAEAQAAAEAAABAAAAQBAAAAQAAAEAAABAEAAABAAAAQAAAEAQAAAEAAABAAAAQBAAAAQAAABAEAAABAAAAQAAAEAQAB4wfVy8iA4Izz4AgCAAAAgAAAIAAACAIAADO1wPK/4j9P0QXY6HkMBAEAA8OYo5oycjsdQACBxvyyXx1AA8OYo8ZgcjcdQAPDmKPGYHI3HcCzb/Tx5FPrx/19+4rXR7TE5Go+hAOC1AQgAAH3zHQCAAAAgAAAIAAACAIAAACAAAAgAAAIAgAAAIAAACAAAAgCAAAAgAAAIAAACAIAAACAAAAgAAAIAgAAAIAAACACAAAAgAAAIAAACAIAAACAAAAgAAAIAgAAAIAAACAAAAgCAAAAgAAAIAAACAIAAACAAAAgAAAIAgAAAIAAACACAAHgIAAQAAAEAQAAAEAAABAAAAQBAAAAQAAAEAAABAEAAABAAAAQAAAEAQAAAEAAABAAAAQBAAAAQAAAEAAABAEAAAAQAAAEAQAAAEAAABAAAAQBAAAAQAAAEAAABAEAAABAAAAQAAAEAQAAAEAAABAAAAQBAAAAQAAAEAAABAEAAAAQAAAEAQAAAEAAABAAAAQBAAAAQAAAEAAABAEAAABAAAAQAAAEAQAAAEAAABAAAAQBAAAAQAAAEAAABAEAAABAAAAEAQAAAEAAABAAAAQBAAAAQAAAEAAABAEAAABAAAAQAAAEAQAAAEAAABAAAAQBAAAAQAAAEAAABAEAAABAAAAEAQAAAEAAABAAAAQBAAAAQAADG8w2X1XHCV6qT3AAAAABJRU5ErkJggg==">
+<title>BarrioKey</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pine:#0F2E27; --pine2:#0A211C; --moss:#3D6A5C; --pine-soft:#E4EEE9;
+    --lime:#D4F2A0; --lime-ink:#3E5B1F;
+    --paper:#EDF0EA; --card:#FBFCFA;
+    --ink:#151A17; --muted:#6B756F;
+    --line:#E4E6E1; --line2:#EDEEEA;
+    --ok:#1E8E5A; --ok-bg:#E4F4EA;
+    --warn:#B7791F; --warn-bg:#FCF3E3;
+    --bad:#C4453F; --bad-bg:#FBE9E8;
+    --shadow:0 16px 34px -18px rgba(10,32,24,.5);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:var(--pine2);color:var(--ink);
+    min-height:100dvh;-webkit-font-smoothing:antialiased}
+  .app{max-width:460px;margin:0 auto;min-height:100dvh;background:var(--paper);position:relative}
+  .screen{display:none;min-height:100dvh;flex-direction:column}
+  .screen.active{display:flex;animation:pantalla .22s ease-out}
+  @keyframes pantalla{from{opacity:0}to{opacity:1}}
+  /* acceso como overlay: se ve el Inicio real de fondo, difuminado */
+  #inicio.tras-acceso{display:flex;filter:blur(6px) brightness(.7);pointer-events:none;user-select:none}
+  #acceso.overlay-acceso{position:fixed;inset:0;z-index:50;overflow-y:auto;
+    background:rgba(10,33,28,.35);backdrop-filter:blur(2px)}
+  button,input,select,textarea{font-family:inherit}
+
+  /* ---- ola: elemento firma (inicio) ---- */
+  .ola{display:block;width:100%;height:34px;margin-top:-1px}
+  .ola path{fill:var(--paper)}
+  /* ---- separador minimal (resto de pantallas) ---- */
+  .barrera{height:1px;background:var(--line)}
+
+  /* ---- topbar ---- */
+  .top{background:linear-gradient(160deg,var(--pine) 0%,var(--pine2) 130%);color:#fff;
+    padding:calc(env(safe-area-inset-top) + 14px) 18px 0;position:relative}
+  .top-row{display:flex;align-items:center;gap:11px;padding-bottom:18px}
+  .brand-mark{width:42px;height:42px;border-radius:50%;border:2.5px solid var(--moss);flex:none;
+    display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.05)}
+  .brand{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:20px;letter-spacing:-.5px;line-height:1.1}
+  .brand small{display:block;font-family:'Space Mono',monospace;font-weight:400;font-size:8.5px;
+    letter-spacing:2px;text-transform:uppercase;opacity:.6;margin-top:4px}
+  .top-btn{margin-left:auto;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.14);
+    color:#fff;padding:9px 13px;border-radius:11px;font-weight:600;font-size:13px;cursor:pointer}
+  .top-ic{margin-left:auto;width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.14);
+    border:none;color:#fff;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .barrio-lbl{font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;
+    color:var(--moss);margin:0 0 3px 1px}
+  .barrio-pick-wrap{position:relative;margin-bottom:30px}
+  .barrio-pick-wrap::after{content:'⌄';position:absolute;right:4px;top:50%;transform:translateY(-50%);
+    font-size:17px;opacity:.75;pointer-events:none}
+  .barrio-pick{width:100%;background:transparent;border:none;color:#fff;padding:2px 26px 2px 0;
+    font-size:23px;font-weight:800;font-family:'Bricolage Grotesque',sans-serif;
+    -webkit-appearance:none;-moz-appearance:none;appearance:none}
+  .barrio-pick option{color:#10201A}
+
+  /* ---- header (Inicio, verde petróleo, opción centrada) ---- */
+  .top-light{background:linear-gradient(160deg,var(--pine) 0%,var(--pine2) 130%);color:#fff;
+    padding:calc(env(safe-area-inset-top) + 8px) 16px 14px}
+  .ic-btn{width:36px;height:36px;border-radius:11px;background:rgba(255,255,255,.14);border:none;font-size:14px;
+    cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff}
+  .brand-center{text-align:center;padding:2px 0 10px}
+  .brand-center svg{margin-bottom:2px;width:24px;height:19px}
+  .brand-center-tit{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:18px;
+    letter-spacing:-.4px;color:#fff}
+  .brand-center-tag{font-family:'Space Mono',monospace;font-size:8.5px;letter-spacing:2px;
+    text-transform:uppercase;color:var(--lime);margin-top:2px;opacity:.85}
+  .barrio-box-lbl{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;
+    color:rgba(255,255,255,.55);margin:0 0 4px 2px}
+  .barrio-box-wrap{margin-bottom:10px}
+  .barrio-box{position:relative;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);
+    border-radius:12px;padding:9px 14px}
+  .barrio-box::after{content:'⌄';position:absolute;right:14px;top:50%;transform:translateY(-50%);
+    font-size:15px;color:var(--lime);pointer-events:none}
+  .barrio-box-sel{width:100%;background:transparent;border:none;color:#fff;font-weight:700;font-size:14px;
+    padding:0 20px 0 0;-webkit-appearance:none;-moz-appearance:none;appearance:none;font-family:inherit}
+  .barrio-box-sel option{color:#10201A}
+
+  /* ---- tarjetas Oficios/Vecinos ---- */
+  .mundo-cards{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+  .mundo-cards button{background:#fff;border:none;border-radius:12px;padding:8px 10px;text-align:left;
+    box-shadow:0 3px 12px -7px rgba(15,46,39,.2);cursor:pointer;display:flex;flex-direction:column;gap:1px}
+  .mundo-cards button.on{background:var(--pine)}
+  .mc-ic{font-size:14px;margin-bottom:1px}
+  .mc-tit{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:12.5px;color:var(--ink)}
+  .mundo-cards button.on .mc-tit{color:#fff}
+  .mc-sub{font-size:9.5px;color:var(--muted);line-height:1.2}
+  .mundo-cards button.on .mc-sub{color:rgba(255,255,255,.7)}
+  .mundo-cards.center button{align-items:center;text-align:center;border:1.5px solid var(--line)}
+  .mundo-cards.center button.on{border-color:var(--pine)}
+
+  .row-h{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:12px}
+  .row-h .h{margin:0}
+  .verTodas{font-size:12px;font-weight:700;color:var(--moss);cursor:pointer}
+
+  .body{flex:1;padding:22px 16px 90px}
+  .hero-h{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:26px;line-height:1.15;
+    letter-spacing:-.6px;margin:0 0 16px;color:var(--ink)}
+
+  /* ---- buscador ---- */
+  .search-wrap{position:relative;margin-bottom:12px}
+  .search-ic{position:absolute;left:6px;top:0;bottom:0;width:34px;background:none;border:none;
+    font-size:14px;opacity:.55;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:1}
+  .search{width:100%;padding:13px 16px 13px 40px;border:none;border-radius:15px;background:#fff;
+    box-shadow:0 12px 26px -14px rgba(20,55,43,.35);
+    font-size:15px;box-shadow:0 3px 10px -6px rgba(20,55,43,.15)}
+  .search:focus{outline:2px solid var(--moss);outline-offset:1px;border-color:transparent}
+
+  /* ---- rubros ---- */
+  .h{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:18px;margin:0 0 12px;letter-spacing:-.3px}
+  .rubros{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:24px}
+  .rubro{background:#fff;border:none;border-radius:15px;padding:12px 3px 10px;text-align:center;min-width:0;
+    cursor:pointer;transition:transform .12s,box-shadow .12s,background .15s;
+    box-shadow:0 3px 12px -6px rgba(15,46,39,.14);
+    animation:subir .32s cubic-bezier(.22,.7,.32,1) backwards}
+  .rubro:nth-child(1){animation-delay:.02s} .rubro:nth-child(2){animation-delay:.05s}
+  .rubro:nth-child(3){animation-delay:.08s} .rubro:nth-child(4){animation-delay:.11s}
+  .rubro:nth-child(5){animation-delay:.14s} .rubro:nth-child(6){animation-delay:.17s}
+  .rubro:nth-child(7){animation-delay:.2s} .rubro:nth-child(8){animation-delay:.23s}
+  .rubro:nth-child(n+9){animation-delay:.25s}
+  .rubro:active{transform:scale(.95)}
+  .rubro.on{background:var(--pine);box-shadow:0 10px 22px -12px rgba(15,46,39,.55)}
+  .rubro.on .rb-lb{color:#fff}
+  .rb-badge{width:40px;height:40px;border-radius:50%;margin:0 auto 8px;display:flex;align-items:center;justify-content:center}
+  .rb-badge svg{width:22px;height:22px;display:block;color:#fff}
+  .rb-lb{font-size:10.5px;font-weight:700;line-height:1.2;color:var(--ink);overflow-wrap:anywhere;hyphens:auto}
+
+  @keyframes subir{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes entrar{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+  /* ---- tarjeta prestador ---- */
+  .card{background:#fff;border:none;border-radius:18px;margin-bottom:12px;overflow:hidden;
+    box-shadow:0 3px 14px -8px rgba(15,46,39,.16);
+    cursor:pointer;transition:transform .12s,box-shadow .15s;animation:entrar .3s ease-out backwards}
+  .card:active{transform:scale(.985)}
+  .card:hover{box-shadow:0 8px 20px -12px rgba(15,46,39,.28)}
+  .card:nth-child(1){animation-delay:.02s} .card:nth-child(2){animation-delay:.06s}
+  .card:nth-child(3){animation-delay:.1s} .card:nth-child(4){animation-delay:.14s}
+  .card:nth-child(n+5){animation-delay:.17s}
+  .card-in{padding:14px 15px}
+  .card-top{display:flex;gap:12px;align-items:flex-start}
+  .ava{width:50px;height:50px;border-radius:14px;flex:none;display:grid;place-items:center;color:#fff;
+    font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:19px;overflow:hidden}
+  .ava img{width:100%;height:100%;object-fit:cover}
+  .c-name{font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:16px;line-height:1.15;
+    display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .c-rubro{font-size:12.5px;color:var(--muted);margin-top:2px}
+  .ver{background:var(--ok-bg);color:var(--ok);font-size:10px;font-weight:700;padding:3px 7px;border-radius:999px;
+    letter-spacing:.2px;white-space:nowrap}
+  .stars{margin-left:auto;text-align:right;flex:none}
+  .stars b{font-family:'Space Mono',monospace;font-size:14px;display:block}
+  .stars span{font-size:10.5px;color:var(--muted)}
+  .acceso{display:flex;align-items:center;gap:8px;margin-top:12px;padding-top:11px;border-top:1px dashed var(--line)}
+  .acceso .flag{width:20px;height:9px;border-radius:2px;flex:none;
+    background:repeating-linear-gradient(115deg,var(--barrera) 0 5px,var(--pine) 5px 10px)}
+  .acceso .txt{font-size:12px;font-weight:600;color:var(--ok)}
+  .acceso.no .txt{color:var(--muted)}
+  .acceso.no .flag{background:var(--line)}
+  .acceso .resp{margin-left:auto;font-family:'Space Mono',monospace;font-size:11px;color:var(--muted)}
+
+  .card-acts{display:flex;gap:8px;padding:0 15px 14px}
+  .bsm{flex:1;padding:11px 8px;border:none;border-radius:11px;font-weight:700;font-size:13px;cursor:pointer}
+  .bsm.p{background:var(--pine);color:#fff}
+  .bsm.w{background:#1FA855;color:#fff;flex:0 0 40%}
+  .bsm.ghost{background:var(--pine-soft);color:var(--pine);flex:0 0 32%}
+  .bsm:active{transform:translateY(1px)}
+
+  .dest{background:var(--warn-bg);color:var(--warn);font-size:10px;font-weight:700;padding:3px 7px;
+    border-radius:999px;letter-spacing:.2px;white-space:nowrap}
+  .v-que{font-size:13.5px;color:var(--muted);line-height:1.55;margin:11px 0 0}
+
+  .foto-box{border:1px dashed var(--line);border-radius:12px;padding:20px 12px;text-align:center;
+    color:var(--muted);font-size:13px;font-weight:600;background:#fff;cursor:pointer;overflow:hidden}
+  .foto-box img{width:100%;border-radius:9px;display:block}
+  .foto-peso{font-family:'Space Mono',monospace;font-size:10.5px;color:var(--muted);margin-top:6px;text-align:center}
+  .card-foto{width:100%;height:158px;object-fit:cover;display:block;background:var(--line2)}
+  .ped-foto{width:100%;border-radius:11px;margin-top:10px;display:block}
+
+  .estrellas{display:flex;gap:6px;justify-content:center;margin:6px 0 18px}
+  .estrellas button{flex:1;padding:12px 0;border:1px solid var(--line);border-radius:12px;background:#fff;
+    font-size:24px;line-height:1;color:var(--line);cursor:pointer}
+  .estrellas button.on{color:var(--barrera);border-color:var(--barrera2);background:#FFFBF0}
+  .resena{background:#fff;border:1px solid var(--line);border-radius:13px;padding:12px;margin-bottom:9px}
+  .resena .re-top{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700}
+  .resena .re-est{color:var(--barrera2);font-family:'Space Mono',monospace}
+  .resena .re-txt{font-size:13px;color:var(--muted);line-height:1.5;margin-top:6px}
+  .resena .re-fe{font-family:'Space Mono',monospace;font-size:10.5px;color:var(--muted);margin-left:auto}
+
+  .chips-f{display:flex;gap:7px;overflow-x:auto;padding:0 0 4px;margin-bottom:10px;
+    -webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .chips-f::-webkit-scrollbar{display:none}
+  .chf{white-space:nowrap;border:none;background:#fff;border-radius:999px;box-shadow:0 2px 8px -5px rgba(15,46,39,.18);
+    padding:8px 13px;font-size:12.5px;font-weight:600;color:var(--muted);cursor:pointer;flex:none}
+  .chf.on{background:var(--lime);color:var(--lime-ink)}
+
+  /* ===== carrusel de destacados (formato stories) ===== */
+  .stories-wrap{margin:2px 0 14px}
+  .stories-lbl{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:12px;color:var(--ink);margin-bottom:9px}
+  .stories-track{display:flex;gap:14px;overflow-x:auto;padding:0 0 4px;-webkit-overflow-scrolling:touch;
+    -ms-overflow-style:none;scrollbar-width:none;scroll-behavior:smooth}
+  .stories-track::-webkit-scrollbar{display:none}
+  .story{flex:0 0 auto;width:64px;text-align:center;cursor:pointer}
+  .story-ring{width:60px;height:60px;border-radius:50%;padding:2.5px;
+    background:conic-gradient(from 45deg, var(--lime), var(--moss), var(--lime));
+    display:flex;align-items:center;justify-content:center;margin:0 auto}
+  .story-ring-in{width:100%;height:100%;border-radius:50%;background:var(--paper);
+    display:flex;align-items:center;justify-content:center;overflow:hidden;font-weight:800;
+    font-family:'Bricolage Grotesque',sans-serif;font-size:17px;color:var(--moss)}
+  .story-ring-in img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+  .story-name{font-size:9.5px;font-weight:600;color:var(--ink);margin-top:5px;line-height:1.15;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:64px}
+  .stories-nota{font-size:10px;color:var(--muted);margin:8px 0 0}
+
+  .cupos-box{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:16px}
+  .cupos-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px;font-size:13.5px}
+  .cupos-head b{font-weight:700}
+  .cupos-meta{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted)}
+  .cupos-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .cupo{display:flex;align-items:center;gap:8px;font-size:12.5px}
+  .cupo .cnm{flex:1;color:var(--muted)}
+  .cupo .cnum{font-family:'Space Mono',monospace;font-weight:700}
+  .cupo .cbar{width:44px;height:6px;border-radius:3px;background:var(--line2);overflow:hidden;flex:none}
+  .cupo .cbar i{display:block;height:100%;background:var(--moss)}
+  .cupo.lleno .cnum{color:var(--ok)}
+  .cupo.lleno .cbar i{background:var(--ok)}
+
+  /* ---- planes ---- */
+  .plan{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;margin-bottom:14px}
+  .plan-h{background:var(--pine);color:#fff;padding:16px 17px}
+  .plan-h.oficio{background:var(--moss)}
+  .plan-h .pt{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:18px;letter-spacing:-.3px}
+  .plan-h .ps{font-size:12.5px;opacity:.82;margin-top:3px}
+  .plan-b{padding:15px 17px}
+  .plan-b ul{margin:0;padding-left:19px}
+  .plan-b li{font-size:13.5px;line-height:1.65;margin-bottom:5px}
+  .plan-b li b{font-weight:700}
+  .precio{font-family:'Space Mono',monospace;font-size:12px;color:var(--muted);margin:12px 0 0;
+    padding-top:12px;border-top:1px solid var(--line2)}
+
+  /* ---- detalle ---- */
+  .sheet-wrap{position:fixed;inset:0;z-index:60;display:none;align-items:flex-end;justify-content:center;
+    background:rgba(8,22,17,.6)}
+  .sheet-wrap.show{display:flex}
+  .sheet{width:100%;max-width:460px;background:var(--paper);border-radius:22px 22px 0 0;
+    max-height:92dvh;overflow:auto;animation:up .24s ease}
+  @keyframes up{from{transform:translateY(26px)}to{transform:translateY(0)}}
+  .sheet-in{padding:20px 18px calc(env(safe-area-inset-bottom) + 20px)}
+  .sheet h3{font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:21px;margin:0 0 4px;letter-spacing:-.3px}
+  .sheet .sub{font-size:13px;color:var(--muted);margin:0 0 16px}
+  .chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:16px}
+  .chip{background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 11px;font-size:12.5px;font-weight:600}
+  .datos{background:#fff;border:1px solid var(--line);border-radius:14px;padding:4px 14px;margin-bottom:16px}
+  .dato{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid var(--line2);
+    font-size:13.5px}
+  .dato:last-child{border-bottom:none}
+  .dato span{color:var(--muted)}
+  .dato b{font-weight:600;text-align:right}
+
+  /* ---- botones ---- */
+  .btn{width:100%;padding:15px;border:none;border-radius:14px;font-size:15.5px;font-weight:700;cursor:pointer;
+    letter-spacing:-.1px;transition:transform .1s,opacity .1s}
+  .btn-main{background:var(--pine);color:#fff}
+  .btn-wa{background:#1FA855;color:#fff;margin-top:9px}
+  .btn-soft{background:#fff;border:1px solid var(--line);color:var(--ink);margin-top:9px;font-weight:600}
+  .btn:active{transform:scale(.98);opacity:.9}
+
+  /* ---- formulario ---- */
+  .field{margin-bottom:12px}
+  .field label{display:block;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1.6px;
+    text-transform:uppercase;color:var(--muted);margin:0 0 6px 2px}
+  .field label .req{color:var(--barrera2, #C9A24A);opacity:.85;text-transform:none;letter-spacing:0;font-family:'Plus Jakarta Sans',sans-serif}
+  .field input,.field select,.field textarea{width:100%;padding:13px 14px;border:1px solid var(--line);
+    border-radius:12px;font-size:16px;background:#fff;color:var(--ink);appearance:none}
+  .field textarea{min-height:92px;resize:vertical;font-size:15px}
+  .field input:focus,.field select:focus,.field textarea:focus{outline:2px solid var(--moss);outline-offset:1px;border-color:transparent}
+  .field input[type="checkbox"],.field input[type="radio"]{width:18px;height:18px;flex:none;padding:0;
+    appearance:auto;border-radius:4px;accent-color:var(--pine)}
+  .row2{display:flex;gap:10px}
+  .row2 .field{flex:1}
+
+  /* ---- pedidos ---- */
+  .pedido{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:11px}
+  .pedido-top{display:flex;align-items:center;gap:9px;margin-bottom:8px}
+  .estado{font-size:10.5px;font-weight:700;padding:4px 9px;border-radius:999px;letter-spacing:.2px}
+  .estado.nuevo{background:var(--warn-bg);color:var(--warn)}
+  .estado.curso{background:var(--ok-bg);color:var(--ok)}
+  .estado.fin{background:var(--line2);color:var(--muted)}
+  .pedido .p-tit{font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:15px}
+  .pedido .p-txt{font-size:13.5px;color:var(--muted);line-height:1.5;margin-top:5px}
+  .pedido .p-pie{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);margin-top:9px}
+
+  /* ---- nav inferior ---- */
+  .nav{position:fixed;bottom:0;left:0;right:0;max-width:460px;margin:0 auto;background:#fff;
+    border-top:1px solid var(--line);display:flex;padding:8px 6px calc(env(safe-area-inset-bottom) + 8px);z-index:30}
+  .nav button{flex:1;background:none;border:none;padding:7px 2px;cursor:pointer;color:var(--muted);font-weight:600;font-size:10.5px}
+  .nav button .ni{display:block;font-size:19px;margin-bottom:2px;line-height:1}
+  .nav button.on{color:var(--pine)}
+
+  /* ---- admin ---- */
+  .tabs{display:flex;gap:5px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:5px;margin-bottom:16px}
+  .tabs button{flex:1;padding:10px 4px;border:none;border-radius:10px;background:none;font-weight:600;font-size:12.5px;
+    color:var(--muted);cursor:pointer}
+  .tabs button.on{background:var(--pine);color:#fff}
+  .pane{display:none}
+  .pane.on{display:block}
+  .mini{width:100%;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff;
+    font-weight:600;font-size:13.5px;cursor:pointer;margin-top:8px}
+  .mini.dash{border-style:dashed;border-color:var(--pine);color:var(--pine)}
+  .adm-row{display:flex;align-items:center;gap:11px;background:#fff;border:1px solid var(--line);
+    border-radius:14px;padding:11px;margin-bottom:9px}
+  .adm-row .ava{width:40px;height:40px;border-radius:11px;font-size:16px}
+  .adm-row .nm{font-weight:600;font-size:14px;line-height:1.1}
+  .adm-row .mt{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);margin-top:2px}
+  .tg{margin-left:auto;border:none;cursor:pointer;padding:6px 10px;border-radius:999px;font-weight:700;font-size:10.5px}
+  .tg.si{background:var(--ok-bg);color:var(--ok)}
+  .tg.no{background:var(--line2);color:var(--muted)}
+  .cuenta{display:flex;gap:8px;margin-bottom:14px}
+  .cu{flex:1;background:#fff;border:1px solid var(--line);border-radius:14px;padding:11px 8px;text-align:center}
+  .cu b{display:block;font-family:'Bricolage Grotesque',sans-serif;font-size:21px;line-height:1.1}
+  .cu span{font-size:9.5px;letter-spacing:.4px;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .banner{border-radius:13px;padding:12px 14px;font-size:12.5px;line-height:1.5;margin-bottom:14px;border:1px solid transparent}
+  .banner.warn{background:var(--warn-bg);color:var(--warn);border-color:#EFDCB6}
+  .banner.good{background:var(--ok-bg);color:var(--ok);border-color:#C4E7D2}
+  .nota{font-size:12px;color:var(--muted);line-height:1.55;margin-top:8px}
+  .plan{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .plan-row{display:flex;justify-content:space-between;align-items:center;padding:11px 14px;
+    font-size:13.5px;border-bottom:1px solid var(--line2)}
+  .plan-row:last-child{border-bottom:none}
+  .plan-row.on{background:var(--pine-soft)}
+  .plan-row b{font-weight:800;color:var(--pine)}
+  .free-banner{background:var(--pine-soft);color:var(--pine);font-size:12.5px;font-weight:700;
+    padding:11px 14px;border-radius:12px;margin-bottom:16px;line-height:1.4}
+  .chk-legal{display:flex;gap:8px;align-items:flex-start;font-size:12px;color:var(--muted);line-height:1.5;margin:12px 0;cursor:pointer}
+  .chk-legal input{margin-top:2px;flex-shrink:0}
+  .reportar-wrap{text-align:right;margin-top:4px}
+  .reportar{background:none;border:none;font-size:11px;color:var(--muted);padding:4px;cursor:pointer;text-decoration:underline}
+  .destacate-wrap{padding:0 15px 12px}
+  .destacate-wrap span{font-size:11.5px;font-weight:700;color:var(--pine);cursor:pointer;text-decoration:underline}
+  .badge{background:#B3261E;color:#fff;font-size:10px;font-weight:700;border-radius:20px;padding:1px 6px;margin-left:4px}
+  .pasos{font-size:12.5px;color:var(--muted);line-height:1.75;padding-left:17px;margin:0 0 14px}
+  .pasos b{color:var(--ink)}
+
+  /* ---- acceso (gate: vecino / oficio) ---- */
+  .acc-choice{display:flex;flex-direction:column;gap:12px;text-align:left;padding:14px 16px}
+  .acc-choice small{display:block;font-weight:400;font-size:11.5px;margin-top:4px;line-height:1.4}
+  .btn-main .acc-choice small{color:rgba(255,255,255,.7)}
+  .btn-soft .acc-choice small{color:var(--muted)}
+  .btn.acc-btn{padding:0}
+  .oneup-acc{background:var(--pine-soft);color:var(--lime-ink);border-radius:12px;padding:11px 14px;
+    font-size:12px;line-height:1.5;font-weight:500;margin-bottom:20px}
+  .link-back{text-align:center;color:var(--muted);font-size:12.5px;margin-top:16px;
+    text-decoration:underline;cursor:pointer}
+  .locked-panel{background:#fff;border:1.5px dashed var(--line);border-radius:16px;padding:26px 20px;
+    text-align:center;margin-top:6px}
+  .locked-panel .lk-ic{font-size:26px;margin-bottom:10px;opacity:.5}
+  .locked-panel b{display:block;font-family:'Bricolage Grotesque',sans-serif;font-size:14.5px;color:var(--ink);margin-bottom:6px}
+  .locked-panel span{display:block;font-size:12px;color:var(--muted);line-height:1.5}
+  code{font-family:'Space Mono',monospace;font-size:11.5px;background:#fff;border:1px solid var(--line);
+    padding:1px 5px;border-radius:5px}
+  .seg{display:flex;gap:8px;margin-bottom:10px}
+  .seg button{flex:1;padding:13px 6px;border-radius:13px;border:none;background:#fff;
+    box-shadow:0 2px 10px -6px rgba(15,46,39,.2);
+    font-weight:700;font-size:13px;color:var(--muted);cursor:pointer}
+  .seg button.on{background:var(--pine);color:#fff}
+  .vacio{text-align:center;color:var(--muted);font-size:13.5px;padding:30px 10px;line-height:1.6}
+  /* ---- asistente IA ---- */
+  .fab-ia{position:fixed;right:16px;bottom:78px;z-index:35;width:54px;height:54px;border-radius:50%;
+    background:var(--pine);color:#fff;border:none;box-shadow:var(--shadow);font-size:22px;
+    display:flex;align-items:center;justify-content:center;cursor:pointer;max-width:calc(460px - 32px)}
+  .chat-wrap{position:fixed;inset:0;z-index:60;display:none;background:rgba(10,32,24,.45)}
+  .chat-wrap.show{display:flex;align-items:flex-end;justify-content:center}
+  .chat-box{width:100%;max-width:460px;background:var(--paper);border-radius:20px 20px 0 0;
+    height:82dvh;display:flex;flex-direction:column;box-shadow:var(--shadow);animation:up .24s ease}
+  .chat-head{background:var(--pine);color:#fff;padding:calc(env(safe-area-inset-top) + 14px) 18px 14px;
+    border-radius:20px 20px 0 0;display:flex;align-items:center;gap:10px}
+  .chat-head .ttl{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:17px}
+  .chat-head .sub{font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:1.6px;
+    text-transform:uppercase;opacity:.7;margin-top:2px}
+  .chat-close{margin-left:auto;background:rgba(255,255,255,.13);border:none;color:#fff;
+    width:32px;height:32px;border-radius:9px;font-size:16px;cursor:pointer}
+  .chat-msgs{flex:1;overflow-y:auto;padding:16px 14px;display:flex;flex-direction:column;gap:10px}
+  .msg{max-width:84%;padding:10px 13px;border-radius:14px;font-size:14px;line-height:1.5;white-space:pre-wrap;
+    animation:entrar .2s ease-out}
+  .msg.bot{align-self:flex-start;background:#fff;border:1px solid var(--line);border-bottom-left-radius:4px}
+  .msg.user{align-self:flex-end;background:var(--pine);color:#fff;border-bottom-right-radius:4px}
+  .msg.think{align-self:flex-start;background:#fff;border:1px solid var(--line);color:var(--muted);
+    font-style:italic;border-bottom-left-radius:4px}
+  .chat-in{display:flex;gap:8px;padding:10px 12px calc(env(safe-area-inset-bottom) + 10px);
+    border-top:1px solid var(--line);background:#fff}
+  .chat-in input{flex:1;border:1px solid var(--line);border-radius:12px;padding:11px 13px;font-size:15px}
+  .chat-in button{background:var(--pine);color:#fff;border:none;border-radius:12px;width:44px;
+    font-size:17px;cursor:pointer}
+
+  .toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%) translateY(16px);opacity:0;
+    background:var(--pine2);color:#fff;padding:12px 18px;border-radius:12px;font-size:13.5px;font-weight:600;
+    z-index:90;transition:.26s;max-width:88%;text-align:center}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ================= INICIO ================= -->
+  <!-- ================= ACCESO (gate: vecino / oficio) ================= -->
+  <section id="acceso" class="screen active">
+    <div class="top-light" style="padding-bottom:26px">
+      <div class="brand-center">
+        <svg width="30" height="24" viewBox="0 0 28 22" fill="none">
+          <line x1="3" y1="20" x2="3" y2="13" stroke="var(--lime)" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="3" cy="13" r="1.5" fill="var(--lime)"/>
+          <line x1="3" y1="13" x2="12" y2="5" stroke="var(--lime)" stroke-width="2" stroke-linecap="round"/>
+          <path d="M16 20 V14 L21 10 L26 14 V20" stroke="var(--lime)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="brand-center-tit" onclick="tocarLogoAdmin()">BarrioKey</div>
+        <div class="brand-center-tag">Antes de entrar</div>
+      </div>
+    </div>
+    <div class="body">
+      <div id="accPasoRol">
+        <h2 class="h" style="text-align:center;margin-bottom:6px">¿Cómo querés usar BarrioKey?</h2>
+        <p class="nota" style="text-align:center;margin:0 0 20px">Elegí una opción para continuar.</p>
+        <button class="btn btn-main acc-btn" onclick="mostrarPasoVecino()" style="margin-bottom:12px">
+          <div class="acc-choice">🏡 Ingresar como vecino<small>Consultá, contactá y publicá lo que quieras en tu comunidad de barrios</small></div>
+        </button>
+        <button class="btn btn-soft acc-btn" onclick="elegirRolAcceso('oficio')">
+          <div class="acc-choice">🛠️ Ofrecer un servicio<small>Externo — no vivo en el barrio</small></div>
+        </button>
+      </div>
+      <div id="accPasoVecino" style="display:none">
+        <p style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1.6px;text-transform:uppercase;
+          color:var(--moss);text-align:center;margin:0 0 6px">Registro único</p>
+        <h2 class="h" style="text-align:center;margin-bottom:14px">Confirmá que sos parte del barrio</h2>
+        <div class="oneup-acc">✅ Ingresá tu código de barrio y lote por única vez. Esto solo te lo pedimos como registro único, no cada vez que entrás a la app. Se guarda en este dispositivo — si entrás desde otro celular, compu o tablet, vas a tener que ponerlo ahí también.</div>
+        <div class="field"><label>Elegí tu barrio</label><select id="accBarrio"></select></div>
+        <div class="field"><label>Código de tu barrio</label>
+          <input id="accCodigo" inputmode="numeric" maxlength="4" placeholder="••••"
+            style="letter-spacing:7px;font-family:'Space Mono',monospace;font-size:19px;text-align:center"></div>
+        <div class="field"><label>Número de lote / Unidad Funcional <span style="font-weight:400;color:var(--muted);font-size:11px">(para el registro — no se visualiza ni se publica en la app)</span></label>
+          <input id="accLote" inputmode="numeric" placeholder="Ej: 20, 45, 1056"></div>
+        <p class="nota" style="margin:-10px 0 14px">Poné tu número real de lote, casa o UF (mínimo 2 dígitos). Es un registro único: solo te lo pedimos esta vez, salvo que entres desde otro dispositivo. Si tenés dudas, contactá al administrador.</p>
+        <button class="btn btn-main" onclick="validarAccesoVecino()">Ingresar</button>
+        <p class="link-back" id="lnkNoTengoCodigo" onclick="abrirConsultaAcceso()" style="display:none;text-decoration:underline;color:var(--pine);font-weight:600">¿Problemas para entrar? Contactá al administrador</p>
+        <p class="link-back" onclick="volverPasoRol()">‹ Volver</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="inicio" class="screen">
+    <div class="top top-light">
+      <div class="brand-center">
+        <svg width="30" height="24" viewBox="0 0 28 22" fill="none">
+          <line x1="3" y1="20" x2="3" y2="13" stroke="var(--lime)" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="3" cy="13" r="1.5" fill="var(--lime)"/>
+          <line x1="3" y1="13" x2="12" y2="5" stroke="var(--lime)" stroke-width="2" stroke-linecap="round"/>
+          <path d="M16 20 V14 L21 10 L26 14 V20" stroke="var(--lime)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="brand-center-tit" id="brandName" onclick="tocarLogoAdmin()">BarrioKey</div>
+        <div class="brand-center-tag" id="brandTag">Servicios de confianza</div>
+      </div>
+      <div class="barrio-box-wrap">
+        <p class="barrio-box-lbl">Tu barrio</p>
+        <div class="barrio-box">
+          <select class="barrio-box-sel" id="barrioSel" onchange="cambiarBarrio()"></select>
+        </div>
+      </div>
+      <div class="search-wrap" style="margin-bottom:0">
+        <button type="button" class="search-ic" onclick="scrollABuscar()" aria-label="Buscar">🔍</button>
+        <input class="search" id="buscar" placeholder="Buscar servicio, profesional…" oninput="buscarInput()" onkeydown="if(event.key==='Enter'){this.blur();scrollABuscar();}">
+      </div>
+    </div>
+    <div class="body" style="padding-top:16px">
+      <div id="offlineBanner"></div>
+      <p style="text-align:right;font-size:11.5px;color:var(--moss);font-weight:600;margin:-6px 0 8px;cursor:pointer" onclick="abrir('shPlanes')">💳 ¿Sos Oficio o Vecino? Consultá tu Plan Pro</p>
+      <div class="mundo-cards center" id="segMundo">
+        <button id="mgOficios" class="on" onclick="setMundo('oficios')">
+          <span class="mc-ic">🔧</span><span class="mc-tit">Oficios</span><span class="mc-sub">Encontrá profesionales</span>
+        </button>
+        <button id="mgVecinos" onclick="setMundo('vecinos')">
+          <span class="mc-ic">🧑‍🤝‍🧑</span><span class="mc-tit">Vecinos</span><span class="mc-sub">Venden productos o servicios</span>
+        </button>
+      </div>
+      <div class="chips-f" id="filtros"></div>
+      <div class="stories-wrap" id="storiesWrap" style="display:none">
+        <div class="stories-lbl">✨ Destacados</div>
+        <div class="stories-track" id="storiesTrack"></div>
+        <p class="stories-nota">También los encontrás buscando por rubro más abajo ↓</p>
+      </div>
+      <h2 class="h" style="margin-bottom:2px">¿Qué necesitás resolver hoy?</h2>
+      <p class="nota" style="margin:0 0 12px">Buscá lo que necesitás.</p>
+      <div class="rubros" id="rubros"></div>
+      <p id="verMasRubros" onclick="toggleRubrosExpandido()" style="display:none;text-align:center;font-size:12.5px;font-weight:700;color:var(--moss);margin:0 0 20px;padding:10px 0;cursor:pointer">Ver más rubros ↓</p>
+      <h2 class="h" id="tituloLista">Cerca tuyo</h2>
+      <div id="lista"></div>
+    </div>
+  </section>
+
+  <!-- ================= PEDIDOS ================= -->
+  <section id="pedidos" class="screen">
+    <div class="top">
+      <div class="top-row">
+        <div class="brand">Mis pedidos<small>seguimiento</small></div>
+      </div>
+      <div style="height:14px"></div>
+    </div>
+    <div class="barrera"></div>
+    <div class="body"><div id="listaPedidos"></div></div>
+  </section>
+
+  <!-- ================= SUMARSE ================= -->
+  <section id="sumate" class="screen">
+    <div class="top">
+      <div class="top-row">
+        <div class="brand">Sumate<small>¿Tenés algo para vender u ofrecer? Sumate y sé parte de la comunidad BarrioKey</small></div>
+      </div>
+      <div style="height:14px"></div>
+    </div>
+    <div class="barrera"></div>
+    <div class="body">
+      <div class="free-banner" id="freeBanner">🎉 Publicar es gratis, siempre. 3 barrios a elección, gratis para siempre. Para estar en todos los barrios, sumate al Plan Pro.</div>
+      <p id="lnkCambiarRol" style="display:none;text-align:center;font-size:12.5px;font-weight:600;color:var(--moss);
+        text-decoration:underline;cursor:pointer;margin:0 0 12px" onclick="cambiarRolAcceso()">¿No sos Oficio externo? Volver a elegir</p>
+      <button class="mini dash" onclick="abrir('shPlanes')" style="margin-bottom:8px">💳 Ver planes y precios</button>
+      <button class="mini dash" onclick="compartirApp()" style="margin-bottom:16px">📲 Invitar vecinos a sumarse</button>
+      <div class="seg" id="segAlta" style="margin-bottom:16px">
+        <button id="agOficio" class="on" onclick="tipoAlta('oficio')">🔧 Tengo un oficio</button>
+        <button id="agVecino" onclick="tipoAlta('vecino')">🤝 Vendo algo</button>
+      </div>
+      <div id="formOficio">
+      <p class="nota" style="margin:0 0 6px">Publicá gratis. BarrioKey es un intermediario y no se responsabiliza por el trabajo realizado.</p>
+      <p class="nota" style="margin:0 0 16px;font-weight:600">Todos los campos son obligatorios, salvo los que dicen "opcional".</p>
+      <input type="text" id="spOficio" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;width:1px;height:1px" aria-hidden="true">
+      <div class="field"><label>Nombre o del negocio</label><input id="sName" placeholder="Ej. Cerrajería Pilar del Este"></div>
+      <div class="field"><label>Oficio</label><select id="sRubro"></select></div>
+      <div class="row2">
+        <div class="field"><label>WhatsApp</label><input id="sTel" inputmode="tel" placeholder="11 5555 5555"></div>
+        <div class="field"><label>Años en el oficio</label><input id="sAnios" inputmode="numeric" placeholder="10"></div>
+      </div>
+      <div class="field"><label>Barrios donde querés publicar (hasta 3 gratis para siempre)</label>
+        <div id="sBarriosVenta" style="display:flex;flex-direction:column;gap:4px"></div>
+        <small style="opacity:.7">Quedan pendientes de aprobación. Si querés estar en <span id="etBarrios1">todos los barrios cerrados</span>, consultá por el Plan Pro.</small></div>
+      <div class="field"><label>Qué hacés</label><textarea id="sDesc" placeholder="Contá en dos líneas qué trabajos hacés."></textarea></div>
+      <div class="field"><label>Foto de perfil (tu cara o el logo de tu negocio)</label>
+        <div class="foto-box" id="sfBox" onclick="document.getElementById('sfFile').click()"><span>📷 Tocá para sacar o elegir una foto</span></div>
+        <input type="file" id="sfFile" accept="image/*" style="display:none" onchange="tomarFoto(event,'oficio')">
+        <button class="mini" id="sfQuitar" style="display:none" onclick="quitarFoto('oficio')">Quitar foto</button>
+      </div>
+      <label class="chk-legal"><input type="checkbox" id="sLegal"> Declaro que la información brindada es mía y verídica. Acepto que BarrioKey actúa exclusivamente como medio de contacto entre vecinos y prestadores, sin participar del acto comercial. La plataforma no verifica antecedentes ni garantiza el trabajo realizado, y se desliga de toda responsabilidad sobre lo publicado o lo ejecutado. BarrioKey se reserva el derecho de eliminar publicaciones inadecuadas, ofensivas o reportadas. <a href="javascript:void(0)" onclick="abrir('shCriterios')" style="color:var(--barrera2);font-weight:600">Ver criterios completos</a></label>
+      <button class="btn btn-main" id="btnEnviarOficio" onclick="enviarAlta()">Enviar mis datos</button>
+      </div>
+
+      <div id="formVecino" style="display:none">
+        <p class="nota" style="margin:0 0 6px">Publicá gratis lo que vendés u ofrecés.</p>
+        <p class="nota" style="margin:0 0 16px;font-weight:600">Todos los campos son obligatorios, salvo los que dicen "opcional".</p>
+        <input type="text" id="spVecino" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;width:1px;height:1px" aria-hidden="true">
+        <div class="field"><label>Nombre y apellido</label><input id="vName" placeholder="Ej. Marta Gómez">
+          <small style="opacity:.7">Es para que el equipo te identifique. El apellido no se publica.</small>
+        </div>
+        <div class="field"><label>Nombre de tu emprendimiento (opcional)</label><input id="vNegocio" placeholder="Ej. Tortas de Marta">
+          <small style="opacity:.7">Si lo completás, se publica este nombre en vez de tu nombre de pila.</small>
+        </div>
+        <div class="field"><label>Qué ofrecés</label><select id="vRubro"></select></div>
+        <div class="field"><label>Tu barrio</label>
+          <select id="vBarrio" onchange="sincronizarBarrioVenta()"><option value="">Elegí tu barrio</option></select>
+        </div>
+        <div class="field"><label>¿En qué barrios querés vender?</label>
+          <small style="opacity:.7;display:block;margin-bottom:6px">Podés elegir uno, varios o todos.</small>
+          <div id="vBarriosVenta" style="display:flex;flex-direction:column;gap:4px"></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label>WhatsApp</label><input id="vTel" inputmode="tel" placeholder="11 5555 5555"></div>
+          <div class="field"><label>Cuándo vendés</label><select id="vDias"></select></div>
+        </div>
+        <div class="field"><label>Contalo en dos líneas</label><textarea id="vQue" placeholder="Ej. Empanadas caseras por docena. Se encargan hasta el jueves."></textarea></div>
+        <div class="field"><label>Foto de lo que vendés</label>
+          <div class="foto-box" id="vfBox" onclick="document.getElementById('vfFile').click()"><span>📷 Tocá para sacar o elegir una foto</span></div>
+          <input type="file" id="vfFile" accept="image/*" style="display:none" onchange="tomarFoto(event,'vecino')">
+          <button class="mini" id="vfQuitar" style="display:none" onclick="quitarFoto('vecino')">Quitar foto</button>
+        </div>
+        <div class="field" id="campoFoto2" style="opacity:.5">
+          <label>2da foto (solo Plan Pro Destacado)</label>
+          <div class="foto-box" id="vfBox2" style="pointer-events:none"><span>🔒 Se habilita al tildar "Todos los barrios"</span></div>
+          <input type="file" id="vfFile2" accept="image/*" style="display:none" onchange="tomarFoto(event,'vecino2')">
+          <button class="mini" id="vfQuitar2" style="display:none" onclick="quitarFoto('vecino2')">Quitar foto</button>
+        </div>
+        <div class="field" id="campoLink" style="opacity:.5">
+          <label>Link a catálogo, Instagram o web (solo Plan Pro Destacado)</label>
+          <input id="vLink" placeholder="Se habilita al tildar &quot;Todos los barrios&quot;" disabled>
+        </div>
+        <label class="chk-legal"><input type="checkbox" id="vLegal"> Confirmo que la información es mía y verídica. BarrioKey actúa exclusivamente como medio de contacto entre vecinos, sin participar del acto comercial. La plataforma no verifica ni garantiza lo publicado, y se desliga de toda responsabilidad. BarrioKey se reserva el derecho de eliminar publicaciones inadecuadas, ofensivas o reportadas.</label>
+        <button class="btn btn-main" id="btnEnviarVecino" onclick="publicarVecino()">Publicar gratis</button>
+        <p class="nota">Si querés aparecer arriba de la lista, se puede destacar por semana. Consultanos.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PANEL ================= -->
+  <section id="admin" class="screen">
+    <div class="top">
+      <div class="top-row">
+        <div class="brand">Panel<small>administración</small></div>
+        <button class="top-btn" onclick="ir('inicio')">Salir</button>
+      </div>
+      <div style="height:14px"></div>
+    </div>
+    <div class="barrera"></div>
+    <div class="body">
+      <div class="tabs" style="overflow-x:auto;flex-wrap:nowrap">
+        <button id="tbOficios" class="on" onclick="tab('oficios')" style="flex:none">Prestadores</button>
+        <button id="tbVencimientos" onclick="tab('vencimientos')" style="flex:none">⏳ Vencimientos</button>
+        <button id="tbTrabajos" onclick="tab('trabajos')" style="flex:none">Actividad</button>
+        <button id="tbVecinos" onclick="tab('vecinos')" style="flex:none">Vecinos</button>
+        <button id="tbReportes" onclick="tab('reportes')" style="flex:none">Reportes <span id="badgeReportes" class="badge" style="display:none">0</span></button>
+        <button id="tbBase" onclick="tab('base')" style="flex:none">Base</button>
+        <button id="tbConsultas" onclick="tab('consultas')" style="flex:none">Consultas <span id="badgeConsultas" class="badge" style="display:none">0</span></button>
+      </div>
+
+      <div id="paneConsultas" class="pane">
+        <p class="nota" style="margin:0 0 12px">Mensajes de gente que no pudo entrar (no tiene el código, se equivocó, etc.). Contactalos por WhatsApp con el teléfono que dejaron, si lo dejaron.</p>
+        <div id="admConsultas"></div>
+      </div>
+
+      <div id="paneVencimientos" class="pane">
+        <p class="nota" style="margin:0 0 12px">Solo quienes tienen Plan Pro activo (Oficios y Vecinos juntos), ordenados por los que vencen antes.</p>
+        <div id="admVencimientos"></div>
+      </div>
+
+      <div id="paneOficios" class="pane on">
+        <div id="lanzBanner" style="border-radius:12px;padding:10px 12px;margin-bottom:12px;font-size:12.5px"></div>
+        <div class="cuenta">
+          <div class="cu"><b id="cTot">0</b><span>Total</span></div>
+          <div class="cu"><b id="cVer" style="color:var(--ok)">0</b><span>Verificados</span></div>
+          <div class="cu"><b id="cPen" style="color:var(--warn)">0</b><span>A revisar</span></div>
+        </div>
+        <div class="cupos-box">
+          <div class="cupos-head">
+            <span>Activos en <b id="cupoBarrio">—</b></span>
+            <span class="cupos-meta">sin límite de cupo</span>
+          </div>
+          <div id="cuposGrid"></div>
+        </div>
+        <div id="admLista"></div>
+        <button class="mini dash" onclick="abrirNuevo()">+ Cargar prestador</button>
+      </div>
+
+      <div id="paneTrabajos" class="pane">
+        <p class="nota" style="margin:0 0 12px">Por privacidad, el contenido de cada solicitud (nombre, teléfono, dirección, detalle) es solo entre el vecino y el prestador — no se muestra acá. Esto es un resumen anónimo, para que veas si la app se está usando.</p>
+        <div id="admPedidosStats"></div>
+      </div>
+
+      <div id="paneVecinos" class="pane">
+        <p class="nota" style="margin:0 0 12px">Los vecinos publican gratis. El Plan Pro/Destacado dura 30 días y los deja arriba de la lista.</p>
+        <div id="admVecinos"></div>
+      </div>
+
+      <div id="paneReportes" class="pane">
+        <p class="nota" style="margin:0 0 12px">Publicaciones y reseñas que algún vecino marcó como reportadas. Revisalas y decidí si las bajás.</p>
+        <div id="admReportes"></div>
+      </div>
+
+      <div id="paneBase" class="pane">
+        <div id="bannerBase"></div>
+        <p style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1.6px;
+          text-transform:uppercase;color:var(--muted);margin:0 0 8px 2px">Barrios</p>
+        <p class="nota" style="margin:0 0 10px">Uno por línea. Aparecen en el selector de arriba.</p>
+        <div class="field"><textarea id="txtBarrios" style="min-height:140px"></textarea></div>
+        <button class="mini" onclick="guardarBarrios()">Guardar barrios</button>
+        <div style="height:22px"></div>
+        <p style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1.6px;
+          text-transform:uppercase;color:var(--muted);margin:0 0 8px 2px">Códigos de barrio</p>
+        <p class="nota" style="margin:0 0 10px">4 dígitos por barrio. Se los pasás vos a cada comunidad (grupo de WhatsApp, etc.) para que los vecinos puedan ingresar.</p>
+        <div id="codigosBarrioBox"></div>
+        <button class="mini" onclick="guardarCodigosBarrio()">Guardar códigos</button>
+        <div style="height:22px"></div>
+        <p style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1.6px;
+          text-transform:uppercase;color:var(--muted);margin:0 0 8px 2px">Límite por identificación (lote/casa/UF)</p>
+        <p class="nota" style="margin:0 0 10px">Cuántos dispositivos distintos pueden usar el mismo número dentro de un barrio (para cubrir a toda una familia). Si alguien llega al límite, la app le pide que te contacte.</p>
+        <div class="field" style="display:flex;align-items:center;gap:10px">
+          <input id="inLimiteLote" type="number" min="1" style="width:90px;text-align:center" placeholder="12">
+          <button class="mini" style="flex:none" onclick="guardarLimiteLote()">Guardar límite</button>
+        </div>
+        <div style="height:14px"></div>
+        <p style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1.6px;
+          text-transform:uppercase;color:var(--muted);margin:0 0 8px 2px">Máximo de lotes distintos por barrio</p>
+        <p class="nota" style="margin:0 0 10px">Techo de seguridad: cuántos números de lote/casa distintos puede tener registrados un mismo barrio en total. Ningún barrio real debería acercarse a este número — si alguien queda afuera, te va a escribir.</p>
+        <div class="field" style="display:flex;align-items:center;gap:10px">
+          <input id="inLimiteLotesBarrio" type="number" min="1" style="width:90px;text-align:center" placeholder="600">
+          <button class="mini" style="flex:none" onclick="guardarLimiteLotesBarrio()">Guardar máximo</button>
+        </div>
+        <div style="height:22px"></div>
+        <p class="seg-lbl" style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1.6px;
+          text-transform:uppercase;color:var(--muted);margin:0 0 8px 2px">Modo</p>
+        <div class="seg" id="segModo">
+          <button onclick="setModo(true)">Demostración</button>
+          <button onclick="setModo(false)">Real</button>
+        </div>
+        <p class="nota" id="modoNota" style="margin-bottom:18px"></p>
+        <p class="pasos">
+          <b>1.</b> Creá un proyecto gratis en <code>supabase.com</code><br>
+          <b>2.</b> En <b>SQL Editor</b>, pegá y ejecutá <code>base-vecinos.sql</code><br>
+          <b>3.</b> En <b>Settings → API</b> copiá la <b>Project URL</b> y la clave <b>anon public</b>
+        </p>
+        <div class="field"><label>Project URL</label><input id="sbUrl" placeholder="https://xxxx.supabase.co"></div>
+        <div class="field"><label>Clave anon public</label><input id="sbKey" placeholder="eyJhbGci…"></div>
+        <button class="btn btn-main" onclick="guardarConexion()">Conectar</button>
+        <button class="mini" onclick="probarConexion()">Probar conexión</button>
+        <button class="mini" onclick="desconectar()">Desconectar</button>
+        <div style="height:22px"></div>
+        <p class="seg-lbl" style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1.6px;
+          text-transform:uppercase;color:var(--muted);margin:0 0 8px 2px">Identidad</p>
+        <div class="field"><label>Nombre de la app</label><input id="cfgName"></div>
+        <div class="field"><label>Bajada</label><input id="cfgTag"></div>
+        <div class="field"><label>WhatsApp de contacto</label><input id="cfgTel" inputmode="tel" placeholder="5491155555555"></div>
+        <button class="btn btn-main" onclick="guardarIdentidad()">Guardar identidad</button>
+        <div style="height:22px"></div>
+        <p class="seg-lbl" style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1.6px;
+          text-transform:uppercase;color:var(--muted);margin:0 0 8px 2px">Seguridad</p>
+        <p class="nota" style="margin:0 0 10px">Cambiá la clave de acceso al Panel. Se aplica al instante para todos.</p>
+        <div class="field"><label>Clave actual</label><input id="claveActual" type="password" autocomplete="off" placeholder="••••••"></div>
+        <div class="field"><label>Clave nueva</label><input id="claveNueva" type="password" autocomplete="off" placeholder="mínimo 4 caracteres"></div>
+        <button class="btn btn-main" onclick="cambiarClave()">Cambiar clave</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ASISTENTE IA ================= -->
+  <button class="fab-ia" onclick="abrirChat()" aria-label="Asistente">💬</button>
+
+  <div class="chat-wrap" id="chatWrap">
+    <div class="chat-box">
+      <div class="chat-head">
+        <div>
+          <div class="ttl">Asistente</div>
+          <div class="sub" id="chatSub">BarrioKey</div>
+        </div>
+        <button class="chat-close" onclick="cerrarChat()">✕</button>
+      </div>
+      <div class="chat-msgs" id="chatMsgs"></div>
+      <div class="chat-in">
+        <input id="chatInput" placeholder="Escribí tu consulta..." autocomplete="off"
+          onkeydown="if(event.key==='Enter')enviarChat();">
+        <button onclick="enviarChat()">➤</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= NAV ================= -->
+  <div class="nav" id="nav">
+    <button id="nvInicio" class="on" onclick="ir('inicio')"><span class="ni">🏠</span>Inicio</button>
+    <button id="nvPedidos" onclick="ir('pedidos')"><span class="ni">📋</span>Mis pedidos</button>
+    <button id="nvSumate" onclick="ir('sumate')"><span class="ni">🔧</span>Sumate</button>
+  </div>
+</div>
+
+<!-- ===== hoja: detalle prestador ===== -->
+<div class="sheet-wrap" id="shDet"><div class="sheet"><div class="sheet-in" id="detIn"></div></div></div>
+
+<!-- ===== hoja: clave del panel ===== -->
+<div class="sheet-wrap" id="shClave"><div class="sheet"><div class="sheet-in">
+  <h3>Panel de administración</h3>
+  <p class="sub">Solo para los administradores. Ingresá la clave.</p>
+  <div class="field"><label>Clave</label>
+    <input id="claveInput" type="password" inputmode="text" autocomplete="off" placeholder="••••••">
+  </div>
+  <button class="btn btn-main" onclick="validarClave()">Entrar</button>
+  <button class="btn btn-soft" onclick="cerrar('shClave')">Cancelar</button>
+</div></div></div>
+
+<!-- ===== hoja: pedir presupuesto ===== -->
+<div class="sheet-wrap" id="shPedir"><div class="sheet"><div class="sheet-in">
+  <h3 id="pdTitulo">Pedir presupuesto</h3>
+  <p class="sub" id="pdSub"></p>
+  <input type="text" id="spPedido" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;width:1px;height:1px" aria-hidden="true">
+  <div class="field"><label>Tu nombre <span class="req">· obligatorio</span></label><input id="pdNombre" placeholder="Ej. Julián"></div>
+  <div class="row2">
+    <div class="field"><label>Barrio <span class="req">· obligatorio</span></label>
+      <input id="pdBarrio" readonly>
+      <select id="pdBarrioSel" style="display:none" onchange="toggleOtroBarrio()"></select>
+      <input id="pdBarrioOtro" style="display:none;margin-top:8px" placeholder="Escribí tu barrio">
+    </div>
+    <div class="field"><label>Lote o casa (opcional)</label><input id="pdLote" placeholder="Lote 214"></div>
+  </div>
+  <div class="field"><label>Tu teléfono (opcional)</label><input id="pdTel" inputmode="tel" placeholder="11 5555 5555"></div>
+  <div class="field"><label>Qué necesitás (opcional)</label><textarea id="pdDesc" placeholder="Contá el problema en dos líneas."></textarea></div>
+  <div class="field"><label>Cuándo</label><select id="pdCuando">
+    <option>Es urgente</option><option>Esta semana</option><option>Sin apuro</option></select></div>
+  <p class="nota" style="margin:0 0 10px">El resto lo coordinás directo por WhatsApp con el prestador.</p>
+  <p class="nota" style="margin:0 0 10px;font-size:11px">BarrioKey actúa exclusivamente como medio de contacto y no participa de la presente transacción ni asume responsabilidad alguna por el trabajo del prestador. Todo lo acordado queda exclusivamente entre las partes contratantes.</p>
+  <button class="btn btn-main" onclick="enviarPedido()">Enviar pedido</button>
+  <button class="btn btn-soft" onclick="cerrar('shPedir')">Cancelar</button>
+</div></div></div>
+
+<!-- ===== hoja: criterios de la plataforma ===== -->
+<div class="sheet-wrap" id="shCriterios"><div class="sheet"><div class="sheet-in">
+  <h3>Criterios de la plataforma</h3>
+  <p class="sub">BarrioKey actúa exclusivamente como medio de contacto entre vecinos y prestadores, sin participar del acto comercial. No verifica antecedentes ni garantiza el trabajo realizado — la relación y cualquier responsabilidad es exclusivamente entre las partes.</p>
+  <p class="nota" style="margin:0 0 14px">BarrioKey se reserva el derecho de suspender o dar de baja cualquier perfil ante reclamos reiterados o mal comportamiento reportado, sin que esto implique participación en la relación comercial ni responsabilidad sobre lo ejecutado.</p>
+  <button class="btn btn-main" onclick="cerrar('shCriterios')">Entendido</button>
+</div></div></div>
+
+<!-- ===== hoja: planes y precios ===== -->
+<div class="sheet-wrap" id="shPlanes"><div class="sheet"><div class="sheet-in">
+  <h3>Planes y precios</h3>
+  <p class="sub">Publicar siempre es gratis. Esto es para tener más visibilidad y alcance.</p>
+
+  <p class="nota" style="margin:0 0 4px"><b>🔧 Oficios (proveedores)</b></p>
+  <div class="plan">
+    <div class="plan-row"><span>3 barrios a elección</span><b style="color:var(--ok)">Gratis para siempre</b></div>
+    <div class="plan-row on"><span>Plan Pro · Todos los barrios</span><b>$30.000/mes</b></div>
+  </div>
+  <p class="nota" style="margin:8px 0 14px">Con el Plan Pro seguís apareciendo cada vez que alguien busque en tu rubro, en los 10 barrios.</p>
+
+  <p class="nota" style="margin:0 0 4px"><b>🛍️ Vecinos · Plan Destacado</b></p>
+  <div class="plan">
+    <div class="plan-row"><span>3 barrios a elección</span><b style="color:var(--ok)">Gratis para siempre</b></div>
+    <div class="plan-row on"><span>Plan Pro · Todos los barrios</span><b>$15.000/mes</b></div>
+  </div>
+  <p class="nota" style="margin:8px 0 14px">Incluye 2da foto, link a catálogo/redes y prioridad en tus barrios.</p>
+
+  <button class="btn btn-main" onclick="irAlPlanPro('oficio')">🔧 Quiero ser Oficio (Plan Pro)</button>
+  <button class="btn btn-wa" style="margin-top:8px" onclick="irAlPlanPro('vecino')">🛍️ Quiero vender (Plan Pro)</button>
+
+  <div style="border-top:1px solid var(--line);margin:18px 0 12px"></div>
+  <p class="nota" style="margin:0 0 8px;text-align:center;font-weight:600">¿Ya estás registrado? Consultá tu estado</p>
+  <div class="field"><input id="pcTel" inputmode="tel" placeholder="Tu WhatsApp (Ej. 11 5555 5555)"></div>
+  <button class="btn btn-soft" onclick="consultarEstadoPlan()">Ver mi estado</button>
+  <p id="pcResultado" class="nota" style="margin:10px 0 0;text-align:center"></p>
+
+  <button class="btn btn-soft" style="margin-top:14px" onclick="cerrar('shPlanes')">Cerrar</button>
+</div></div></div>
+
+<!-- ===== hoja: calificar ===== -->
+<div class="sheet-wrap" id="shResena"><div class="sheet"><div class="sheet-in">
+  <h3>¿Cómo te fue?</h3>
+  <p class="sub" id="rsSub"></p>
+  <div class="estrellas" id="rsStars">
+    <button onclick="setEstrellas(1)">★</button><button onclick="setEstrellas(2)">★</button>
+    <button onclick="setEstrellas(3)">★</button><button onclick="setEstrellas(4)">★</button>
+    <button onclick="setEstrellas(5)">★</button>
+  </div>
+  <div class="field"><label>Contale al barrio (opcional)</label>
+    <textarea id="rsTexto" placeholder="Ej. Vino el mismo día, prolijo y cobró lo que dijo."></textarea></div>
+  <label class="chk-legal"><input type="checkbox" id="rsLegal"> Mi opinión es honesta y basada en una experiencia real. Entiendo que la reseña queda pública, que BarrioKey no se responsabiliza por su contenido, y que puede eliminarla si es reportada u ofensiva.</label>
+  <button class="btn btn-main" onclick="enviarResena()">Publicar reseña</button>
+  <button class="btn btn-soft" onclick="cerrar('shResena')">Ahora no</button>
+</div></div></div>
+
+<!-- ===== hoja: consulta de acceso ===== -->
+<div class="sheet-wrap" id="shConsulta"><div class="sheet"><div class="sheet-in">
+  <h3>Contanos qué te pasa</h3>
+  <p class="sub">No te preocupes, esto llega directo a nosotros y te contactamos. No es un chat automático.</p>
+  <div class="field"><label>Tu nombre</label>
+    <input id="cnsNombre" placeholder="Ej. María"></div>
+  <div class="field"><label>Tu WhatsApp <span style="font-weight:400;color:var(--muted);font-size:11px">(así podemos responderte)</span></label>
+    <input id="cnsTel" inputmode="tel" placeholder="Ej. 11 2345 6789"></div>
+  <div class="field"><label>Contanos qué necesitás</label>
+    <textarea id="cnsMsg" placeholder="Ej. Soy de San Eduardo y no tengo el código de acceso."></textarea></div>
+  <button class="btn btn-main" onclick="enviarConsultaAcceso()">Enviar</button>
+  <button class="btn btn-soft" onclick="cerrar('shConsulta')">Cancelar</button>
+</div></div></div>
+
+
+<!-- ===== hoja: nuevo prestador (panel) ===== -->
+<div class="sheet-wrap" id="shNuevo"><div class="sheet"><div class="sheet-in">
+  <h3>Cargar prestador</h3>
+  <p class="sub">Se publica en el listado de los vecinos.</p>
+  <div class="field"><label>Nombre</label><input id="nName" placeholder="Cerrajería Pilar del Este"></div>
+  <div class="field"><label>Oficio</label><select id="nRubro"></select></div>
+  <div class="row2">
+    <div class="field"><label>WhatsApp</label><input id="nTel" inputmode="tel"></div>
+    <div class="field"><label>Años</label><input id="nAnios" inputmode="numeric"></div>
+  </div>
+  <div class="field"><label>Barrios habilitados</label><input id="nBarrios" placeholder="Pilar del Este, Pilará"></div>
+  <div class="field"><label>Qué hace</label><textarea id="nDesc"></textarea></div>
+  <button class="btn btn-main" onclick="guardarNuevo()">Guardar prestador</button>
+  <button class="btn btn-soft" onclick="cerrar('shNuevo')">Cancelar</button>
+</div></div></div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ===================== datos ===================== */
+const K='miBarrioJob_v1', KC='miBarrioJobConn_v1', KD='miBarrioJobDevice_v1', KACC='miBarrioJobAcceso_v1';
+function cargarAcceso(){try{return JSON.parse(localStorage.getItem(KACC));}catch(e){return null;}}
+function guardarAcceso(obj){try{localStorage.setItem(KACC,JSON.stringify(obj));}catch(e){}}
+function obtenerDispositivoId(){
+  try{
+    let id=localStorage.getItem(KD);
+    if(!id){
+      id='dev_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,10);
+      localStorage.setItem(KD,id);
+    }
+    return id;
+  }catch(e){return 'dev_sin_local';}
+}
+const RUBROS=[
+  {id:'cerrajeria',ic:'🔑',lb:'Cerrajería'},
+  {id:'plomeria',ic:'🚿',lb:'Plomería'},
+  {id:'electricidad',ic:'💡',lb:'Electricidad'},
+  {id:'aire',ic:'❄️',lb:'Aire acond.'},
+  {id:'jardineria',ic:'🌿',lb:'Jardinería'},
+  {id:'pileta',ic:'🏊',lb:'Piletas'},
+  {id:'pintura',ic:'🎨',lb:'Pintura'},
+  {id:'albanileria',ic:'🧱',lb:'Albañilería'},
+  {id:'gas',ic:'🔥',lb:'Gas'},
+  {id:'herreria',ic:'⚒️',lb:'Herrería'},
+  {id:'fletes',ic:'🚚',lb:'Fletes'},
+  {id:'limpieza',ic:'🧽',lb:'Limpieza'},
+  {id:'techos',ic:'🏠',lb:'Impermeabilización y techos'},
+  {id:'electrodomesticos',ic:'🔌',lb:'Técnico de electrodomésticos'},
+  {id:'cortinas',ic:'🪟',lb:'Cortinas y persianas'},
+  {id:'vidrieria',ic:'🪞',lb:'Cristalería y vidriería'},
+  {id:'carpinteria',ic:'🪚',lb:'Carpintería'},
+  {id:'computacion',ic:'💻',lb:'Computación / reparación PC'},
+  {id:'fumigacion',ic:'🐜',lb:'Fumigación / control de plagas'},
+  {id:'camaras',ic:'📹',lb:'Cámaras / seguridad'},
+  {id:'bienestar',ic:'🔮',lb:'Bienestar / Salud mental'},
+  {id:'clases',ic:'📚',lb:'Clases'},
+  {id:'gestoria',ic:'📋',lb:'Gestoría (trámites, multas)'},
+  {id:'lavadoautos',ic:'🚗',lb:'Lavado de autos a domicilio'},
+  {id:'bicicleteria',ic:'🚲',lb:'Bicicletería a domicilio'},
+  {id:'veterinaria',ic:'🐾',lb:'Veterinaria'},
+  {id:'salud',ic:'🩺',lb:'Salud / Profesionales médicos'},
+  {id:'fotografia',ic:'📸',lb:'Animación y fotografía de eventos'},
+  {id:'traslados',ic:'🚐',lb:'Traslados / Transporte'},
+  {id:'otros_of',ic:'✨',lb:'Otros'}
+];
+const RUBROSV=[
+  {id:'comida',ic:'🥟',lb:'Comida casera'},
+  {id:'tortas',ic:'🎂',lb:'Tortas'},
+  {id:'ropa',ic:'👗',lb:'Ropa'},
+  {id:'clases',ic:'📚',lb:'Clases'},
+  {id:'mascotas',ic:'🐶',lb:'Mascotas'},
+  {id:'bienestar',ic:'🔮',lb:'Bienestar / Salud mental'},
+  {id:'delivery',ic:'🛵',lb:'Delivery'},
+  {id:'plantas',ic:'🪴',lb:'Plantas'},
+  {id:'artesanias',ic:'🧶',lb:'Artesanías'},
+  {id:'belleza',ic:'💅',lb:'Belleza'},
+  {id:'ninera',ic:'👶',lb:'Niñera / cuidado de chicos'},
+  {id:'panaderia',ic:'🥖',lb:'Panadería / repostería'},
+  {id:'entrenador',ic:'🏋️',lb:'Entrenador personal / fitness'},
+  {id:'fotografia',ic:'📸',lb:'Animación y fotografía de eventos'},
+  {id:'paseador',ic:'🦮',lb:'Paseador/a de perros'},
+  {id:'carniceria',ic:'🥩',lb:'Carnicería'},
+  {id:'frutasyverduras',ic:'🥬',lb:'Frutas y verduras'},
+  {id:'inmobiliaria',ic:'🏘️',lb:'Desarrollo inmobiliario'},
+  {id:'estetica',ic:'✨',lb:'Estética / cuidado de la piel'},
+  {id:'carbon',ic:'🪵',lb:'Carbón y leña'},
+  {id:'muebles',ic:'🛋️',lb:'Muebles y accesorios'},
+  {id:'almacen',ic:'🫒',lb:'Almacén / Dietética'},
+  {id:'blanqueria',ic:'🧺',lb:'Toallones / blanquería'},
+  {id:'telefonia',ic:'📱',lb:'Accesorios de telefonía'},
+  {id:'otros',ic:'✨',lb:'Otros'}
+];
+const rubroLb=id=>{const r=RUBROS.concat(RUBROSV).find(x=>x.id===id);return r?r.lb:id;};
+const COLORES_RUBRO = {
+  cerrajeria:'#C9A24A', plomeria:'#3E7CA6', electricidad:'#D6A429',
+  aire:'#4FA3AE', jardineria:'#5B8C4D', pileta:'#3B8FB0',
+  pintura:'#B65C6B', albanileria:'#B5713A', gas:'#C1622F',
+  herreria:'#6B6E73', fletes:'#C99A3B', limpieza:'#4C9A80',
+  techos:'#96633A', electrodomesticos:'#5C6076', cortinas:'#A67C4C',
+  vidrieria:'#4A93B5', carpinteria:'#8A6240', computacion:'#3E5C8A',
+  fumigacion:'#6B7A3D', camaras:'#4A5568',
+  gestoria:'#5A6B7A', lavadoautos:'#3B8FB0', bicicleteria:'#4C9A80',
+  veterinaria:'#6B8E5A', salud:'#C4453F', traslados:'#4A6B8A',
+  otros_of:'#3D6A5C',
+  comida:'#C1622F', tortas:'#B5507A', ropa:'#7A5EA8',
+  clases:'#3E7CA6', mascotas:'#9C6B3E', bienestar:'#8967B0',
+  delivery:'#C87A2E', plantas:'#5B8C4D', artesanias:'#B5713A',
+  belleza:'#B5507A', ninera:'#C97A8E', panaderia:'#B8823E',
+  entrenador:'#4A8C6B', fotografia:'#5C5C8A', paseador:'#8C6B4A',
+  carniceria:'#B5504A', frutasyverduras:'#5B8C4D', inmobiliaria:'#6B6E73',
+  estetica:'#B5507A', carbon:'#6B4A3A', muebles:'#8A6240',
+  almacen:'#B8823E', blanqueria:'#4FA3AE', telefonia:'#5C6076',
+  otros:'#3D6A5C'
+};
+const ICONOS_RUBRO = {
+  cerrajeria: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="9.5" r="4"/><path d="M10.3 12.3 L20 22 M15.5 17 L18 14.5 M18.5 19.5 L21 17"/></svg>',
+  plomeria: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3 v6 a4 4 0 0 0 4 4 h4 a4 4 0 0 1 4 4 v4"/><circle cx="18" cy="20" r="1.4" fill="currentColor"/></svg>',
+  electricidad: '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M13 2 L4 14 h6 l-1 8 9-12 h-6 z"/></svg>',
+  aire: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="6.5" width="19" height="6.5" rx="2"/><path d="M6.5 16 v2.5 M11.5 16 v3.5 M16.5 16 v2.5"/></svg>',
+  jardineria: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21 c0-7 0-11 0-11 c-5 0-8-3-8-8 c6 0 9 3 9 8"/></svg>',
+  pileta: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3 v9 M6 3 h4 M6 7 h4 M6 12 h4"/><path d="M2 18 q2.5-3 5 0 t5 0 t5 0 t5 0"/></svg>',
+  pintura: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="10" height="5" rx="1.3"/><path d="M9 9 v3.5 a2 2 0 0 0 2 2 h0 a2 2 0 0 0 2-2 v-1.5"/><path d="M13 14.5 v5.5"/></svg>',
+  albanileria: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="15" width="7" height="4" rx="0.5"/><rect x="9.5" y="15" width="7" height="4" rx="0.5"/><rect x="6" y="10.5" width="7" height="4" rx="0.5"/><rect x="13" y="10.5" width="7" height="4" rx="0.5"/><rect x="2.5" y="6" width="7" height="4" rx="0.5"/><rect x="9.5" y="6" width="7" height="4" rx="0.5"/></svg>',
+  gas: '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12.5 2.5 c1.2 3.2-2 4.5-2 7.8 a4.2 4.2 0 0 0 8.4 0 c0-2.1-1-3.3-1.6-4.3 c0 2.2-1.1 2.8-2.1 2.8 c1.1-3.2-1-4.3-2.7-6.3 z"/></svg>',
+  herreria: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17 h16"/><path d="M6 17 v-3 c0-2 1.5-4 6-4 s6 2 6 4 v3"/><path d="M12 10 V4"/></svg>',
+  fletes: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><rect x="1.5" y="8" width="11" height="8" rx="1"/><path d="M12.5 11 h4.5 l3 3 v2 h-2"/><circle cx="6.5" cy="18.5" r="1.7" fill="currentColor"/><circle cx="17" cy="18.5" r="1.7" fill="currentColor"/></svg>',
+  limpieza: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8 h7 l1.5 12 H6.5 Z"/><path d="M9.5 8 V5.5 a2 2 0 0 1 2-2 h0"/><path d="M14 4.5 h2 M15.5 3 v3"/></svg>',
+  techos: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11 L12 4 l8 7"/><path d="M6 10.5 V20 h12 v-9.5"/><path d="M12 13 c-1.3 1.6-1.3 3.3 0 3.9 c1.3-.6 1.3-2.3 0-3.9z" fill="currentColor" stroke="none"/></svg>',
+  electrodomesticos: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2.5 v4 M15 2.5 v4"/><path d="M6.5 6.5 h11 v4 a5.5 5.5 0 0 1-11 0 z"/><path d="M12 16 v5.5"/></svg>',
+  cortinas: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4 h16"/><path d="M4 8 h16 M4 12 h16 M4 16 h16"/><path d="M9 20 h6"/></svg>',
+  vidrieria: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linejoin="round"><path d="M12 2.5 L21.5 12 L12 21.5 L2.5 12 Z"/></svg>',
+  otros_of: '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2 L14.5 9.5 22 12 14.5 14.5 12 22 9.5 14.5 2 12 9.5 9.5 Z"/></svg>',
+  comida: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12 a8 5 0 0 1 16 0 z"/><path d="M4 12 h16 v2.5 a2 2 0 0 1-2 2 H6 a2 2 0 0 1-2-2 z"/></svg>',
+  tortas: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12 L12 4 L20 12 Z"/><path d="M12 4 V2"/><path d="M4 12 v6.5 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2-2 V12"/><path d="M4 16.5 h16"/></svg>',
+  ropa: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4 a2.2 2.2 0 0 1 2.2 2.2 l6.3 3.3 -2.2 3.3 -4.3-2.2 v10.4 H9.8 V10.6 l-4.3 2.2 -2.2-3.3 6.3-3.3 a2.2 2.2 0 0 1 2.4-2.2 z"/></svg>',
+  clases: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7 L12 3 L22 7 L12 11 Z"/><path d="M6 9.5 V15 c0 1.6 3 3 6 3 s6-1.4 6-3 V9.5"/></svg>',
+  mascotas: '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="5.5" cy="10" r="2"/><circle cx="10.3" cy="6.8" r="2"/><circle cx="15.7" cy="6.8" r="2"/><circle cx="20.5" cy="10" r="2"/><path d="M13 11.3 c-5 0-7.5 3-7.5 6 a2.7 2.7 0 0 0 4.4 2.1 c1.2-1 2-1.5 3.1-1.5 s1.9 0.5 3.1 1.5 a2.7 2.7 0 0 0 4.4-2.1 c0-3-2.5-6-7.5-6z"/></svg>',
+  bienestar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21 c-4.5-3.2-7.5-6.5-7.5-10.3 a4.3 4.3 0 0 1 7.5-2.9 a4.3 4.3 0 0 1 7.5 2.9 c0 3.8-3 7.1-7.5 10.3z"/></svg>',
+  delivery: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="10" width="10" height="7.5" rx="1"/><path d="M13 12.5 h4.5 l3.5 3 v2 h-2"/><circle cx="7.5" cy="19.5" r="1.7" fill="currentColor"/><circle cx="17" cy="19.5" r="1.7" fill="currentColor"/></svg>',
+  plantas: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M7 14 h10 l-1.5 7 h-7 z"/><path d="M12 14 V5"/><path d="M12 8 c0-3.5-2.5-5-6-5 c0 4 2 6.5 6 6.5"/><path d="M12 6 c0-2.5 2-4 5-4 c0 3.5-2 5.5-5 5"/></svg>',
+  artesanias: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="M12 4 v4 M12 16 v4 M4 12 h4 M16 12 h4"/></svg>',
+  belleza: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 20 L17 9.5 a2.6 2.6 0 0 0-3.5-3.5 L3 16.5 Z"/><path d="M13.5 6 L18 10.5"/></svg>',
+  otros: '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2 L14.5 9.5 22 12 14.5 14.5 12 22 9.5 14.5 2 12 9.5 9.5 Z"/></svg>'
+};
+function rubrosDelMundo(){return MUNDO==='vecinos'?RUBROSV:RUBROS;}
+const DIAS=['Todos los días','Lunes a viernes','Fines de semana','Sábados','Viernes y sábados','Por encargo'];
+
+// ===== Lanzamiento: 2 meses con todos los barrios gratis para quien se aprueba =====
+// Fecha por defecto si nunca se configuró nada en el Panel. Se puede cambiar desde
+// Panel → Base → Lanzamiento, y ahí queda guardada en S.cfg.lanzamientoInicio.
+const LANZAMIENTO_INICIO_DEFAULT='2026-09-10';
+// Links de pago de Mercado Pago (Plan Pro). Si cambian, actualizar solo acá.
+const LINK_PAGO_VECINOS='https://mpago.la/1AXCeT6';
+const LINK_PAGO_OFICIOS='https://mpago.la/1zsr5ar';
+function lanzamientoInicioStr(){
+  return (S.cfg && S.cfg.lanzamientoInicio) || LANZAMIENTO_INICIO_DEFAULT;
+}
+function fechaFinLanzamiento(){
+  const d=new Date(lanzamientoInicioStr()+'T00:00:00');
+  d.setMonth(d.getMonth()+2);
+  return d;
+}
+function enLanzamiento(){
+  // Promo de lanzamiento desactivada: ahora el modelo es fijo, 3 barrios gratis para siempre.
+  return false;
+}
+// Etiqueta configurable desde Panel → Base (ej: "barrios" o "barrios cerrados").
+function etiquetaBarrios(){
+  return (S.cfg && S.cfg.etiquetaBarrios) || 'barrios';
+}
+function etiquetaTodosBarrios(){
+  return 'todos los '+etiquetaBarrios();
+}
+const FILTROS_OFICIOS=[{id:'barrio',lb:'Entran a mi barrio'}];
+const FILTROS_VECINOS=[{id:'diario',lb:'Todos los días'},{id:'semana',lb:'Lunes a viernes'},
+  {id:'finde',lb:'Fin de semana'},{id:'encargo',lb:'Por encargo'}];
+function coincideDia(dias,f){
+  const d=norm(dias);
+  if(f==='diario')return d.includes('todos los dias');
+  if(f==='semana')return d.includes('lunes a viernes')||d.includes('semana');
+  if(f==='finde')return d.includes('sabado')||d.includes('domingo')||d.includes('fin de semana');
+  if(f==='encargo')return d.includes('encargo')||d.includes('aviso')||d.includes('pedido');
+  return true;
+}
+function destActivo(v){return v&&v.destacado_hasta&&new Date(v.destacado_hasta)>new Date();}
+const COLS=['#14372B','#2F6B4F','#7A4A1F','#3A4E6B','#6A2B53','#5A5F2B'];
+const TINTS=['#FBE4E2','#E1F1E6','#E2EAF8','#FBEEDC','#EDE4F8','#FAE3ED'];
+const TFG=['#C4453F','#3F9E6B','#3B6FC9','#D98A2B','#8B5FC9','#C93B7A'];
+function col(s){let h=0;for(const c of String(s))h=(h*31+c.charCodeAt(0))>>>0;return COLS[h%COLS.length];}
+function tinte(s){let h=0;for(const c of String(s))h=(h*31+c.charCodeAt(0))>>>0;return {bg:TINTS[h%TINTS.length],fg:TFG[h%TFG.length]};}
+function ini(n){return String(n||'?').replace(/^(Cerrajería|Taller|Servicio)\s+/i,'').split(' ').filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase();}
+function soloNombre(n){return String(n||'').trim().split(' ')[0]||'';}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function soloNum(t){return String(t||'').replace(/\D/g,'');}
+function telNorm(t){const d=soloNum(t);return d.slice(-10);}
+
+const BARRIOS_PILAR=['San Eduardo','San Ramón','San Ramiro','San Alfonso',
+  'San Emilia','Santa Lucía','Santa Elisa','Santa Guadalupe','Santa Elena','Santa Sofía'];
+
+// Códigos de acceso iniciales por barrio (4 dígitos). Se editan después desde
+// Panel → Base → Códigos de barrio, sin tocar el código.
+const CODIGOS_BARRIO_DEFAULT={
+  'San Eduardo':'4728','San Ramón':'6053','San Ramiro':'2891','San Alfonso':'7346',
+  'San Emilia':'5210','Santa Lucía':'8967','Santa Elisa':'3184','Santa Guadalupe':'9502',
+  'Santa Elena':'1739','Santa Sofía':'6428'
+};
+
+const semilla={
+  cfg:{name:'BarrioKey',tag:'oficios del barrio',tel:'',barrio:'San Eduardo',precioVecino:'',precioOficio:'',demo:true,codigosBarrio:Object.assign({},CODIGOS_BARRIO_DEFAULT),limiteLote:12,limiteLotesPorBarrio:600},
+  barrios:BARRIOS_PILAR.slice(),
+  prestadores:[
+    {id:1,nombre:'Cerrajería San Eduardo',rubro:'cerrajeria',tel:'',anios:'12',
+     barrios:'',barriosAprobados:'San Eduardo, San Ramón',
+     descripcion:'Cerraduras electrónicas, aperturas, cambio de combinación, cerraduras de hotelería y control de acceso.',
+     verificado:true,destacado:true,rating:'5.0',trabajos:'—',resp:'responde en el día'},
+    {id:2,nombre:'Plomería Sardi',rubro:'plomeria',tel:'',anios:'8',
+     barrios:'',barriosAprobados:'San Eduardo',
+     descripcion:'Destapaciones, pérdidas, termotanques y bombas presurizadoras.',
+     verificado:true,destacado:false,rating:'4.8',trabajos:'demo',resp:'responde en 2 h'},
+    {id:3,nombre:'Electricidad Rivas',rubro:'electricidad',tel:'',anios:'15',
+     barrios:'',barriosAprobados:'San Eduardo, San Ramiro',
+     descripcion:'Tableros, luces de parque, tomas exteriores y certificados.',
+     verificado:true,destacado:false,rating:'4.9',trabajos:'demo',resp:'responde en 1 h'},
+    {id:4,nombre:'Clima Norte',rubro:'aire',tel:'',anios:'6',
+     barrios:'',barriosAprobados:'San Ramón',
+     descripcion:'Instalación y service de split. Carga de gas.',
+     verificado:false,destacado:false,rating:'4.5',trabajos:'demo',resp:'responde en el día'},
+    {id:5,nombre:'Parques del Norte',rubro:'jardineria',tel:'',anios:'10',
+     barrios:'',barriosAprobados:'San Eduardo, Santa Guadalupe',
+     descripcion:'Corte, poda, riego automático y diseño de parque.',
+     verificado:true,destacado:false,rating:'4.7',trabajos:'demo',resp:'responde en el día'}
+  ],
+  pedidos:[],
+  resenas:[],
+  vecinos:[
+    {id:101,nombre:'Marta',rubro:'comida',barrio:'San Eduardo',barriosVenta:'San Eduardo',dias:'Viernes y sábados',tel:'',aprobado:true,
+     que:'Empanadas caseras por docena: carne, pollo y humita. Se encargan hasta el jueves.',demo:true},
+    {id:102,nombre:'Sol',rubro:'tortas',barrio:'San Eduardo',barriosVenta:'Todos',dias:'Por encargo',tel:'',aprobado:true,
+     que:'Tortas de cumpleaños, mesa dulce y budines. Sin gluten a pedido.',demo:true},
+    {id:103,nombre:'Ariel',rubro:'clases',barrio:'San Eduardo',barriosVenta:'San Eduardo, San Ramón',dias:'Lunes a viernes',tel:'',aprobado:true,
+     que:'Clases de matemática y física para secundario. A domicilio dentro del barrio.',demo:true},
+    {id:104,nombre:'Vero',rubro:'mascotas',barrio:'San Eduardo',dias:'Todos los días',tel:'',aprobado:true,
+     que:'Paseo de perros y cuidado en tu casa cuando viajás.',demo:true}
+  ]
+};
+
+const CONN_DEFAULT={url:'https://bovnkvqqrswfatgmrjtj.supabase.co',key:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJvdm5rdnFxcnN3ZmF0Z21yanRqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxOTYzMzksImV4cCI6MjEwMDc3MjMzOX0.AsB4NfxhgOZJmpA7lrmReC5_IJqrmeU-tU2DkrPkAqw'};
+let S=cargar(), CONN=cargarConn(), CACHE=[], CACHEV=[], CACHER=[], RUBRO_ACTIVO='', FILTRO='', DET=null, MUNDO='oficios', RESPED=null, ESTRELLAS=0;
+// Si el dispositivo ya tenía datos guardados de antes de agregar códigos de barrio,
+// completamos los que falten con los valores por defecto (no pisa los que ya editaste).
+if(!S.cfg.codigosBarrio)S.cfg.codigosBarrio={};
+Object.keys(CODIGOS_BARRIO_DEFAULT).forEach(b=>{
+  if(!S.cfg.codigosBarrio[b])S.cfg.codigosBarrio[b]=CODIGOS_BARRIO_DEFAULT[b];
+});
+function clonar(o){return JSON.parse(JSON.stringify(o));}
+function cargar(){try{const r=JSON.parse(localStorage.getItem(K));return (r&&r.cfg)?r:clonar(semilla);}catch(e){return clonar(semilla);}}
+function guardar(){try{localStorage.setItem(K,JSON.stringify(S));}catch(e){}}
+function cargarConn(){
+  try{const r=JSON.parse(localStorage.getItem(KC));if(r&&r.url&&r.key)return r;}catch(e){}
+  return clonar(CONN_DEFAULT);
+}
+function enLinea(){return !!(CONN.url&&CONN.key);}
+function esDemo(){return S.cfg.demo!==false;}
+
+/* ===================== fotos (comprimidas) ===================== */
+let FOTO_VECINO='', FOTO_VECINO2='', FOTO_OFICIO='';
+function comprimir(file,cb){
+  const rd=new FileReader();
+  rd.onload=e=>{
+    const img=new Image();
+    img.onload=()=>{
+      const MAX=900, r=Math.min(MAX/img.width,MAX/img.height,1);
+      const c=document.createElement('canvas');
+      c.width=Math.round(img.width*r); c.height=Math.round(img.height*r);
+      const x=c.getContext('2d'); x.fillStyle='#fff'; x.fillRect(0,0,c.width,c.height);
+      x.drawImage(img,0,0,c.width,c.height);
+      let q=0.6, data=c.toDataURL('image/jpeg',q);
+      while(data.length>200000 && q>0.28){ q-=0.08; data=c.toDataURL('image/jpeg',q); }
+      cb(data, Math.round(data.length*0.75/1024));
+    };
+    img.onerror=()=>toast('No se pudo leer la imagen');
+    img.src=e.target.result;
+  };
+  rd.readAsDataURL(file);
+}
+function boxIdDe(destino){return {vecino:'vfBox',vecino2:'vfBox2',oficio:'sfBox'}[destino];}
+function qtIdDe(destino){return {vecino:'vfQuitar',vecino2:'vfQuitar2',oficio:'sfQuitar'}[destino];}
+function tomarFoto(ev,destino){
+  const f=ev.target.files&&ev.target.files[0]; if(!f)return;
+  comprimir(f,(data,kb)=>{
+    const box=document.getElementById(boxIdDe(destino));
+    const qt=document.getElementById(qtIdDe(destino));
+    if(destino==='vecino2')FOTO_VECINO2=data; else if(destino==='oficio')FOTO_OFICIO=data; else FOTO_VECINO=data;
+    box.innerHTML='<img src="'+data+'" alt=""><div class="foto-peso">'+kb+' KB</div>';
+    qt.style.display='block';
+  });
+  ev.target.value='';
+}
+function quitarFoto(destino){
+  const box=document.getElementById(boxIdDe(destino));
+  const qt=document.getElementById(qtIdDe(destino));
+  if(destino==='vecino2')FOTO_VECINO2=''; else if(destino==='oficio')FOTO_OFICIO=''; else FOTO_VECINO='';
+  box.innerHTML='<span>📷 Tocá para sacar o elegir '+(destino==='vecino2'?'otra foto':'una foto')+'</span>';
+  qt.style.display='none';
+}
+
+/* ===================== supabase ===================== */
+async function sb(path,o={}){
+  const url=CONN.url.replace(/\/$/,'')+'/rest/v1/'+path;
+  const h={apikey:CONN.key,Authorization:'Bearer '+CONN.key,'Content-Type':'application/json'};
+  if(o.prefer)h.Prefer=o.prefer;
+  const r=await fetch(url,{method:o.method||'GET',headers:h,body:o.body?JSON.stringify(o.body):undefined});
+  if(!r.ok)throw new Error(await r.text()||('HTTP '+r.status));
+  const t=await r.text();return t?JSON.parse(t):null;
+}
+async function traerPrestadores(){
+  if(!enLinea())return S.prestadores;
+  return await sb('prestadores?select=*&order=destacado.desc,nombre.asc');
+}
+async function traerPedidos(){
+  if(!enLinea())return S.pedidos;
+  try{return await accionPublica({accion:'misPedidos',dispositivo:obtenerDispositivoId()});}
+  catch(e){return [];}
+}
+
+/* ===================== navegación ===================== */
+let ROL_ACTUAL=null; // null (sin definir) | 'vecino' | 'oficio'
+function ir(id){
+  if(ROL_ACTUAL==='oficio'&&id==='pedidos')id='sumate';
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  const inicioEl=document.getElementById('inicio'), accesoEl=document.getElementById('acceso');
+  if(id==='acceso'){
+    inicioEl.classList.add('active','tras-acceso');
+    accesoEl.classList.add('active','overlay-acceso');
+  }else{
+    inicioEl.classList.remove('tras-acceso');
+    accesoEl.classList.remove('overlay-acceso');
+    document.getElementById(id).classList.add('active');
+  }
+  document.getElementById('nav').style.display=(id==='admin'||id==='acceso')?'none':'flex';
+  ABIERTO_EN[id]=Date.now();
+  ['Inicio','Pedidos','Sumate'].forEach(n=>{
+    const b=document.getElementById('nv'+n);if(b)b.classList.toggle('on','nv'+n==='nv'+id.charAt(0).toUpperCase()+id.slice(1));
+  });
+  if(id==='pedidos')pintarPedidos();
+  if(id==='inicio'&&ROL_ACTUAL==='oficio'&&MUNDO!=='oficios')setMundo('oficios');
+  window.scrollTo(0,0);
+}
+function aplicarRestriccionNav(){
+  const nvI=document.getElementById('nvInicio'), nvP=document.getElementById('nvPedidos');
+  const mgV=document.getElementById('mgVecinos');
+  const restringir=(ROL_ACTUAL==='oficio');
+  if(nvI)nvI.style.display='';
+  if(nvP)nvP.style.display=restringir?'none':'';
+  if(mgV)mgV.style.display=restringir?'none':'';
+  if(restringir&&MUNDO!=='oficios')setMundo('oficios');
+  const lnk=document.getElementById('lnkCambiarRol');
+  if(lnk)lnk.style.display=restringir?'block':'none';
+}
+function cambiarRolAcceso(){
+  if(!confirm('¿Volver a elegir cómo usar BarrioKey? Vas a tener que ingresar el código de tu barrio si sos Vecino.'))return;
+  try{localStorage.removeItem(KACC);}catch(e){}
+  ROL_ACTUAL=null;
+  document.getElementById('accPasoVecino').style.display='none';
+  document.getElementById('accPasoRol').style.display='block';
+  ir('acceso');
+}
+/* ---- acceso: vecino / oficio (gate de entrada, una sola vez por dispositivo) ---- */
+function mostrarPasoVecino(){
+  document.getElementById('accPasoRol').style.display='none';
+  document.getElementById('accPasoVecino').style.display='block';
+}
+function volverPasoRol(){
+  document.getElementById('accPasoVecino').style.display='none';
+  document.getElementById('accPasoRol').style.display='block';
+}
+function elegirRolAcceso(rol){
+  if(rol==='oficio'){
+    guardarAcceso({rol:'oficio',ts:Date.now()});
+    ROL_ACTUAL='oficio';aplicarRestriccionNav();
+    ir('sumate');tipoAlta('oficio');
+  }
+}
+let INTENTOS_CODIGO_FALLIDOS=0;
+async function validarAccesoVecino(){
+  const barrio=document.getElementById('accBarrio').value;
+  const codigo=document.getElementById('accCodigo').value.trim();
+  let lote=document.getElementById('accLote').value.trim();
+  if(!barrio){toast('Elegí tu barrio');return;}
+  if(!codigo){toast('Ingresá el código de tu barrio');return;}
+  if(!lote){toast('Poné tu número de lote, casa o UF');return;}
+  if(!/^[0-9]{2,}$/.test(lote)){toast('Ingresá tu número real de lote (mínimo 2 dígitos)');return;}
+  lote=String(parseInt(lote,10)); // normaliza: '059' y '59' quedan como el mismo lote ('59')
+  const cod=(S.cfg.codigosBarrio||{})[barrio];
+  if(!cod||codigo!==String(cod)){
+    toast('Código incorrecto para ese barrio. Pedíselo a algún vecino o al grupo de WhatsApp.');
+    INTENTOS_CODIGO_FALLIDOS++;
+    if(INTENTOS_CODIGO_FALLIDOS>=3){
+      const lnk=document.getElementById('lnkNoTengoCodigo');
+      if(lnk)lnk.style.display='block';
+    }
+    return;
+  }
+  if(lote&&enLinea()){
+    const btn=document.querySelector('#accPasoVecino .btn-main');
+    if(btn){btn.disabled=true;btn.textContent='Verificando…';}
+    try{
+      const miId=obtenerDispositivoId();
+      const existentes=await sb('lote_registros?select=dispositivo&barrio=eq.'+encodeURIComponent(barrio)+'&lote=eq.'+encodeURIComponent(lote));
+      const yaRegistrado=(existentes||[]).some(x=>x.dispositivo===miId);
+      const limite=S.cfg.limiteLote||12;
+      if(!yaRegistrado){
+        if((existentes||[]).length>=limite){
+          if(btn){btn.disabled=false;btn.textContent='Ingresar';}
+          toast('Ese número ya llegó al máximo de dispositivos registrados ('+limite+'). Escribinos para sumarte.');
+          const lnk=document.getElementById('lnkNoTengoCodigo');
+          if(lnk)lnk.style.display='block';
+          return;
+        }
+        if((existentes||[]).length===0){
+          const limiteLotes=S.cfg.limiteLotesPorBarrio||600;
+          const lotesDelBarrio=await sb('lote_registros?select=lote&barrio=eq.'+encodeURIComponent(barrio));
+          const lotesDistintos=new Set((lotesDelBarrio||[]).map(x=>x.lote)).size;
+          if(lotesDistintos>=limiteLotes){
+            if(btn){btn.disabled=false;btn.textContent='Ingresar';}
+            toast('Este barrio llegó al máximo de números registrados. Escribinos y te ayudamos a entrar igual.');
+            const lnk=document.getElementById('lnkNoTengoCodigo');
+            if(lnk)lnk.style.display='block';
+            return;
+          }
+        }
+        await sb('lote_registros',{method:'POST',body:{barrio,lote,dispositivo:miId,creado_en:new Date().toISOString()}});
+      }
+    }catch(e){/* si falla el chequeo, no bloqueamos el ingreso */}
+    if(btn){btn.disabled=false;btn.textContent='Ingresar';}
+  }
+  guardarAcceso({rol:'vecino',barrio,lote,ts:Date.now()});
+  ROL_ACTUAL='vecino';aplicarRestriccionNav();
+  S.cfg.barrio=barrio;guardar();pintarBarrios();
+  ir('inicio');
+}
+function pintarSelectAcceso(){
+  const sel=document.getElementById('accBarrio');
+  if(sel)sel.innerHTML='<option value="">Elegí tu barrio</option>'+S.barrios.map(b=>'<option>'+esc(b)+'</option>').join('');
+}
+function arrancarSegunAcceso(){
+  pintarSelectAcceso();
+  const acc=cargarAcceso();
+  if(acc&&acc.rol==='vecino'){
+    ROL_ACTUAL='vecino';aplicarRestriccionNav();
+    if(S.barrios.includes(acc.barrio))S.cfg.barrio=acc.barrio;
+    guardar();ir('inicio');
+  }else if(acc&&acc.rol==='oficio'){
+    ROL_ACTUAL='oficio';aplicarRestriccionNav();
+    ir('sumate');tipoAlta('oficio');
+  }else{
+    ir('acceso');
+  }
+}
+const ABIERTO_EN={};
+function abrir(id){document.getElementById(id).classList.add('show');ABIERTO_EN[id]=Date.now();}
+function cerrar(id){document.getElementById(id).classList.remove('show');}
+function esBot(honeypotId,sheetId,minMs){
+  const hp=document.getElementById(honeypotId);
+  if(hp&&hp.value.trim())return true;
+  const t=ABIERTO_EN[sheetId]||0;
+  if(Date.now()-t<(minMs||2500))return true;
+  return false;
+}
+let tT;
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');
+  clearTimeout(tT);tT=setTimeout(()=>t.classList.remove('show'),6000);}
+
+/* ===================== pintar inicio ===================== */
+function pintarBarrios(){
+  const sel=document.getElementById('barrioSel');
+  sel.innerHTML='<option value="__TODOS__"'+(S.cfg.barrio==='__TODOS__'?' selected':'')+'>🌎 Todos los '+etiquetaBarrios()+'</option>'
+    +S.barrios.map(b=>'<option'+(b===S.cfg.barrio?' selected':'')+'>'+esc(b)+'</option>').join('');
+  pintarSelectAcceso();
+  const selV=document.getElementById('vBarrio');
+  if(selV)selV.innerHTML='<option value="">Elegí tu barrio</option>'+S.barrios.map(b=>'<option>'+esc(b)+'</option>').join('');
+  const boxV=document.getElementById('vBarriosVenta');
+  if(boxV){
+    const notaLanz=enLanzamiento()
+      ?'<p style="font-size:11.5px;background:var(--pine-soft);color:var(--lime-ink);padding:8px 10px;border-radius:10px;margin:0 0 8px">🎉 Estamos en período de lanzamiento: aunque elijas menos, vas a aparecer en todos los barrios hasta el '+fechaFinLanzamiento().toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit'})+'. Después, solo quedás en los que tildaste acá.</p>'
+      :'';
+    const notaTodosV=enLanzamiento()
+      ?'🎉 Gratis durante el lanzamiento (hasta el '+fechaFinLanzamiento().toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit'})+'). Después, esto pasa a ser el Plan Pro pago — vas a poder pagarlo cuando quieras desde acá mismo.'
+      :'💳 Esto es el Plan Pro (pago, $15.000/mes) — al enviar tus datos te llevamos directo a pagar con Mercado Pago.';
+    boxV.innerHTML=notaLanz
+      +'<label style="display:flex;gap:8px;align-items:center;font-weight:700;margin-bottom:4px"><input type="checkbox" id="vbTodos" onchange="toggleTodosVenta(this)">Todos los barrios</label>'
+      +'<p id="notaTodosV" style="font-size:11px;color:var(--muted);margin:0 0 8px 26px;display:none">'+notaTodosV+'</p>'
+      +'<p style="font-size:11.5px;color:var(--muted);margin:0 0 4px">O elegí hasta 3 barrios gratis:</p>'
+      +S.barrios.map(b=>'<label style="display:flex;gap:8px;align-items:center"><input type="checkbox" class="vb-item" value="'+esc(b)+'" onchange="limitarBarriosVecino(this)">'+esc(b)+'</label>').join('');
+  }
+  const boxS=document.getElementById('sBarriosVenta');
+  if(boxS){
+    const notaLanzS=enLanzamiento()
+      ?'<p style="font-size:11.5px;background:var(--pine-soft);color:var(--lime-ink);padding:8px 10px;border-radius:10px;margin:0 0 8px">🎉 Estamos en período de lanzamiento: aunque elijas menos, vas a aparecer en todos los barrios hasta el '+fechaFinLanzamiento().toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit'})+'. Después, solo quedás en los que tildaste acá.</p>'
+      :'';
+    const notaTodosS=enLanzamiento()
+      ?'🎉 Gratis durante el lanzamiento (hasta el '+fechaFinLanzamiento().toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit'})+'). Después, esto pasa a ser el Plan Pro pago — vas a poder pagarlo cuando quieras desde acá mismo.'
+      :'💳 Esto es el Plan Pro (pago, $30.000/mes) — al enviar tus datos te llevamos directo a pagar con Mercado Pago.';
+    boxS.innerHTML=notaLanzS
+      +'<label style="display:flex;gap:8px;align-items:center;font-weight:700;margin-bottom:4px"><input type="checkbox" id="sbTodos" onchange="toggleTodosOficio(this)">Todos los barrios</label>'
+      +'<p id="notaTodosS" style="font-size:11px;color:var(--muted);margin:0 0 8px 26px;display:none">'+notaTodosS+'</p>'
+      +'<p style="font-size:11.5px;color:var(--muted);margin:0 0 4px">O elegí hasta 3 barrios gratis:</p>'
+      +S.barrios.map(b=>'<label style="display:flex;gap:8px;align-items:center"><input type="checkbox" class="sb-item" value="'+esc(b)+'" onchange="limitarBarriosOficio(this)">'+esc(b)+'</label>').join('');
+  }
+}
+function toggleTodosVenta(cb){
+  const nota=document.getElementById('notaTodosV');
+  if(nota)nota.style.display=cb.checked?'block':'none';
+  document.querySelectorAll('.vb-item').forEach(x=>{x.checked=cb.checked;x.disabled=cb.checked;});
+  const btn=document.getElementById('btnEnviarVecino');
+  if(btn)btn.textContent=cb.checked?'Enviar y pagar Plan Pro →':'Publicar gratis';
+}
+function toggleTodosOficio(cb){
+  const nota=document.getElementById('notaTodosS');
+  if(nota)nota.style.display=cb.checked?'block':'none';
+  document.querySelectorAll('.sb-item').forEach(x=>{x.checked=cb.checked;x.disabled=cb.checked;});
+  const btn=document.getElementById('btnEnviarOficio');
+  if(btn)btn.textContent=cb.checked?'Enviar y pagar Plan Pro →':'Enviar mis datos';
+}
+function limitarBarriosVecino(cb){
+  const marcados=document.querySelectorAll('.vb-item:checked');
+  if(marcados.length>3){
+    cb.checked=false;
+    toast('Máximo 3 barrios gratis. Para más, pasás al Plan Pro por WhatsApp.');
+  }
+  const btn=document.getElementById('btnEnviarVecino');
+  const todos=document.getElementById('vbTodos');
+  if(btn)btn.textContent=(todos&&todos.checked)?'Enviar y pagar Plan Pro →':'Publicar gratis';
+}
+function limitarBarriosOficio(cb){
+  const marcados=document.querySelectorAll('.sb-item:checked');
+  if(marcados.length>3){
+    cb.checked=false;
+    toast('Máximo 3 barrios gratis. Para más, pasás al Plan Pro por WhatsApp.');
+  }
+  const btn=document.getElementById('btnEnviarOficio');
+  const todos=document.getElementById('sbTodos');
+  if(btn)btn.textContent=(todos&&todos.checked)?'Enviar y pagar Plan Pro →':'Enviar mis datos';
+}
+function sincronizarBarrioVenta(){
+  const b=document.getElementById('vBarrio').value;
+  if(!b)return;
+  document.querySelectorAll('.vb-item').forEach(cb=>{if(cb.value===b)cb.checked=true;});
+}
+function cambiarBarrio(){
+  S.cfg.barrio=document.getElementById('barrioSel').value;guardar();pintarLista();
+}
+function setMundo(m){
+  MUNDO=m;RUBRO_ACTIVO='';FILTRO='';RUBROS_EXPANDIDO=false;
+  document.getElementById('mgOficios').classList.toggle('on',m==='oficios');
+  document.getElementById('mgVecinos').classList.toggle('on',m==='vecinos');
+  document.getElementById('buscar').value='';
+  document.getElementById('buscar').placeholder=(m==='vecinos')
+    ?'Buscar: empanadas, tortas, clases…':'Buscar: cerrajero, plomero, aire…';
+  pintarFiltros();pintarRubros();pintarSugerencias();pintarLista();
+}
+function pintarFiltros(){
+  const el=document.getElementById('filtros');
+  const l=(MUNDO==='vecinos')?FILTROS_VECINOS:FILTROS_OFICIOS;
+  el.innerHTML='<button class="chf'+(FILTRO?'':' on')+'" onclick="filtrarPor(\'\')">Todos</button>'
+    +l.map(f=>'<button class="chf'+(FILTRO===f.id?' on':'')+'" onclick="filtrarPor(\''+f.id+'\')">'+f.lb+'</button>').join('');
+}
+function filtrarPor(v){FILTRO=(FILTRO===v)?'':v;pintarFiltros();pintarLista();}
+function pintarSugerencias(){
+  const el=document.getElementById('sugerencias');
+  if(!el)return;
+  const top=rubrosDelMundo().slice(0,5);
+  el.innerHTML=top.map(r=>'<button class="chf" onclick="filtrar(\''+r.id+'\');window.scrollTo({top:0,behavior:\'smooth\'})">'+r.lb+'</button>').join('');
+}
+let RUBROS_EXPANDIDO=false;
+const RUBROS_LIMITE=8;
+function pintarRubros(){
+  const lista=rubrosDelMundo();
+  const hayMas=lista.length>RUBROS_LIMITE;
+  const visibles=(RUBROS_EXPANDIDO||!hayMas)?lista:lista.slice(0,RUBROS_LIMITE);
+  let html=visibles.map(r=>{
+    return '<div class="rubro'+(RUBRO_ACTIVO===r.id?' on':'')+'" onclick="filtrar(\''+r.id+'\')">'
+    +'<div class="rb-badge" style="background:'+(COLORES_RUBRO[r.id]||'#3D6A5C')+'">'+(ICONOS_RUBRO[r.id]||r.ic)+'</div><div class="rb-lb">'+r.lb+'</div></div>';
+  }).join('');
+  document.getElementById('rubros').innerHTML=html;
+  const verMasEl=document.getElementById('verMasRubros');
+  if(verMasEl){
+    if(hayMas){
+      verMasEl.style.display='block';
+      verMasEl.textContent=RUBROS_EXPANDIDO?'Ver menos ↑':'Ver más rubros ↓';
+    }else{
+      verMasEl.style.display='none';
+    }
+  }
+  const ops=RUBROS.map(r=>'<option value="'+r.id+'">'+r.lb+'</option>').join('');
+  const opsv=RUBROSV.map(r=>'<option value="'+r.id+'">'+r.lb+'</option>').join('');
+  ['sRubro','nRubro'].forEach(i=>{const e=document.getElementById(i);if(e)e.innerHTML=ops;});
+  const v=document.getElementById('vRubro');if(v)v.innerHTML=opsv;
+  const dd=document.getElementById('vDias');
+  if(dd&&!dd.children.length)dd.innerHTML=DIAS.map(x=>'<option>'+x+'</option>').join('');
+}
+function toggleRubrosExpandido(){
+  RUBROS_EXPANDIDO=!RUBROS_EXPANDIDO;
+  pintarRubros();
+}
+let tScroll;
+function buscarInput(){
+  const q=document.getElementById('buscar').value.trim();
+  if(q && RUBRO_ACTIVO){RUBRO_ACTIVO='';pintarRubros();}
+  pintarLista();
+  clearTimeout(tScroll);
+  if(q)tScroll=setTimeout(scrollABuscar,700);
+}
+function filtrar(id){
+  RUBRO_ACTIVO=(RUBRO_ACTIVO===id)?'':id;
+  const buscar=document.getElementById('buscar');
+  if(buscar)buscar.value='';
+  pintarRubros();pintarLista();
+  if(RUBRO_ACTIVO)scrollABuscar();
+}
+function entraEn(p,barrio){
+  if(barrio==='__TODOS__')return true;
+  if(enLanzamiento())return true;
+  return String(p.barriosAprobados||'').toLowerCase().includes(String(barrio||'').toLowerCase());
+}
+function pideEn(p,barrio){
+  return String(p.barrios||'').toLowerCase().includes(String(barrio||'').toLowerCase());
+}
+function vendeEn(v,barrio){
+  if(barrio==='__TODOS__')return true;
+  if(enLanzamiento())return true;
+  if(destActivo(v))return true;
+  if(!v.barriosVenta)return true;
+  const bv=v.barriosVenta.toLowerCase();
+  return bv.includes('todos')||bv.includes(String(barrio||'').toLowerCase());
+}
+function norm(s){return String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');}
+const SINONIMOS={
+  cerrajero:'cerrajeria',cerrajeria:'cerrajeria',cerradura:'cerrajeria',llave:'cerrajeria',llaves:'cerrajeria',
+  candado:'cerrajeria',porton:'cerrajeria',traba:'cerrajeria',
+  plomero:'plomeria',plomeria:'plomeria',destapacion:'plomeria',cano:'plomeria',perdida:'plomeria',
+  canilla:'plomeria',termotanque:'plomeria',bomba:'plomeria',cloaca:'plomeria',
+  electricista:'electricidad',electricidad:'electricidad',luz:'electricidad',tablero:'electricidad',
+  enchufe:'electricidad',corto:'electricidad',
+  aire:'aire',split:'aire',acondicionado:'aire',refrigeracion:'aire',frio:'aire',
+  jardinero:'jardineria',jardineria:'jardineria',pasto:'jardineria',poda:'jardineria',cesped:'jardineria',
+  riego:'jardineria',parque:'jardineria',
+  pileta:'pileta',piletero:'pileta',piscina:'pileta',
+  pintor:'pintura',pintura:'pintura',
+  albanil:'albanileria',albanileria:'albanileria',obra:'albanileria',revoque:'albanileria',
+  gasista:'gas',gas:'gas',estufa:'gas',caldera:'gas',
+  herrero:'herreria',herreria:'herreria',reja:'herreria',soldadura:'herreria',
+  flete:'fletes',fletes:'fletes',mudanza:'fletes',camioneta:'fletes',
+  limpieza:'limpieza',limpiar:'limpieza',mucama:'limpieza',
+  impermeabilizacion:'techos',techo:'techos',techos:'techos',filtracion:'techos',losa:'techos',membrana:'techos',
+  tecnico:'electrodomesticos',electrodomesticos:'electrodomesticos',lavarropas:'electrodomesticos',
+  heladera:'electrodomesticos',lavavajillas:'electrodomesticos',horno:'electrodomesticos',
+  cortina:'cortinas',cortinas:'cortinas',persiana:'cortinas',persianas:'cortinas',roller:'cortinas',automatismo:'cortinas',
+  vidrio:'vidrieria',vidrieria:'vidrieria',cristaleria:'vidrieria',espejo:'vidrieria',mampara:'vidrieria',
+  carpintero:'carpinteria',carpinteria:'carpinteria',mueble:'carpinteria',madera:'carpinteria',
+  computacion:'computacion',pc:'computacion',notebook:'computacion',computadora:'computacion',tecnico:'computacion',
+  fumigacion:'fumigacion',plagas:'fumigacion',cucaracha:'fumigacion',cucarachas:'fumigacion',hormigas:'fumigacion',roedores:'fumigacion',
+  camara:'camaras',camaras:'camaras',seguridad:'camaras',alarma:'camaras',cctv:'camaras',
+  ninera:'ninera',nana:'ninera',niñera:'ninera',cuidado:'ninera',
+  panaderia:'panaderia',pan:'panaderia',facturas:'panaderia',repostero:'panaderia',reposteria:'panaderia',
+  entrenador:'entrenador',fitness:'entrenador',personaltrainer:'entrenador',gimnasio:'entrenador',
+  fotografo:'fotografia',fotografia:'fotografia',foto:'fotografia',fotos:'fotografia',
+  paseador:'paseador',paseo:'paseador',perro:'paseador',perros:'paseador',
+  bienestar:'bienestar',psicologia:'bienestar',psicologa:'bienestar',psicologo:'bienestar',
+  tarot:'bienestar',tarotista:'bienestar',masaje:'bienestar',masajes:'bienestar',
+  masajista:'bienestar',terapia:'bienestar',terapias:'bienestar',holistica:'bienestar',holisticas:'bienestar',
+  reiki:'bienestar',yoga:'bienestar',meditacion:'bienestar',mindfulness:'bienestar',psicopedagogia:'bienestar',
+  paisajismo:'jardineria',paisajista:'jardineria',
+  cloro:'pileta',
+  gestor:'gestoria',gestoria:'gestoria',multas:'gestoria',tramites:'gestoria',tramite:'gestoria',
+  lavadero:'lavadoautos',autolavado:'lavadoautos',lavadoautos:'lavadoautos',
+  bici:'bicicleteria',bicicleta:'bicicleteria',bicicleteria:'bicicleteria',
+  veterinario:'veterinaria',veterinaria:'veterinaria',vacuna:'veterinaria',
+  kinesiologo:'salud',traumatologo:'salud',pediatra:'salud',medico:'salud',medica:'salud',
+  mago:'fotografia',animador:'fotografia',animacion:'fotografia',cumpleanos:'fotografia',fotografo:'fotografia',fotos:'fotografia',
+  combi:'traslados',remis:'traslados',traslado:'traslados',transporte:'traslados',
+  carnicero:'carniceria',carniceria:'carniceria',carne:'carniceria',
+  verduleria:'frutasyverduras',fruteria:'frutasyverduras',verdura:'frutasyverduras',fruta:'frutasyverduras',
+  inmobiliaria:'inmobiliaria',desarrollador:'inmobiliaria',propiedades:'inmobiliaria',emprendimiento:'inmobiliaria',
+  esteticista:'estetica',piel:'estetica',depilacion:'estetica',
+  lena:'carbon',carbon:'carbon',asado:'carbon',
+  mueble:'muebles',sillon:'muebles',
+  dietetica:'almacen',nueces:'almacen',suplementos:'almacen',organicos:'almacen',almacen:'almacen',frutossecos:'almacen',
+  toallon:'blanqueria',sabanas:'blanqueria',blanqueria:'blanqueria',toalla:'blanqueria',
+  celular:'telefonia',funda:'telefonia',cargador:'telefonia',telefono:'telefonia',
+  balanceado:'mascotas',croquetas:'mascotas',cuidador:'mascotas',cuidadora:'mascotas'
+};
+function rubroDeBusqueda(q){
+  if(!q||q.length<3)return '';
+  for(const k in SINONIMOS){if(k.startsWith(q)||q.startsWith(k))return SINONIMOS[k];}
+  return '';
+}
+function scrollABuscar(){
+  const el=document.getElementById('lista');
+  if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function pintarLista(){
+  if(MUNDO==='vecinos')return pintarVecinos();
+  const q=norm(document.getElementById('buscar').value);
+  const barrio=S.cfg.barrio;
+  const rq=rubroDeBusqueda(q);
+  let l=(CACHE||[]).slice();
+  if(RUBRO_ACTIVO)l=l.filter(p=>p.rubro===RUBRO_ACTIVO);
+  if(q)l=l.filter(p=>p.rubro===rq||norm(p.nombre+' '+rubroLb(p.rubro)+' '+(p.descripcion||'')).includes(q));
+  l=l.filter(p=>p.verificado);
+  if(FILTRO==='barrio')l=l.filter(p=>entraEn(p,barrio));
+  l.sort((a,b)=>{
+    const entraDiff=entraEn(b,barrio)-entraEn(a,barrio);
+    if(entraDiff)return entraDiff;
+    const ra=promedio(a.nombre), rb=promedio(b.nombre);
+    const pa=ra?Number(ra.prom):-1, pb=rb?Number(rb.prom):-1;
+    if(pb!==pa)return pb-pa;
+    const na=ra?ra.n:0, nb=rb?rb.n:0;
+    return nb-na;
+  });
+  const barrioLbl=barrio==='__TODOS__'?etiquetaTodosBarrios():barrio;
+  document.getElementById('tituloLista').textContent=
+    RUBRO_ACTIVO?rubroLb(RUBRO_ACTIVO)+' en '+barrioLbl
+    :(rq?rubroLb(rq)+' en '+barrioLbl:'Entran a '+barrioLbl);
+  const el=document.getElementById('lista');
+  if(!l.length){el.innerHTML='<div class="vacio">Todavía no hay nadie cargado en este oficio en '+esc(barrio)+'.<br>Si conocés un buen prestador para recomendar, pasale la app desde <b>Sumate</b>, o invitá a tus vecinos para que se sume más gente.</div>'
+    +'<button class="mini dash" onclick="compartirApp(\'oficio\')">📲 Invitar proveedores por WhatsApp</button>';return;}
+  el.innerHTML=l.map(p=>{
+    const entra=entraEn(p,barrio);
+    const nAprobP=(p.barriosAprobados||'').split(',').map(x=>x.trim()).filter(Boolean).length;
+    const esPro=nAprobP>2;
+    return '<div class="card" onclick="verDetalle(\''+p.id+'\')"><div class="card-in">'
+      +'<div class="card-top"><div class="ava" style="background:'+col(p.nombre)+'">'+(p.foto?'<img src="'+esc(p.foto)+'" alt="">':esc(ini(p.nombre)))+'</div>'
+      +'<div style="min-width:0"><div class="c-name">'+esc(p.nombre)
+      +(p.verificado?'<span class="ver">VERIFICADO</span>':'')
+      +(esPro?'<span class="dest">PLAN PRO</span>':'')+'</div>'
+      +'<div class="c-rubro">'+esc(rubroLb(p.rubro))+' · '+esc(p.anios||'—')+' años</div></div>'
+      +(function(){const r=promedio(p.nombre);
+         return '<div class="stars"><b>★ '+(r?r.prom:'—')+'</b><span>'+(r?r.n+(r.n===1?' reseña':' reseñas'):'sin reseñas')+'</span></div>';})()
+      +'</div>'
+      +'<div class="acceso'+(entra?'':' no')+'"><span class="flag"></span>'
+      +'<span class="txt">'+(entra?'Ya entra a '+esc(barrio):'No registra ingreso a '+esc(barrio))+'</span>'
+      +'<span class="resp">'+esc(p.resp||'')+'</span></div>'
+      +'</div>'
+      +'<div class="card-acts">'
+      +'<button class="bsm ghost" onclick="event.stopPropagation();verDetalle(\''+p.id+'\')">Ver perfil</button>'
+      +'<button class="bsm p" onclick="event.stopPropagation();pedirDesde(\''+p.id+'\')">Pedir presupuesto</button>'
+      +'</div></div>';
+  }).join('')
+  +'<button class="mini dash" onclick="compartirApp(\'oficio\')" style="margin-top:12px">📲 Invitar más proveedores por WhatsApp</button>';
+}
+
+function irAVecino(id){
+  const v=(CACHEV||[]).find(x=>String(x.id)===String(id));
+  if(!v)return;
+  setMundo('vecinos');
+  document.getElementById('buscar').value=v.negocio||v.nombre||'';
+  buscarInput();
+  const lista=document.getElementById('lista');
+  if(lista)lista.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function pintarStories(){
+  const wrap=document.getElementById('storiesWrap');
+  const track=document.getElementById('storiesTrack');
+  if(!wrap||!track)return;
+  const oficiosDest=(CACHE||[]).filter(p=>{
+    const nAprobP=(p.barriosAprobados||'').split(',').map(x=>x.trim()).filter(Boolean).length;
+    return p.verificado && nAprobP>2;
+  }).map(p=>({tipo:'oficio',id:p.id,nombre:p.nombre,foto:p.foto}));
+  const vecinosDest=(ROL_ACTUAL==='oficio')?[]:(CACHEV||[]).filter(v=>v.aprobado && destActivo(v))
+    .map(v=>({tipo:'vecino',id:v.id,nombre:v.negocio||soloNombre(v.nombre),foto:v.foto}));
+  const items=[...oficiosDest,...vecinosDest].sort(()=>Math.random()-0.5);
+  if(!items.length){wrap.style.display='none';return;}
+  wrap.style.display='block';
+  track.innerHTML=items.map(it=>
+    '<div class="story" onclick="'+(it.tipo==='oficio'?'verDetalle(\''+it.id+'\')':'irAVecino(\''+it.id+'\')')+'">'
+    +'<div class="story-ring"><div class="story-ring-in">'+(it.foto?'<img src="'+esc(it.foto)+'" alt="">':esc(ini(it.nombre)))+'</div></div>'
+    +'<div class="story-name">'+esc(it.nombre)+'</div></div>'
+  ).join('');
+  iniciarAutoScrollStories();
+}
+let STORIES_INTERVAL=null;
+function iniciarAutoScrollStories(){
+  const track=document.getElementById('storiesTrack');
+  if(!track)return;
+  if(STORIES_INTERVAL)clearInterval(STORIES_INTERVAL);
+  let pausado=false, pausaTimeout;
+  function avanzar(){
+    if(pausado)return;
+    const el=track.querySelector('.story');
+    if(!el)return;
+    const w=el.offsetWidth+14;
+    const max=track.scrollWidth-track.clientWidth;
+    if(track.scrollLeft>=max-5){track.scrollTo({left:0,behavior:'smooth'});}
+    else{track.scrollBy({left:w,behavior:'smooth'});}
+  }
+  STORIES_INTERVAL=setInterval(avanzar,3200);
+  function pausar(){pausado=true;clearTimeout(pausaTimeout);pausaTimeout=setTimeout(()=>{pausado=false;},6000);}
+  track.addEventListener('touchstart',pausar,{passive:true});
+  track.addEventListener('mousedown',pausar);
+  track.addEventListener('wheel',pausar,{passive:true});
+}
+
+function pintarVecinos(){
+  const q=norm(document.getElementById('buscar').value);
+  const barrio=S.cfg.barrio;
+  let l=(CACHEV||[]).filter(v=>v.aprobado && vendeEn(v,barrio));
+  if(RUBRO_ACTIVO)l=l.filter(v=>v.rubro===RUBRO_ACTIVO);
+  if(q)l=l.filter(v=>norm(v.nombre+' '+rubroLb(v.rubro)+' '+(v.que||'')+' '+(v.barrio||'')).includes(q));
+  if(FILTRO)l=l.filter(v=>coincideDia(v.dias,FILTRO));
+  l.sort((a,b)=>{
+    const destDiff=(destActivo(b)?1:0)-(destActivo(a)?1:0);
+    if(destDiff)return destDiff;
+    const ra=promedio(a.nombre), rb=promedio(b.nombre);
+    const pa=ra?Number(ra.prom):-1, pb=rb?Number(rb.prom):-1;
+    if(pb!==pa)return pb-pa;
+    const na=ra?ra.n:0, nb=rb?rb.n:0;
+    return nb-na;
+  });
+  const barrioLbl=barrio==='__TODOS__'?etiquetaTodosBarrios():barrio;
+  document.getElementById('tituloLista').textContent=
+    (RUBRO_ACTIVO?rubroLb(RUBRO_ACTIVO):'Vecinos')+' · '+barrioLbl;
+  const el=document.getElementById('lista');
+  if(!l.length){
+    el.innerHTML='<div class="vacio">Sé de los primeros en '+esc(barrioLbl)+' — todavía no hay vecinos publicando acá.</div>'
+      +'<button class="mini dash" onclick="publicarLoMio()">+ Publicar lo que vendo</button>'
+      +'<button class="mini dash" onclick="compartirApp()" style="margin-top:8px">📲 Invitar vecinos por WhatsApp</button>';
+    return;
+  }
+  el.innerHTML=l.map(v=>'<div class="card">'
+    +(v.foto?'<img class="card-foto" src="'+esc(v.foto)+'" alt="">':'')
+    +(destActivo(v)&&v.foto2?'<img class="card-foto" src="'+esc(v.foto2)+'" alt="">':'')
+    +'<div class="card-in">'
+    +'<div class="card-top"><div class="ava" style="background:'+col(v.nombre)+'">'+(v.foto?'<img src="'+esc(v.foto)+'" alt="">':esc(ini(v.nombre)))+'</div>'
+    +'<div style="min-width:0"><div class="c-name">'+esc(v.negocio||soloNombre(v.nombre))
+    +(destActivo(v)?'<span class="dest">DESTACADO</span>':'')+'</div>'
+    +'<div class="c-rubro">'+esc(rubroLb(v.rubro))+' · '+esc(v.barrio||('Todos los '+etiquetaBarrios()))+'</div></div></div>'
+    +'<p class="v-que">'+esc(v.que||'')+'</p>'
+    +(v.dias?'<div class="acceso"><span class="flag"></span><span class="txt">'+esc(v.dias)+'</span></div>':'')
+    +(destActivo(v)&&v.link?'<div class="acceso"><span class="txt">🔗 '+esc(v.link)+'</span></div>':'')
+    +'</div>'
+    +(soloNum(v.tel)?'<div class="card-acts"><button class="bsm w" style="flex:1" onclick="waVecino(\''+v.id+'\')">Escribir por WhatsApp</button></div>':'')
+    +(!destActivo(v)?'<div class="destacate-wrap"><span onclick="pedirDestacado(\''+esc(v.nombre)+'\')">⭐ ¿Sos vos? Hacete Destacado</span></div>':'')
+    +'<div class="reportar-wrap"><button class="reportar" onclick="reportar(\'vecinos\',\''+v.id+'\')">🚩 Reportar</button></div>'
+    +'</div>').join('')
+    +'<button class="mini dash" onclick="publicarLoMio()">+ Publicar lo que vendo</button>'
+    +'<button class="mini dash" onclick="compartirApp()" style="margin-top:8px">📲 Invitar vecinos por WhatsApp</button>';
+}
+function publicarLoMio(){ir('sumate');tipoAlta('vecino');}
+async function reportar(tabla,id){
+  if(!confirm('¿Reportar esta publicación para que el administrador la revise?'))return;
+  const motivo=prompt('Contanos brevemente por qué (opcional):')||'';
+  const patch={reportado:true,reporte_motivo:motivo,reportado_en:new Date().toISOString()};
+  if(enLinea()){
+    try{await accionPublica({accion:'reportar',tabla,id,motivo});}
+    catch(e){toast('No se pudo enviar el reporte: '+(e&&e.message?e.message:'error de conexión'));return;}
+  }else{
+    const arr=tabla==='vecinos'?S.vecinos:S.resenas;
+    const it=(arr||[]).find(x=>String(x.id)===String(id));
+    if(it)Object.assign(it,patch);
+    guardar();
+  }
+  toast('Gracias, lo vamos a revisar');
+}
+function waVecino(id){
+  const v=(CACHEV||[]).find(x=>String(x.id)===String(id));if(!v)return;
+  const t=soloNum(v.tel);
+  if(!t){toast('Todavía no cargó su WhatsApp');return;}
+  const msg='Hola '+v.nombre+', te vi en '+S.cfg.name+' (soy vecino de '+barrioTxt()+'). Quería consultarte por lo que ofrecés.';
+  window.open('https://wa.me/'+t+'?text='+encodeURIComponent(msg),'_blank');
+}
+async function traerResenas(){
+  if(!enLinea())return S.resenas||[];
+  return await sb('resenas?select=*&order=creado_en.desc&limit=400');
+}
+function resenasDe(nombre){
+  return (CACHER||[]).filter(r=>norm(r.prestador)===norm(nombre));
+}
+function promedio(nombre){
+  const l=resenasDe(nombre);
+  if(!l.length)return null;
+  const s=l.reduce((a,r)=>a+Number(r.estrellas||0),0);
+  return {prom:(s/l.length).toFixed(1),n:l.length};
+}
+async function traerVecinos(){
+  if(!enLinea())return S.vecinos||[];
+  return await sb('vecinos?select=*&order=creado_en.desc&limit=300');
+}
+
+/* ===================== detalle ===================== */
+function verDetalle(id){
+  const p=(CACHE||[]).find(x=>String(x.id)===String(id));if(!p)return;
+  DET=p;
+  const entra=entraEn(p,S.cfg.barrio);
+  const nAprob=(p.barriosAprobados||'').split(',').map(x=>x.trim()).filter(Boolean).length;
+  const esPro=nAprob>2;
+  const barriosTxt=esPro?'Todos los barrios':(p.barriosAprobados||'—');
+  document.getElementById('detIn').innerHTML=
+    (p.foto?'<img src="'+esc(p.foto)+'" alt="" style="width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:14px;margin-bottom:14px">':'')
+    +'<h3>'+esc(p.nombre)+'</h3>'
+    +'<p class="sub">'+esc(rubroLb(p.rubro))+' · '+esc(p.anios||'—')+' años en el oficio</p>'
+    +'<div class="chips">'+(p.verificado?'<span class="chip">✓ Verificado</span>':'<span class="chip">Sin verificar</span>')
+    +'<span class="chip">★ '+esc(p.rating||'—')+'</span>'
+    +(esPro?'<span class="chip">PLAN PRO</span>':'')
+    +(entra?'<span class="chip">Entra a '+esc(barrioTxt())+'</span>':'')+'</div>'
+    +'<div class="datos">'
+    +'<div class="dato"><span>Barrios donde entra</span><b>'+esc(barriosTxt)+'</b></div>'
+    +'<div class="dato"><span>Respuesta</span><b>'+esc(p.resp||'—')+'</b></div>'
+    +'</div>'
+    +'<p class="nota" style="margin:0 0 16px">'+esc(p.descripcion||'')+'</p>'
+    +(function(){
+       const l=resenasDe(p.nombre).slice(0,3);
+       if(!l.length)return '<p class="nota" style="margin:0 0 16px">Todavía no tiene reseñas de vecinos.</p>';
+       return '<p style="font-family:\'Space Mono\',monospace;font-size:10px;letter-spacing:1.6px;'
+         +'text-transform:uppercase;color:var(--muted);margin:0 0 8px 2px">Lo que dicen los vecinos</p>'
+         +l.map(r=>'<div class="resena"><div class="re-top"><span class="re-est">'
+           +'★'.repeat(Number(r.estrellas||0))+'</span><span>'+esc(soloNombre(r.vecino)||'Vecino')+'</span>'
+           +'<span class="re-fe">'+new Date(r.creado_en).toLocaleDateString('es-AR')+'</span></div>'
+           +(r.texto?'<div class="re-txt">'+esc(r.texto)+'</div>':'')
+           +'<div class="reportar-wrap"><button class="reportar" onclick="reportar(\'resenas\',\''+r.id+'\')">🚩 Reportar</button></div>'
+           +'</div>').join('');
+     })()
+    +'<button class="btn btn-main" onclick="abrirPedir()">Pedir presupuesto</button>'
+    +'<button class="btn btn-soft" onclick="cerrar(\'shDet\')">Cerrar</button>';
+  abrir('shDet');
+}
+function pedirDesde(id){
+  const p=(CACHE||[]).find(x=>String(x.id)===String(id));if(!p)return;
+  DET=p;abrirPedir();
+}
+function pedirDestacado(nombre){
+  const msg='Hola! Soy '+nombre+' y ya publiqué en '+S.cfg.name+'. Quiero pasarme al plan Destacado, ¿cómo hago?';
+  location.href='https://wa.me/?text='+encodeURIComponent(msg);
+}
+function compartirPlanes(){
+  const tipo=document.getElementById('agVecino').classList.contains('on')?'vecino':'oficio';
+  const msg=(tipo==='oficio')
+    ? 'Hola! Te escribo desde '+S.cfg.name+', quiero consultarte por los planes pagos para Oficios (más barrios / combo).'
+    : 'Hola! Te escribo desde '+S.cfg.name+', quiero consultarte por el plan Destacado para Vecinos.';
+  location.href='https://wa.me/?text='+encodeURIComponent(msg);
+}
+function irAlPlanPro(tipo){
+  cerrar('shPlanes');
+  ir('sumate');
+  tipoAlta(tipo);
+  setTimeout(()=>{
+    const cb=document.getElementById(tipo==='oficio'?'sbTodos':'vbTodos');
+    if(cb){cb.checked=true;cb.dispatchEvent(new Event('change'));cb.scrollIntoView({behavior:'smooth',block:'center'});}
+  },150);
+}
+function consultarEstadoPlan(){
+  const tel=(document.getElementById('pcTel').value||'').trim();
+  const out=document.getElementById('pcResultado');
+  if(!tel){out.textContent='Escribí tu WhatsApp para consultar.';out.style.color='var(--muted)';return;}
+  const t=telNorm(tel);
+  const of=(CACHE||[]).find(p=>telNorm(p.tel)===t);
+  const ve=(CACHEV||[]).find(v=>telNorm(v.tel)===t);
+  if(!of&&!ve){
+    out.innerHTML='No encontramos ningún registro con ese WhatsApp. Si recién te anotaste, puede tardar unos minutos en aparecer.';
+    out.style.color='var(--muted)';
+    return;
+  }
+  const partes=[];
+  if(of){
+    const nAprob=(of.barriosAprobados||'').split(',').map(x=>x.trim()).filter(Boolean).length;
+    const esPro=nAprob>3;
+    if(esPro&&of.proHasta){
+      const dias=Math.ceil((new Date(of.proHasta)-new Date())/86400000);
+      partes.push('🔧 Oficio: Plan Pro activo, vence en '+(dias>0?dias+' días':'breve')+'.');
+    }else if(esPro){
+      partes.push('🔧 Oficio: Plan Pro activo.');
+    }else{
+      partes.push('🔧 Oficio: plan gratis ('+nAprob+' de 3 barrios usados).');
+    }
+    if(!of.verificado)partes.push('(Todavía pendiente de aprobación)');
+    partes.push('<button class="btn btn-soft" style="margin-top:8px" onclick="location.href=LINK_PAGO_OFICIOS">'+(esPro?'Renovar':'Pasar a')+' Plan Pro Oficios</button>');
+  }
+  if(ve){
+    const bv=(ve.barriosVenta||'').toLowerCase();
+    const esPro=destActivo(ve)||bv.includes('todos');
+    if(esPro&&ve.destacado_hasta){
+      const dias=Math.ceil((new Date(ve.destacado_hasta)-new Date())/86400000);
+      partes.push('🛍️ Vecino: Destacado activo, vence en '+(dias>0?dias+' días':'breve')+'.');
+    }else{
+      const n=(ve.barriosVenta||'').split(',').map(x=>x.trim()).filter(Boolean).length;
+      partes.push('🛍️ Vecino: plan gratis ('+n+' de 3 barrios usados).');
+    }
+    if(!ve.aprobado)partes.push('(Todavía pendiente de aprobación)');
+    partes.push('<button class="btn btn-soft" style="margin-top:8px" onclick="location.href=LINK_PAGO_VECINOS">'+(esPro?'Renovar':'Pasar a')+' Plan Pro Vecinos</button>');
+  }
+  out.innerHTML=partes.join('<br>');
+  out.style.color='var(--ink)';
+}
+function compartirApp(tipo){
+  const url=location.origin+location.pathname;
+  const instalar='\n\n📱 En iPhone: abrí el link con Safari, tocá el ícono de compartir (⬆️) y elegí "Agregar a pantalla de inicio" — te queda como una app más.'
+    +'\n\n🤖 En Android: descargá la app desde Google Play.';
+  const custom=(tipo==='oficio')?(S.cfg.msgOficios||''):(S.cfg.msgVecinos||'');
+  let msg;
+  if(custom.trim()){
+    msg=custom
+      .replaceAll('{barrio}',barrioTxt()||'')
+      .replaceAll('{app}',S.cfg.name||'')
+      .replaceAll('{link}',url)
+      +instalar;
+  }else{
+    msg=(tipo==='oficio')
+      ? '¡Hola! Te escribo desde '+S.cfg.name+', la app para conectar oficios y servicios con vecinos de '+barrioTxt()+' y otros barrios cerrados de la zona. Si trabajás en la zona, sumate y publicá tu oficio — 3 barrios gratis para siempre 👇\n'+url+instalar
+      : '¡Hola! Te invito a probar '+S.cfg.name+', la app para encontrar y ofrecer cosas acá en '+barrioTxt()+' y otros barrios cerrados de la zona — reemplaza los grupos de WhatsApp sueltos 👇\n'+url+instalar;
+  }
+  location.href='https://wa.me/?text='+encodeURIComponent(msg);
+}
+function waDe(id){
+  const p=(CACHE||[]).find(x=>String(x.id)===String(id));if(!p)return;
+  DET=p;waDirecto();
+}
+function barrioTxt(){
+  return (S.cfg.barrio==='__TODOS__')?'tu zona':S.cfg.barrio;
+}
+function waDirecto(){
+  if(!DET)return;
+  const t=soloNum(DET.tel);
+  if(!t){toast('Este prestador todavía no cargó su WhatsApp');return;}
+  const msg='Hola, te escribo desde '+S.cfg.name+'. Vivo en '+barrioTxt()+' y necesito '+rubroLb(DET.rubro).toLowerCase()+'.';
+  window.open('https://wa.me/'+t+'?text='+encodeURIComponent(msg),'_blank');
+}
+
+/* ===================== pedido ===================== */
+function toggleOtroBarrio(){
+  const sel=document.getElementById('pdBarrioSel');
+  const otro=document.getElementById('pdBarrioOtro');
+  if(!sel||!otro)return;
+  otro.style.display=(sel.value==='__OTRO__')?'block':'none';
+}
+function abrirPedir(){
+  if(!DET)return;
+  cerrar('shDet');
+  document.getElementById('pdTitulo').textContent='Pedir presupuesto';
+  document.getElementById('pdSub').textContent=DET.nombre+' · '+rubroLb(DET.rubro);
+  const inp=document.getElementById('pdBarrio');
+  const sel=document.getElementById('pdBarrioSel');
+  if(S.cfg.barrio==='__TODOS__'){
+    inp.style.display='none';
+    sel.style.display='block';
+    sel.innerHTML='<option value="">Elegí tu barrio</option>'+S.barrios.map(b=>'<option>'+esc(b)+'</option>').join('')+'<option value="__OTRO__">Otro (escribilo)</option>';
+    const otro=document.getElementById('pdBarrioOtro');
+    if(otro){otro.style.display='none';otro.value='';}
+  }else{
+    inp.style.display='block';
+    sel.style.display='none';
+    inp.value=S.cfg.barrio;
+  }
+  abrir('shPedir');
+}
+async function enviarPedido(){
+  if(esBot('spPedido','shPedir')){toast('¡Gracias! Ya le avisamos.');return;}
+  const nombre=document.getElementById('pdNombre').value.trim();
+  const tel=document.getElementById('pdTel').value.trim();
+  const desc=document.getElementById('pdDesc').value.trim();
+  const selVisible=document.getElementById('pdBarrioSel').style.display!=='none';
+  let barrioPedido=selVisible?document.getElementById('pdBarrioSel').value:document.getElementById('pdBarrio').value;
+  if(barrioPedido==='__OTRO__'){
+    barrioPedido=document.getElementById('pdBarrioOtro').value.trim();
+  }
+  if(!nombre){toast('Completá tu nombre');return;}
+  if(!barrioPedido){toast('Elegí o escribí tu barrio');return;}
+  const rec={vecino:nombre,telefono:tel,barrio:barrioPedido,
+    lote:document.getElementById('pdLote').value.trim(),
+    detalle:desc,cuando:document.getElementById('pdCuando').value,
+    prestador:DET?DET.nombre:'',rubro:DET?DET.rubro:'',
+    dispositivo:obtenerDispositivoId(),
+    estado:'nuevo',creado_en:new Date().toISOString()};
+  if(enLinea()){
+    try{await accionPublica({accion:'crearPedido',datos:rec});}catch(e){toast('No se pudo enviar. Probá de nuevo.: '+(e&&e.message?e.message:'error de conexión'));return;}
+  }else{
+    rec.id=Date.now();S.pedidos.unshift(rec);guardar();
+  }
+  cerrar('shPedir');
+  ['pdNombre','pdTel','pdLote','pdDesc'].forEach(i=>document.getElementById(i).value='');
+  toast('Pedido enviado');
+  const t=soloNum(DET&&DET.tel);
+  if(t){
+    const msg='Hola, soy '+nombre+' de '+barrioPedido+(rec.lote?' ('+rec.lote+')':'')+'.'
+      +(rec.detalle?'\n'+rec.detalle:'\nQuería consultarte por '+rubroLb(rec.rubro).toLowerCase()+'.')
+      +'\nCuándo: '+rec.cuando
+      +'\nTe escribo desde '+S.cfg.name+'.';
+    window.open('https://wa.me/'+t+'?text='+encodeURIComponent(msg),'_blank');
+  }else{
+    toast('Este prestador todavía no cargó su WhatsApp — el pedido quedó registrado, coordinalo por otro medio.');
+  }
+  ir('pedidos');
+}
+async function pintarPedidos(){
+  let l=[];try{l=await traerPedidos();}catch(e){l=S.pedidos;}
+  const miId=obtenerDispositivoId();
+  l=l.filter(p=>p.dispositivo===miId);
+  window.__pedidosCache=l;
+  const el=document.getElementById('listaPedidos');
+  if(!l.length){el.innerHTML='<div class="vacio">Todavía no pediste nada.<br>Buscá un oficio en Inicio y pedí presupuesto.</div>';return;}
+  el.innerHTML=l.map(p=>{
+    const f=new Date(p.creado_en).toLocaleString('es-AR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+    const e=p.estado==='hecho'?'fin':(p.estado==='curso'?'curso':'nuevo');
+    const lb=p.estado==='hecho'?'Terminado':(p.estado==='curso'?'En curso':'Enviado');
+    return '<div class="pedido"><div class="pedido-top"><span class="estado '+e+'">'+lb+'</span>'
+      +'<span class="p-tit">'+esc(p.prestador||rubroLb(p.rubro))+'</span></div>'
+      +'<div class="p-txt">'+esc(p.detalle)+'</div>'
+      +'<div class="p-pie">'+esc(p.barrio)+(p.lote?' · '+esc(p.lote):'')+' · '+f+'</div>'
+      +((p.prestador&&!p.calificado)?'<button class="mini" onclick="calificar(\''+p.id+'\')">★ Calificar a '+esc(p.prestador)+'</button>':'')
+      +(p.calificado?'<div class="p-pie" style="color:var(--ok)">✓ Ya calificaste este trabajo</div>':'')
+      +'</div>';
+  }).join('');
+}
+
+/* ===================== reseñas ===================== */
+function calificar(id){
+  const l=(enLinea()?null:S.pedidos)||S.pedidos;
+  let p=(l||[]).find(x=>String(x.id)===String(id));
+  if(!p&&window.__pedidosCache)p=window.__pedidosCache.find(x=>String(x.id)===String(id));
+  if(!p){toast('No encontramos ese pedido');return;}
+  RESPED=p;ESTRELLAS=0;
+  document.getElementById('rsSub').textContent=p.prestador+' · '+rubroLb(p.rubro);
+  document.getElementById('rsTexto').value='';
+  setEstrellas(0);
+  abrir('shResena');
+}
+function setEstrellas(n){
+  ESTRELLAS=n;
+  const b=document.getElementById('rsStars').querySelectorAll('button');
+  b.forEach((x,i)=>x.classList.toggle('on',i<n));
+}
+async function enviarResena(){
+  if(!RESPED)return;
+  if(!ESTRELLAS){toast('Tocá las estrellas para puntuar');return;}
+  if(!document.getElementById('rsLegal').checked){toast('Tenés que aceptar el aviso para publicar la reseña');return;}
+  const rec={prestador:RESPED.prestador,rubro:RESPED.rubro,vecino:RESPED.vecino,
+    barrio:RESPED.barrio,estrellas:ESTRELLAS,texto:document.getElementById('rsTexto').value.trim(),
+    creado_en:new Date().toISOString()};
+  if(enLinea()){
+    try{
+      await sb('resenas',{method:'POST',body:rec});
+      await accionPublica({accion:'marcarCalificado',id:RESPED.id});
+    }catch(e){toast('No se pudo publicar la reseña: '+(e&&e.message?e.message:'error de conexión'));return;}
+  }else{
+    rec.id=Date.now();S.resenas=S.resenas||[];S.resenas.unshift(rec);
+    const l=S.pedidos.find(x=>String(x.id)===String(RESPED.id));if(l)l.calificado=true;
+    guardar();
+  }
+  cerrar('shResena');
+  document.getElementById('rsLegal').checked=false;
+  await refrescar();
+  pintarPedidos();
+  toast('¡Gracias! Tu reseña ya la ven los vecinos');
+}
+
+/* ===================== sumate ===================== */
+async function enviarAlta(){
+  if(esBot('spOficio','formOficio')){toast('¡Gracias! Ya recibimos tus datos.');return;}
+  const nombre=document.getElementById('sName').value.trim();
+  const tel=document.getElementById('sTel').value.trim();
+  const anios=document.getElementById('sAnios').value.trim();
+  const desc=document.getElementById('sDesc').value.trim();
+  const quiereTodos=document.getElementById('sbTodos')&&document.getElementById('sbTodos').checked;
+  const elegidos=Array.from(document.querySelectorAll('.sb-item:checked')).map(cb=>cb.value);
+  if(!nombre||!tel){toast('Completá el nombre y el WhatsApp');return;}
+  if(!anios){toast('Completá los años en el oficio');return;}
+  if(!desc){toast('Contanos qué trabajos hacés');return;}
+  if(!FOTO_OFICIO){toast('Subí una foto de perfil');return;}
+  if(!elegidos.length){toast('Elegí en qué barrios querés publicar');return;}
+  if(!document.getElementById('sLegal').checked){toast('Tenés que aceptar los criterios de la plataforma');return;}
+  const matchPrevio=(CACHE||[]).find(p=>norm(p.nombre)===norm(nombre)||telNorm(p.tel)===telNorm(tel));
+  const yaUsoCupo=matchPrevio&&(matchPrevio.barriosAprobados||'').split(',').map(x=>x.trim()).filter(Boolean).length>=3;
+  if(yaUsoCupo&&!quiereTodos){
+    toast('Ya te registraste antes con este WhatsApp o nombre y usaste tus 3 barrios gratis. Para sumar más barrios, elegí "Todos los barrios" (Plan Pro).');
+    return;
+  }
+  const posibleDup=!!matchPrevio;
+  const rec={nombre,rubro:document.getElementById('sRubro').value,tel,
+    anios,
+    barriosAprobados:elegidos.join(', '),
+    descripcion:desc,
+    foto:FOTO_OFICIO||null,
+    verificado:false,destacado:false,rating:'—',trabajos:'nuevo',resp:'a confirmar'};
+  if(enLinea()){
+    try{await sb('prestadores',{method:'POST',body:rec});}catch(e){toast('No se pudo enviar: '+(e&&e.message?e.message:'error de conexión'));return;}
+  }else{rec.id=Date.now();S.prestadores.push(rec);guardar();}
+  ['sName','sTel','sAnios','sDesc'].forEach(i=>document.getElementById(i).value='');
+  document.querySelectorAll('.sb-item').forEach(cb=>{cb.checked=false;});
+  document.getElementById('sLegal').checked=false;
+  quitarFoto('oficio');
+  await refrescar();
+  if(quiereTodos){
+    toast('¡Datos enviados! Ahora te llevamos a pagar el Plan Pro.');
+    setTimeout(()=>{location.href=LINK_PAGO_OFICIOS;},1200);
+    return;
+  }
+  toast(posibleDup?'Datos enviados. Ojo: ya había alguien con un nombre parecido — lo vamos a revisar antes de aprobar.':'Datos enviados. Ya podés verlo publicado.');
+  ir('inicio');
+}
+
+function tipoAlta(t){
+  document.getElementById('agOficio').classList.toggle('on',t==='oficio');
+  document.getElementById('agVecino').classList.toggle('on',t==='vecino');
+  document.getElementById('formOficio').style.display=(t==='oficio')?'block':'none';
+  document.getElementById('formVecino').style.display=(t==='vecino')?'block':'none';
+  ABIERTO_EN[t==='oficio'?'formOficio':'formVecino']=Date.now();
+  const ni=document.querySelector('#nvSumate .ni');
+  if(ni)ni.textContent=(t==='vecino')?'🎁':'🔧';
+}
+async function publicarVecino(){
+  const nombre=document.getElementById('vName').value.trim();
+  const tel=document.getElementById('vTel').value.trim();
+  const que=document.getElementById('vQue').value.trim();
+  const barrioV=document.getElementById('vBarrio').value;
+  const quiereTodos=document.getElementById('vbTodos')&&document.getElementById('vbTodos').checked;
+  const elegidos=Array.from(document.querySelectorAll('.vb-item:checked')).map(cb=>cb.value);
+  if(!nombre||!tel||!que){toast('Completá nombre, WhatsApp y qué ofrecés');return;}
+  if(!barrioV){toast('Elegí tu barrio');return;}
+  if(!elegidos.length){toast('Elegí en qué barrios querés vender');return;}
+  if(!FOTO_VECINO){toast('Subí una foto de lo que vendés');return;}
+  if(!document.getElementById('vLegal').checked){toast('Tenés que aceptar el aviso para publicar');return;}
+  const matchPrevio=(CACHEV||[]).find(v=>norm(v.nombre)===norm(nombre)||telNorm(v.tel)===telNorm(tel));
+  const yaUsoCupo=matchPrevio&&(matchPrevio.barriosVenta||'').toLowerCase().includes('todos')===false&&(matchPrevio.barriosVenta||'').split(',').map(x=>x.trim()).filter(Boolean).length>=3;
+  if(yaUsoCupo&&!quiereTodos){
+    toast('Ya te registraste antes con este WhatsApp o nombre y usaste tus 3 barrios gratis. Para sumar más barrios, elegí "Todos los barrios" (Plan Pro).');
+    return;
+  }
+  const posibleDup=!!matchPrevio;
+  const rec={nombre,negocio:document.getElementById('vNegocio').value.trim(),rubro:document.getElementById('vRubro').value,tel,
+    dias:document.getElementById('vDias').value.trim(),
+    que,foto:FOTO_VECINO||null,foto2:FOTO_VECINO2||null,link:document.getElementById('vLink').value.trim(),
+    barrio:barrioV,barriosVenta:elegidos.join(', '),aprobado:false,destacado_hasta:null,creado_en:new Date().toISOString()};
+  if(enLinea()){try{await sb('vecinos',{method:'POST',body:rec});}catch(e){toast('No se pudo publicar: '+(e&&e.message?e.message:'error de conexión'));return;}}
+  else{rec.id=Date.now();S.vecinos=S.vecinos||[];S.vecinos.unshift(rec);guardar();}
+  ['vName','vNegocio','vTel','vDias','vQue','vLink'].forEach(i=>document.getElementById(i).value='');
+  document.getElementById('vBarrio').value='';
+  document.querySelectorAll('.vb-item').forEach(cb=>{cb.checked=false;});
+  document.getElementById('vLegal').checked=false;
+  quitarFoto('vecino');
+  quitarFoto('vecino2');
+  await refrescar();
+  if(quiereTodos){
+    toast('¡Listo! Ahora te llevamos a pagar el Plan Pro.');
+    setTimeout(()=>{location.href=LINK_PAGO_VECINOS;},1200);
+    return;
+  }
+  toast(posibleDup?'¡Listo! Ojo: ya había alguien con un nombre parecido — lo vamos a revisar antes de aprobar.':'¡Listo! Tu publicación queda pendiente de aprobación. Te avisamos cuando esté activa.');
+  MUNDO='vecinos';setMundo('vecinos');ir('inicio');
+}
+
+/* ===================== panel ===================== */
+let ADMIN_OK=false, PANEL_CLAVE='';
+async function sbAdmin(tabla,metodo,filtro,datos){
+  const r=await fetch('/.netlify/functions/admin-accion',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({clave:PANEL_CLAVE,tabla,metodo,filtro,datos})
+  });
+  const j=await r.json();
+  if(!j.ok)throw new Error(j.error||'No se pudo completar la acción');
+  return j.data;
+}
+async function accionPublica(payload){
+  const r=await fetch('/.netlify/functions/accion-publica',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(payload)
+  });
+  const j=await r.json();
+  if(!j.ok)throw new Error(j.error||'No se pudo completar la acción');
+  return j.data;
+}
+let TOQUES_LOGO=[];
+function tocarLogoAdmin(){
+  const ahora=Date.now();
+  TOQUES_LOGO=TOQUES_LOGO.filter(t=>ahora-t<3000);
+  TOQUES_LOGO.push(ahora);
+  if(TOQUES_LOGO.length>=5){
+    TOQUES_LOGO=[];
+    abrirAdmin();
+  }
+}
+async function abrirAdmin(){
+  if(ADMIN_OK){ir('admin');tab('oficios');refrescar();llenarConfig();return;}
+  abrir('shClave');
+  setTimeout(()=>{const i=document.getElementById('claveInput');if(i){i.value='';i.focus();}},80);
+}
+async function cambiarClave(){
+  const actual=(document.getElementById('claveActual').value||'').trim();
+  const nueva=(document.getElementById('claveNueva').value||'').trim();
+  if(!actual||!nueva){toast('Completá las dos claves');return;}
+  if(nueva.length<4){toast('La clave nueva debe tener al menos 4 caracteres');return;}
+  try{
+    const r=await fetch('/.netlify/functions/clave-admin',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({accion:'cambiar',claveActual:actual,claveNueva:nueva})
+    });
+    const data=await r.json();
+    if(!data.ok){toast(data.error||'La clave actual no coincide');return;}
+    PANEL_CLAVE=nueva;
+    document.getElementById('claveActual').value='';
+    document.getElementById('claveNueva').value='';
+    toast('Clave actualizada');
+  }catch(e){toast('No se pudo cambiar. ¿Conexión?: '+(e&&e.message?e.message:'error de conexión'));}
+}
+async function validarClave(){
+  const c=(document.getElementById('claveInput').value||'').trim();
+  if(!c){toast('Escribí la clave');return;}
+  try{
+    const r=await fetch('/.netlify/functions/clave-admin',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({accion:'validar',clave:c})
+    });
+    const data=await r.json();
+    if(data.ok){
+      ADMIN_OK=true;PANEL_CLAVE=c;cerrar('shClave');
+      ir('admin');tab('oficios');refrescar();llenarConfig();
+    }else{
+      toast('Clave incorrecta');
+    }
+  }catch(e){toast('No se pudo verificar. ¿Conexión?: '+(e&&e.message?e.message:'error de conexión'));}
+}
+function tab(t){
+  const m={oficios:'Oficios',vencimientos:'Vencimientos',trabajos:'Trabajos',vecinos:'Vecinos',reportes:'Reportes',base:'Base',consultas:'Consultas'};
+  Object.keys(m).forEach(k=>{
+    document.getElementById('pane'+m[k]).classList.toggle('on',k===t);
+    document.getElementById('tb'+m[k]).classList.toggle('on',k===t);
+  });
+  if(t==='vencimientos')pintarAdmVencimientos();
+  if(t==='trabajos')pintarAdmPedidos();
+  if(t==='vecinos')pintarAdmVecinos();
+  if(t==='reportes')pintarAdmReportes();
+  if(t==='consultas')pintarAdmConsultas();
+  if(t==='base'){document.getElementById('txtBarrios').value=S.barrios.join('\n');pintarBase();pintarCodigosBarrio();
+    const inL=document.getElementById('inLimiteLote');if(inL)inL.value=S.cfg.limiteLote||12;
+    const inLB=document.getElementById('inLimiteLotesBarrio');if(inLB)inLB.value=S.cfg.limiteLotesPorBarrio||600;}
+}
+async function traerConfigRemota(){
+  if(!enLinea())return null;
+  try{
+    const r=await sb('config_app?id=eq.1&select=*');
+    return (r&&r[0])||null;
+  }catch(e){return null;}
+}
+async function guardarConfigRemota(campos){
+  if(!enLinea())return;
+  try{await sbAdmin('config_app','PATCH','id=eq.1',campos);}catch(e){toast('No se pudo sincronizar con la base compartida: '+(e&&e.message?e.message:'error de conexión'));}
+}
+async function aplicarConfigRemota(){
+  const c=await traerConfigRemota();
+  if(!c)return;
+  if(c.barrios){
+    const l=String(c.barrios).split(',').map(x=>x.trim()).filter(Boolean);
+    if(l.length)S.barrios=l;
+  }
+  if(c.lanzamiento_inicio)S.cfg.lanzamientoInicio=c.lanzamiento_inicio;
+  if(c.nombre)S.cfg.name=c.nombre;
+  if(c.tag)S.cfg.tag=c.tag;
+  if(typeof c.tel==='string')S.cfg.tel=c.tel;
+  if(typeof c.demo==='boolean')S.cfg.demo=c.demo;
+  if(c.codigos_barrio){
+    try{const obj=JSON.parse(c.codigos_barrio);if(obj&&typeof obj==='object')S.cfg.codigosBarrio=obj;}catch(e){}
+  }
+  if(c.limite_lote!=null&&!isNaN(Number(c.limite_lote)))S.cfg.limiteLote=Number(c.limite_lote);
+  if(c.limite_lotes_barrio!=null&&!isNaN(Number(c.limite_lotes_barrio)))S.cfg.limiteLotesPorBarrio=Number(c.limite_lotes_barrio);
+  if(!S.barrios.includes(S.cfg.barrio)&&S.cfg.barrio!=='__TODOS__')S.cfg.barrio=S.barrios[0];
+  guardar();
+  aplicar();pintarBarrios();pintarTextosLanzamiento();
+}
+async function vencerProsOficios(){
+  const hoy=new Date();
+  const vencidos=(CACHE||[]).filter(p=>p.proHasta&&new Date(p.proHasta)<hoy);
+  for(const p of vencidos){
+    const nuevoValor=p.barriosAprobados_previo||'';
+    const patch={barriosAprobados:nuevoValor,proHasta:null};
+    if(enLinea()){
+      try{await accionPublica({accion:'vencerPro',tabla:'prestadores',id:p.id,campoVence:'proHasta',campoBarrios:'barriosAprobados',valorPrevio:nuevoValor});}catch(e){}
+    }else{
+      const i=(S.prestadores||[]).findIndex(x=>String(x.id)===String(p.id));
+      if(i>-1){S.prestadores[i].barriosAprobados=nuevoValor;S.prestadores[i].proHasta=null;guardar();}
+    }
+    p.barriosAprobados=nuevoValor;p.proHasta=null;
+  }
+}
+async function refrescar(){
+  await aplicarConfigRemota();
+  let offline=false;
+  try{CACHE=await traerPrestadores();}catch(e){CACHE=S.prestadores;offline=true;}
+  try{CACHEV=await traerVecinos();}catch(e){CACHEV=S.vecinos||[];offline=true;}
+  try{CACHER=await traerResenas();}catch(e){CACHER=S.resenas||[];}
+  await vencerProsOficios();
+  const ob=document.getElementById('offlineBanner');
+  if(ob)ob.innerHTML=offline
+    ?'<div style="background:var(--warn-bg);color:var(--warn);border-radius:12px;padding:10px 12px;margin-bottom:14px;font-size:12.5px;font-weight:600">⚠️ Sin conexión — mostrando datos de ejemplo, no los reales. Revisá tu internet y volvé a entrar.</div>'
+    :'';
+  pintarLista();pintarStories();pintarAdmLista();pintarAdmVecinos();pintarAdmReportes();
+}
+function pintarCupos(){
+  const barrio=S.cfg.barrio;
+  document.getElementById('cupoBarrio').textContent=barrio;
+  const enBarrio=(CACHE||[]).filter(p=>entraEn(p,barrio));
+  const grid=document.getElementById('cuposGrid');
+  grid.className='cupos-grid';
+  grid.innerHTML=RUBROS.map(r=>{
+    const n=enBarrio.filter(p=>p.rubro===r.id).length;
+    return '<div class="cupo">'
+      +'<span class="cnm">'+esc(r.lb)+'</span>'
+      +'<span class="cnum">'+n+'</span></div>';
+  }).join('');
+}
+function pintarLanzBanner(){
+  const el=document.getElementById('lanzBanner');
+  if(!el)return;
+  el.style.background='#F1F1F1';el.style.color='#555';
+  el.innerHTML='✅ Modelo vigente: 3 barrios gratis para siempre (Oficios y Vecinos), resto Plan Pro pago.';
+}
+function pintarAdmVencimientos(){
+  const el=document.getElementById('admVencimientos');
+  if(!el)return;
+  const items=[];
+  (CACHE||[]).forEach(p=>{
+    const nAprob=(p.barriosAprobados||'').split(',').map(x=>x.trim()).filter(Boolean).length;
+    if(nAprob>3){
+      const dias=p.proHasta?Math.ceil((new Date(p.proHasta)-new Date())/86400000):null;
+      items.push({tipo:'oficio',id:p.id,nombre:p.nombre,dias});
+    }
+  });
+  (CACHEV||[]).forEach(v=>{
+    const bv=(v.barriosVenta||'').toLowerCase();
+    if(destActivo(v)||bv.includes('todos')){
+      const dias=v.destacado_hasta?Math.ceil((new Date(v.destacado_hasta)-new Date())/86400000):null;
+      items.push({tipo:'vecino',id:v.id,nombre:v.negocio||v.nombre,dias});
+    }
+  });
+  if(!items.length){el.innerHTML='<div class="vacio">Nadie tiene Plan Pro activo todavía.</div>';return;}
+  items.sort((a,b)=>(a.dias==null?9999:a.dias)-(b.dias==null?9999:b.dias));
+  el.innerHTML=items.map(it=>{
+    const semaforo=it.dias==null?'⚪':(it.dias<=5?'🔴':(it.dias<=15?'🟡':'🟢'));
+    const diasTxt=it.dias==null?'sin fecha':('vence en '+it.dias+'d');
+    const bg=it.dias!=null&&it.dias<=5?'#FBE4E2;color:#C4453F':(it.dias!=null&&it.dias<=15?'#FCF3E3;color:#B7791F':'#E8F5E9;color:#1B5E20');
+    return '<div class="adm-row">'
+      +'<div style="min-width:0;flex:1"><div class="nm">'+esc(it.nombre)+' <span style="font-size:9px;opacity:.6">('+(it.tipo==='oficio'?'Oficio':'Vecino')+')</span></div>'
+      +'<span style="font-size:10.5px;font-weight:700;padding:1px 6px;border-radius:8px;background:'+bg+'">'+semaforo+' '+diasTxt+'</span></div>'
+      +'<button class="tg no" onclick="recordarVencimiento(\''+it.tipo+'\',\''+it.id+'\')">📲 Recordar</button>'
+      +'</div>';
+  }).join('');
+}
+function recordarVencimiento(tipo,id){
+  const item=tipo==='oficio'
+    ?(CACHE||[]).find(x=>String(x.id)===String(id))
+    :(CACHEV||[]).find(x=>String(x.id)===String(id));
+  if(!item)return;
+  const t=soloNum(item.tel);
+  if(!t){toast('No tiene WhatsApp cargado');return;}
+  const vence=tipo==='oficio'?item.proHasta:item.destacado_hasta;
+  const dias=vence?Math.ceil((new Date(vence)-new Date())/86400000):null;
+  const cuando=dias!=null?(dias<=0?'hoy':(dias===1?'mañana':'en '+dias+' días')):'pronto';
+  const msg='Hola '+item.nombre+'! Te escribo de '+S.cfg.name+' para avisarte que tu Plan Pro vence '+cuando+'. Si querés seguir apareciendo en todos los barrios, podés renovarlo cuando quieras. ¡Cualquier cosa avisame! 🙂';
+  window.open('https://wa.me/'+t+'?text='+encodeURIComponent(msg),'_blank');
+}
+function pintarAdmLista(){
+  const l=CACHE||[];
+  pintarCupos();
+  pintarLanzBanner();
+  document.getElementById('cTot').textContent=l.length;
+  document.getElementById('cVer').textContent=l.filter(p=>p.verificado).length;
+  document.getElementById('cPen').textContent=l.filter(p=>!p.verificado).length;
+  const el=document.getElementById('admLista');
+  if(!l.length){el.innerHTML='<div class="vacio">Sin prestadores cargados.</div>';return;}
+  el.innerHTML=l.map(p=>{
+    const nAprob=(p.barriosAprobados||'').split(',').map(x=>x.trim()).filter(Boolean).length;
+    const pago=nAprob>3;
+    const pagoPendiente=pago&&!p.verificado;
+    const diasRest=p.proHasta?Math.ceil((new Date(p.proHasta)-new Date())/86400000):null;
+    const porVencer=pago&&diasRest!=null&&diasRest<=5;
+    const porVencerPronto=pago&&diasRest!=null&&diasRest>5&&diasRest<=15;
+    const proTxt=pago?(diasRest!=null?' · Pro, vence en '+diasRest+'d':' · Pro'):' · gratis';
+    const semaforo=porVencer?'🔴':(porVencerPronto?'🟡':(pago?'🟢':''));
+    const badgeBg=porVencer?'#FBE4E2;color:#C4453F':(porVencerPronto?'#FCF3E3;color:#B7791F':(pago?'#E8F5E9;color:#1B5E20':'#F1F1F1;color:#666'));
+    const aprobadosTxt=pago?'Todos los barrios':esc(p.barriosAprobados||'—');
+    const posibleDup=l.filter(x=>norm(x.nombre)===norm(p.nombre)||(telNorm(x.tel)&&telNorm(x.tel)===telNorm(p.tel))).length>1;
+    return '<div class="adm-row" style="flex-wrap:wrap"><div class="ava" style="background:'+col(p.nombre)+'">'+(p.foto?'<img src="'+esc(p.foto)+'" alt="">':esc(ini(p.nombre)))+'</div>'
+    +'<div style="min-width:0;flex:1"><div class="nm">'+esc(p.nombre)
+    +(posibleDup?' <span style="font-size:10px;font-weight:700;padding:1px 6px;border-radius:8px;background:var(--warn-bg);color:var(--warn)">⚠️ NOMBRE REPETIDO</span>':'')
+    +(pagoPendiente?' <span style="font-size:10px;font-weight:700;padding:1px 6px;border-radius:8px;background:var(--warn-bg);color:var(--warn)">⏳ PRO · revisar pago antes de aprobar</span>':'')
+    +' <span style="font-size:10.5px;font-weight:700;padding:1px 6px;border-radius:8px;background:'+badgeBg+'">'+(semaforo?semaforo+' ':'')+nAprob+' barrio'+(nAprob===1?'':'s')+proTxt+'</span></div>'
+    +'<div class="mt">'+esc(rubroLb(p.rubro))+'</div>'
+    +'<div class="mt" style="margin-top:4px">Aprobados: '+aprobadosTxt+'</div></div>'
+    +(porVencer?'<button class="tg no" style="background:#FBE4E2;color:#C4453F" onclick="recordarVencimiento(\'oficio\',\''+p.id+'\')">📲 Recordar</button>':'')
+    +'<button class="tg '+(p.verificado?'si':'no')+'" onclick="verificar(\''+p.id+'\')">'
+    +(p.verificado?'Verificado':'A revisar')+'</button>'
+    +'<button class="tg '+(pago?'si':'no')+'" onclick="destacarOficio(\''+p.id+'\')">'
+    +(pago?'Plan Pro activo':'Destacar Plan Pro')+'</button>'
+    +'<button class="mini" onclick="toggleEditarOficio(\''+p.id+'\')">✏️ Editar</button>'
+    +'<button class="mini" style="color:#B3261E" onclick="borrarPrestador(\''+p.id+'\')">Eliminar</button>'
+    +'<div id="edit_'+p.id+'" style="display:none;width:100%;margin-top:10px;padding-top:10px;border-top:1px solid var(--line)">'
+      +'<div style="display:flex;gap:10px;align-items:center;margin-bottom:8px">'
+        +'<div id="editFoto_'+p.id+'" class="ava" style="background:'+col(p.nombre)+';width:56px;height:56px">'+(p.foto?'<img src="'+esc(p.foto)+'" alt="">':esc(ini(p.nombre)))+'</div>'
+        +'<label class="mini" style="cursor:pointer">📷 Cambiar foto<input type="file" accept="image/*" style="display:none" onchange="cambiarFotoOficio(this,\''+p.id+'\')"></label>'
+        +(p.foto?'<button class="mini" onclick="quitarFotoOficio(\''+p.id+'\')">Quitar foto</button>':'')
+      +'</div>'
+      +'<div class="field"><label>Nombre</label><input id="ed_nombre_'+p.id+'" value="'+esc(p.nombre||'')+'"></div>'
+      +'<div class="field"><label>WhatsApp</label><input id="ed_tel_'+p.id+'" value="'+esc(p.tel||'')+'"></div>'
+      +'<div class="field"><label>Años de experiencia</label><input id="ed_anios_'+p.id+'" value="'+esc(p.anios||'')+'"></div>'
+      +'<div class="field"><label>Descripción</label><textarea id="ed_desc_'+p.id+'" style="min-height:70px">'+esc(p.descripcion||'')+'</textarea></div>'
+      +'<div class="field"><label>Barrios donde entra (separados por coma)</label><input id="apr_'+p.id+'" value="'+esc(p.barriosAprobados||'')+'" placeholder="San Eduardo, San Ramón…"></div>'
+      +'<button class="mini dash" onclick="guardarEdicionOficio(\''+p.id+'\')">Guardar cambios</button>'
+    +'</div></div>';
+  }).join('');
+}
+const FOTOS_EDIT_OFICIO={};
+function toggleEditarOficio(id){
+  const el=document.getElementById('edit_'+id);
+  if(el)el.style.display=(el.style.display==='none')?'block':'none';
+}
+function cambiarFotoOficio(input,id){
+  const f=input.files&&input.files[0]; if(!f)return;
+  comprimir(f,(data,kb)=>{
+    FOTOS_EDIT_OFICIO[id]=data;
+    const box=document.getElementById('editFoto_'+id);
+    if(box)box.innerHTML='<img src="'+data+'" alt="">';
+    toast('Foto lista — tocá "Guardar cambios" para confirmar');
+  });
+  input.value='';
+}
+function quitarFotoOficio(id){
+  FOTOS_EDIT_OFICIO[id]=null;
+  const box=document.getElementById('editFoto_'+id);
+  const p=(CACHE||[]).find(x=>String(x.id)===String(id));
+  if(box)box.innerHTML=esc(ini(p?p.nombre:''));
+  toast('Foto marcada para quitar — tocá "Guardar cambios" para confirmar');
+}
+async function guardarEdicionOficio(id){
+  const p=(CACHE||[]).find(x=>String(x.id)===String(id));
+  if(!p)return;
+  const patch={
+    nombre:document.getElementById('ed_nombre_'+id).value.trim()||p.nombre,
+    tel:document.getElementById('ed_tel_'+id).value.trim(),
+    anios:document.getElementById('ed_anios_'+id).value.trim(),
+    descripcion:document.getElementById('ed_desc_'+id).value.trim(),
+    barriosAprobados:document.getElementById('apr_'+id).value.trim()
+  };
+  if(Object.prototype.hasOwnProperty.call(FOTOS_EDIT_OFICIO,id)){
+    patch.foto=FOTOS_EDIT_OFICIO[id];
+  }
+  if(enLinea()){
+    try{await sbAdmin('prestadores','PATCH','id=eq.'+encodeURIComponent(id),patch);}
+    catch(e){toast('No se pudo guardar: '+(e&&e.message?e.message:'error de conexión'));return;}
+  }else{
+    const i=(S.prestadores||[]).findIndex(x=>String(x.id)===String(id));
+    if(i>-1){Object.assign(S.prestadores[i],patch);guardar();}
+  }
+  delete FOTOS_EDIT_OFICIO[id];
+  toast('Cambios guardados');
+  await refrescar();
+}
+async function guardarBarriosAprobados(id){
+  const val=document.getElementById('apr_'+id).value.trim();
+  const p=(CACHE||[]).find(x=>String(x.id)===String(id));
+  if(!p)return;
+  p.barriosAprobados=val;
+  if(enLinea()){try{await sbAdmin('prestadores','PATCH','id=eq.'+encodeURIComponent(id),{barriosAprobados:val});}catch(e){toast('No se pudo guardar: '+(e&&e.message?e.message:'error de conexión'));return;}}
+  else{const i=(S.prestadores||[]).findIndex(x=>String(x.id)===String(id));if(i>-1){S.prestadores[i].barriosAprobados=val;guardar();}}
+  toast('Barrios aprobados actualizados');pintarCupos();pintarLista();
+}
+async function guardarBarriosVenta(id){
+  const val=document.getElementById('vv_'+id).value.trim();
+  const v=(CACHEV||[]).find(x=>String(x.id)===String(id));
+  if(!v)return;
+  v.barriosVenta=val;
+  if(enLinea()){try{await sbAdmin('vecinos','PATCH','id=eq.'+encodeURIComponent(id),{barriosVenta:val});}catch(e){toast('No se pudo guardar: '+(e&&e.message?e.message:'error de conexión'));return;}}
+  else{const i=(S.vecinos||[]).findIndex(x=>String(x.id)===String(id));if(i>-1){S.vecinos[i].barriosVenta=val;guardar();}}
+  toast('Barrios de venta actualizados');pintarAdmVecinos();pintarLista();
+}
+async function borrarPrestador(id){
+  const p=(CACHE||[]).find(x=>String(x.id)===String(id));
+  if(!confirm('¿Eliminar definitivamente a '+(p?p.nombre:'este prestador')+'? Esta acción no se puede deshacer.'))return;
+  if(enLinea()){try{await sbAdmin('prestadores','DELETE','id=eq.'+encodeURIComponent(id));}catch(e){toast('No se pudo eliminar: '+(e&&e.message?e.message:'error de conexión'));return;}}
+  else{S.prestadores=(S.prestadores||[]).filter(x=>String(x.id)!==String(id));guardar();}
+  await refrescar();toast('Prestador eliminado');
+}
+async function verificar(id){
+  const p=(CACHE||[]).find(x=>String(x.id)===String(id));if(!p)return;
+  const v=!p.verificado;
+  if(enLinea()){
+    try{await sbAdmin('prestadores','PATCH','id=eq.'+encodeURIComponent(id),{verificado:v});}
+    catch(e){toast('No se pudo guardar: '+(e&&e.message?e.message:'error de conexión'));return;}
+  }else{const l=S.prestadores.find(x=>String(x.id)===String(id));if(l)l.verificado=v;guardar();}
+  p.verificado=v;pintarAdmLista();pintarLista();
+}
+function abrirNuevo(){abrir('shNuevo');}
+async function guardarNuevo(){
+  const nombre=document.getElementById('nName').value.trim();
+  if(!nombre){toast('Poné el nombre');return;}
+  const rec={nombre,rubro:document.getElementById('nRubro').value,
+    tel:document.getElementById('nTel').value.trim(),
+    anios:document.getElementById('nAnios').value.trim(),
+    barrios:document.getElementById('nBarrios').value.trim(),
+    descripcion:document.getElementById('nDesc').value.trim(),
+    verificado:true,destacado:false,rating:'—',trabajos:'',resp:'responde en el día'};
+  if(enLinea()){try{await sbAdmin('prestadores','POST',null,rec);}catch(e){toast('No se pudo guardar: '+(e&&e.message?e.message:'error de conexión'));return;}}
+  else{rec.id=Date.now();S.prestadores.push(rec);guardar();}
+  cerrar('shNuevo');
+  ['nName','nTel','nAnios','nBarrios','nDesc'].forEach(i=>document.getElementById(i).value='');
+  await refrescar();toast('Prestador cargado');
+}
+function pintarAdmVecinos(){
+  const el=document.getElementById('admVecinos');
+  if(!el)return;
+  const l=CACHEV||[];
+  if(!l.length){el.innerHTML='<div class="vacio">Todavía no hay vecinos publicando.</div>';return;}
+  el.innerHTML=l.map(v=>{
+    const bv=(v.barriosVenta||'').toLowerCase();
+    const nVenta=destActivo(v)||bv.includes('todos')?(S.barrios||[]).length:(v.barriosVenta||'').split(',').map(x=>x.trim()).filter(Boolean).length;
+    const pago=destActivo(v)||bv.includes('todos');
+    const pagoPendiente=pago&&!v.aprobado;
+    const diasRestV=v.destacado_hasta?Math.ceil((new Date(v.destacado_hasta)-new Date())/86400000):null;
+    const porVencerV=pago&&diasRestV!=null&&diasRestV<=5;
+    const porVencerVPronto=pago&&diasRestV!=null&&diasRestV>5&&diasRestV<=15;
+    const proTxtV=pago?(diasRestV!=null?' · Pro, vence en '+diasRestV+'d':' · Pro'):' · gratis';
+    const semaforoV=porVencerV?'🔴':(porVencerVPronto?'🟡':(pago?'🟢':''));
+    const badgeBgV=porVencerV?'#FBE4E2;color:#C4453F':(porVencerVPronto?'#FCF3E3;color:#B7791F':(pago?'#E8F5E9;color:#1B5E20':'#F1F1F1;color:#666'));
+    const posibleDup=l.filter(x=>norm(x.nombre)===norm(v.nombre)||(telNorm(x.tel)&&telNorm(x.tel)===telNorm(v.tel))).length>1;
+    return '<div class="adm-row"><div class="ava" style="background:'+col(v.nombre)+'">'+(v.foto?'<img src="'+esc(v.foto)+'" alt="">':esc(ini(v.nombre)))+'</div>'
+    +'<div style="min-width:0"><div class="nm">'+esc(v.nombre)+(v.negocio?' · '+esc(v.negocio):'')
+    +(posibleDup?' <span style="font-size:10px;font-weight:700;padding:1px 6px;border-radius:8px;background:var(--warn-bg);color:var(--warn)">⚠️ NOMBRE REPETIDO</span>':'')
+    +(pagoPendiente?' <span style="font-size:10px;font-weight:700;padding:1px 6px;border-radius:8px;background:var(--warn-bg);color:var(--warn)">⏳ PRO · revisar pago antes de aprobar</span>':'')
+    +' <span style="font-size:10.5px;font-weight:700;padding:1px 6px;border-radius:8px;background:'+badgeBgV+'">'+(semaforoV?semaforoV+' ':'')+nVenta+' barrio'+(nVenta===1?'':'s')+proTxtV+'</span></div>'
+    +'<div class="mt">'+esc(rubroLb(v.rubro))+' · vive en '+esc(v.barrio||'—')+'</div>'
+    +'<div class="mt" style="display:flex;gap:6px;align-items:center;margin-top:4px">'
+    +'<span style="opacity:.7">Vende en:</span>'
+    +'<input id="vv_'+v.id+'" value="'+esc(v.barriosVenta||'')+'" placeholder="San Eduardo, San Ramón… o Todos" style="flex:1;min-width:0;font-size:12px;padding:4px 6px">'
+    +'<button class="mini" onclick="guardarBarriosVenta(\''+v.id+'\')">Guardar</button></div></div>'
+    +(porVencerV?'<button class="tg no" style="background:#FBE4E2;color:#C4453F" onclick="recordarVencimiento(\'vecino\',\''+v.id+'\')">📲 Recordar</button>':'')
+    +'<button class="tg '+(v.aprobado?'si':'no')+'" onclick="aprobarVecino(\''+v.id+'\')">'
+    +(v.aprobado?'Aprobado':'Aprobar')+'</button>'
+    +'<button class="tg '+(destActivo(v)?'si':'no')+'" onclick="destacar(\''+v.id+'\')">'
+    +(destActivo(v)?'Destacado':'Destacar')+'</button>'
+    +'<button class="mini" onclick="toggleEditarVecino(\''+v.id+'\')">✏️ Editar</button>'
+    +'<button class="mini" style="color:#B3261E" onclick="borrarVecino(\''+v.id+'\')">Eliminar</button>'
+    +'<div id="editv_'+v.id+'" style="display:none;width:100%;margin-top:10px;padding-top:10px;border-top:1px solid var(--line)">'
+      +'<div style="display:flex;gap:10px;align-items:center;margin-bottom:8px">'
+        +'<div id="editFotoV_'+v.id+'" class="ava" style="background:'+col(v.nombre)+';width:56px;height:56px">'+(v.foto?'<img src="'+esc(v.foto)+'" alt="">':esc(ini(v.nombre)))+'</div>'
+        +'<label class="mini" style="cursor:pointer">📷 Cambiar foto<input type="file" accept="image/*" style="display:none" onchange="cambiarFotoVecino(this,\''+v.id+'\')"></label>'
+        +(v.foto?'<button class="mini" onclick="quitarFotoVecino(\''+v.id+'\')">Quitar foto</button>':'')
+      +'</div>'
+      +'<div class="field"><label>Nombre</label><input id="edv_nombre_'+v.id+'" value="'+esc(v.nombre||'')+'"></div>'
+      +'<div class="field"><label>Negocio/marca (opcional)</label><input id="edv_negocio_'+v.id+'" value="'+esc(v.negocio||'')+'"></div>'
+      +'<div class="field"><label>WhatsApp</label><input id="edv_tel_'+v.id+'" value="'+esc(v.tel||'')+'"></div>'
+      +'<div class="field"><label>Qué ofrece</label><textarea id="edv_que_'+v.id+'" style="min-height:70px">'+esc(v.que||'')+'</textarea></div>'
+      +'<div class="field"><label>Link a catálogo/redes (opcional)</label><input id="edv_link_'+v.id+'" value="'+esc(v.link||'')+'"></div>'
+      +'<button class="mini dash" onclick="guardarEdicionVecino(\''+v.id+'\')">Guardar cambios</button>'
+    +'</div></div>';
+  }).join('');
+}
+const FOTOS_EDIT_VECINO={};
+function toggleEditarVecino(id){
+  const el=document.getElementById('editv_'+id);
+  if(el)el.style.display=(el.style.display==='none')?'block':'none';
+}
+function cambiarFotoVecino(input,id){
+  const f=input.files&&input.files[0]; if(!f)return;
+  comprimir(f,(data,kb)=>{
+    FOTOS_EDIT_VECINO[id]=data;
+    const box=document.getElementById('editFotoV_'+id);
+    if(box)box.innerHTML='<img src="'+data+'" alt="">';
+    toast('Foto lista — tocá "Guardar cambios" para confirmar');
+  });
+  input.value='';
+}
+function quitarFotoVecino(id){
+  FOTOS_EDIT_VECINO[id]=null;
+  const box=document.getElementById('editFotoV_'+id);
+  const v=(CACHEV||[]).find(x=>String(x.id)===String(id));
+  if(box)box.innerHTML=esc(ini(v?v.nombre:''));
+  toast('Foto marcada para quitar — tocá "Guardar cambios" para confirmar');
+}
+async function guardarEdicionVecino(id){
+  const v=(CACHEV||[]).find(x=>String(x.id)===String(id));
+  if(!v)return;
+  const patch={
+    nombre:document.getElementById('edv_nombre_'+id).value.trim()||v.nombre,
+    negocio:document.getElementById('edv_negocio_'+id).value.trim(),
+    tel:document.getElementById('edv_tel_'+id).value.trim(),
+    que:document.getElementById('edv_que_'+id).value.trim(),
+    link:document.getElementById('edv_link_'+id).value.trim()
+  };
+  if(Object.prototype.hasOwnProperty.call(FOTOS_EDIT_VECINO,id)){
+    patch.foto=FOTOS_EDIT_VECINO[id];
+  }
+  if(enLinea()){
+    try{await sbAdmin('vecinos','PATCH','id=eq.'+encodeURIComponent(id),patch);}
+    catch(e){toast('No se pudo guardar: '+(e&&e.message?e.message:'error de conexión'));return;}
+  }else{
+    const i=(S.vecinos||[]).findIndex(x=>String(x.id)===String(id));
+    if(i>-1){Object.assign(S.vecinos[i],patch);guardar();}
+  }
+  delete FOTOS_EDIT_VECINO[id];
+  toast('Cambios guardados');
+  await refrescar();
+}
+async function aprobarVecino(id){
+  const v=(CACHEV||[]).find(x=>String(x.id)===String(id));if(!v)return;
+  const nuevo=!v.aprobado;
+  if(enLinea()){try{await sbAdmin('vecinos','PATCH','id=eq.'+encodeURIComponent(id),{aprobado:nuevo});}catch(e){toast('No se pudo guardar: '+(e&&e.message?e.message:'error de conexión'));return;}}
+  else{const i=(S.vecinos||[]).findIndex(x=>String(x.id)===String(id));if(i>-1){S.vecinos[i].aprobado=nuevo;guardar();}}
+  await refrescar();toast(nuevo?'Vecino aprobado':'Aprobación quitada');
+}
+async function borrarVecino(id){
+  const v=(CACHEV||[]).find(x=>String(x.id)===String(id));
+  if(!confirm('¿Eliminar definitivamente la publicación de '+(v?v.nombre:'este vecino')+'? Esta acción no se puede deshacer.'))return;
+  if(enLinea()){try{await sbAdmin('vecinos','DELETE','id=eq.'+encodeURIComponent(id));}catch(e){toast('No se pudo eliminar: '+(e&&e.message?e.message:'error de conexión'));return;}}
+  else{S.vecinos=(S.vecinos||[]).filter(x=>String(x.id)!==String(id));guardar();}
+  await refrescar();toast('Vecino eliminado');
+}
+async function destacar(id){
+  const v=(CACHEV||[]).find(x=>String(x.id)===String(id));if(!v)return;
+  let hasta=null;
+  if(!destActivo(v)){const d=new Date();d.setDate(d.getDate()+30);hasta=d.toISOString();}
+  if(enLinea()){
+    try{await sbAdmin('vecinos','PATCH','id=eq.'+encodeURIComponent(id),{destacado_hasta:hasta});}
+    catch(e){toast('No se pudo guardar: '+(e&&e.message?e.message:'error de conexión'));return;}
+  }else{
+    const l=(S.vecinos||[]).find(x=>String(x.id)===String(id));if(l)l.destacado_hasta=hasta;guardar();
+  }
+  v.destacado_hasta=hasta;
+  pintarAdmVecinos();pintarLista();
+  toast(hasta?'Destacado por 30 días':'Se quitó el destaque');
+}
+async function destacarOficio(id){
+  const p=(CACHE||[]).find(x=>String(x.id)===String(id));if(!p)return;
+  const nAprob=(p.barriosAprobados||'').split(',').map(x=>x.trim()).filter(Boolean).length;
+  const yaEsPro=nAprob>3;
+  let nuevoValor,nuevoVence;
+  if(yaEsPro){
+    nuevoValor=p.barriosAprobados_previo||'';
+    nuevoVence=null;
+  }else{
+    p.barriosAprobados_previo=p.barriosAprobados||'';
+    nuevoValor=S.barrios.join(', ');
+    const d=new Date();d.setDate(d.getDate()+30);
+    nuevoVence=d.toISOString();
+  }
+  const patch={barriosAprobados:nuevoValor,proHasta:nuevoVence};
+  if(enLinea()){
+    try{await sbAdmin('prestadores','PATCH','id=eq.'+encodeURIComponent(id),patch);}
+    catch(e){toast('No se pudo guardar: '+(e&&e.message?e.message:'error de conexión'));return;}
+  }else{
+    const i=(S.prestadores||[]).findIndex(x=>String(x.id)===String(id));
+    if(i>-1){S.prestadores[i].barriosAprobados=nuevoValor;S.prestadores[i].proHasta=nuevoVence;guardar();}
+  }
+  p.barriosAprobados=nuevoValor;p.proHasta=nuevoVence;
+  toast(yaEsPro?'Se quitó el Plan Pro (volvió a '+(nuevoValor||'sin barrios')+')':'Plan Pro activado por 30 días. Se avisa cuando esté por vencer.');
+  await refrescar();
+}
+function pintarAdmReportes(){
+  const el=document.getElementById('admReportes');
+  if(!el)return;
+  const rv=(CACHEV||[]).filter(v=>v.reportado).map(v=>({tabla:'vecinos',id:v.id,titulo:v.nombre,sub:rubroLb(v.rubro)+' · '+(v.que||''),motivo:v.reporte_motivo}));
+  const rr=(CACHER||[]).filter(r=>r.reportado).map(r=>({tabla:'resenas',id:r.id,titulo:'Reseña a '+(r.prestador||'—'),sub:'★'.repeat(Number(r.estrellas||0))+' — '+(r.texto||'sin comentario'),motivo:r.reporte_motivo}));
+  const l=[...rv,...rr];
+  const badge=document.getElementById('badgeReportes');
+  if(badge){badge.style.display=l.length?'inline-block':'none';badge.textContent=l.length;}
+  if(!l.length){el.innerHTML='<div class="vacio">No hay reportes pendientes.</div>';return;}
+  el.innerHTML=l.map(x=>'<div class="adm-row" style="align-items:flex-start">'
+    +'<div style="min-width:0;flex:1"><div class="nm">'+esc(x.titulo)+'</div>'
+    +'<div class="mt">'+esc(x.sub)+'</div>'
+    +(x.motivo?'<div class="mt" style="color:var(--warn)">Motivo: '+esc(x.motivo)+'</div>':'')+'</div>'
+    +'<div style="display:flex;flex-direction:column;gap:6px">'
+    +'<button class="mini" onclick="descartarReporte(\''+x.tabla+'\',\''+x.id+'\')">Descartar</button>'
+    +'<button class="mini" style="color:#B3261E" onclick="borrarReportado(\''+x.tabla+'\',\''+x.id+'\')">Borrar</button>'
+    +'</div></div>').join('');
+}
+async function descartarReporte(tabla,id){
+  const patch={reportado:false};
+  if(enLinea()){try{await sbAdmin(tabla,'PATCH','id=eq.'+encodeURIComponent(id),patch);}catch(e){toast('No se pudo actualizar: '+(e&&e.message?e.message:'error de conexión'));return;}}
+  else{const arr=tabla==='vecinos'?S.vecinos:S.resenas;const it=(arr||[]).find(x=>String(x.id)===String(id));if(it)Object.assign(it,patch);guardar();}
+  await refrescar();pintarAdmReportes();
+  toast('Reporte descartado');
+}
+async function borrarReportado(tabla,id){
+  if(!confirm('¿Borrar definitivamente esta publicación?'))return;
+  if(enLinea()){try{await sbAdmin(tabla,'DELETE','id=eq.'+encodeURIComponent(id));}catch(e){toast('No se pudo borrar: '+(e&&e.message?e.message:'error de conexión'));return;}}
+  else{const arr=tabla==='vecinos'?S.vecinos:S.resenas;if(tabla==='vecinos')S.vecinos=(S.vecinos||[]).filter(x=>String(x.id)!==String(id));else S.resenas=(S.resenas||[]).filter(x=>String(x.id)!==String(id));guardar();}
+  await refrescar();pintarAdmReportes();
+  toast('Borrado');
+}
+/* ===================== consultas de acceso ===================== */
+function abrirConsultaAcceso(){
+  document.getElementById('cnsNombre').value='';
+  document.getElementById('cnsTel').value='';
+  document.getElementById('cnsMsg').value='';
+  abrir('shConsulta');
+}
+async function enviarConsultaAcceso(){
+  const nombre=document.getElementById('cnsNombre').value.trim();
+  const tel=document.getElementById('cnsTel').value.trim();
+  const msg=document.getElementById('cnsMsg').value.trim();
+  if(!nombre){toast('Contanos tu nombre');return;}
+  if(!tel){toast('Dejanos tu WhatsApp para poder responderte');return;}
+  if(!msg){toast('Contanos brevemente qué necesitás');return;}
+  const rec={nombre,telefono:tel,mensaje:msg,
+    barrio:document.getElementById('accBarrio').value||null,
+    dispositivo:obtenerDispositivoId(),creado_en:new Date().toISOString()};
+  try{
+    await sb('consultas_acceso',{method:'POST',body:rec});
+  }catch(e){toast('No se pudo enviar. Probá de nuevo, o escribinos directo por WhatsApp.');return;}
+  cerrar('shConsulta');
+  toast('¡Listo! Ya nos llegó tu mensaje, te contactamos pronto.');
+}
+async function pintarAdmConsultas(){
+  const el=document.getElementById('admConsultas');
+  if(!el)return;
+  let l=[];
+  try{l=await sbAdmin('consultas_acceso','GET','select=*&order=creado_en.desc&limit=100');}catch(e){l=[];}
+  const badge=document.getElementById('badgeConsultas');
+  if(badge){badge.style.display=l.length?'inline-block':'none';badge.textContent=l.length;}
+  if(!l.length){el.innerHTML='<div class="vacio">No hay consultas pendientes.</div>';return;}
+  el.innerHTML=l.map(x=>{
+    const f=new Date(x.creado_en).toLocaleString('es-AR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+    const telLimpio=(x.telefono||'').replace(/\D/g,'');
+    return '<div class="adm-row" style="align-items:flex-start">'
+      +'<div style="min-width:0;flex:1"><div class="nm">'+esc(x.nombre||'Sin nombre')+(x.barrio?' · '+esc(x.barrio):'')+'</div>'
+      +'<div class="mt">'+esc(x.mensaje)+'</div>'
+      +'<div class="mt" style="opacity:.7">'+f+(x.telefono?' · '+esc(x.telefono):'')+'</div></div>'
+      +'<div style="display:flex;flex-direction:column;gap:6px">'
+      +(telLimpio?'<button class="mini" onclick="window.open(\'https://wa.me/54'+telLimpio+'\',\'_blank\')">WhatsApp</button>':'')
+      +'<button class="mini" style="color:#B3261E" onclick="borrarConsulta(\''+x.id+'\')">Borrar</button>'
+      +'</div></div>';
+  }).join('');
+}
+async function borrarConsulta(id){
+  if(!confirm('¿Borrar esta consulta?'))return;
+  try{await sbAdmin('consultas_acceso','DELETE','id=eq.'+encodeURIComponent(id));}
+  catch(e){toast('No se pudo borrar: '+(e&&e.message?e.message:'error de conexión'));return;}
+  pintarAdmConsultas();
+  toast('Borrado');
+}
+
+async function pintarAdmPedidos(){
+  let l=[];try{l=(enLinea()?await sbAdmin('pedidos','GET','select=*&order=creado_en.desc&limit=200'):S.pedidos)||[];}catch(e){l=S.pedidos||[];}
+  const el=document.getElementById('admPedidosStats');
+  if(!el)return;
+  if(!l.length){el.innerHTML='<div class="vacio">Sin actividad todavía.</div>';return;}
+  const porRubro={}, porBarrio={};
+  l.forEach(p=>{
+    const r=rubroLb(p.rubro)||'—';
+    const b=(p.barrio==='__TODOS__')?'(sin barrio específico)':(p.barrio||'—');
+    porRubro[r]=(porRubro[r]||0)+1;
+    porBarrio[b]=(porBarrio[b]||0)+1;
+  });
+  const filas=(obj)=>Object.entries(obj).sort((a,b)=>b[1]-a[1])
+    .map(([k,n])=>'<div class="mt" style="display:flex;justify-content:space-between"><span>'+esc(k)+'</span><b>'+n+'</b></div>').join('');
+  el.innerHTML='<div class="cuenta" style="margin-bottom:16px"><div class="cu"><b>'+l.length+'</b><span>Total solicitudes</span></div></div>'
+    +'<p style="font-family:\'Space Mono\',monospace;font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted);margin:0 0 8px 2px">Por rubro</p>'
+    +filas(porRubro)
+    +'<p style="font-family:\'Space Mono\',monospace;font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted);margin:16px 0 8px 2px">Por barrio</p>'
+    +filas(porBarrio);
+}
+function guardarBarrios(){
+  const l=document.getElementById('txtBarrios').value.split('\n').map(x=>x.trim()).filter(Boolean);
+  if(!l.length){toast('Dejá al menos un barrio');return;}
+  S.barrios=l;
+  if(!l.includes(S.cfg.barrio)&&S.cfg.barrio!=='__TODOS__')S.cfg.barrio=l[0];
+  guardar();pintarBarrios();pintarLista();pintarCodigosBarrio();
+  guardarConfigRemota({barrios:l.join(',')});
+  toast(enLinea()?'Barrios guardados para todos':'Barrios guardados solo en este aparato (sin conexión)');
+}
+function pintarCodigosBarrio(){
+  const box=document.getElementById('codigosBarrioBox');
+  if(!box)return;
+  const cods=S.cfg.codigosBarrio||{};
+  box.innerHTML=S.barrios.map(b=>
+    '<div class="field" style="display:flex;align-items:center;gap:10px;margin-bottom:8px">'
+    +'<label style="flex:1;margin:0">'+esc(b)+'</label>'
+    +'<input id="cb_'+esc(b)+'" value="'+esc(cods[b]||'')+'" maxlength="4" inputmode="numeric" '
+    +'style="width:90px;text-align:center;font-family:\'Space Mono\',monospace;letter-spacing:3px" placeholder="••••">'
+    +'</div>'
+  ).join('');
+}
+function guardarCodigosBarrio(){
+  const nuevo={};
+  let faltan=[];
+  S.barrios.forEach(b=>{
+    const v=(document.getElementById('cb_'+b)||{}).value;
+    const val=(v||'').trim();
+    if(val)nuevo[b]=val; else faltan.push(b);
+  });
+  S.cfg.codigosBarrio=nuevo;
+  guardar();
+  guardarConfigRemota({codigos_barrio:JSON.stringify(nuevo)});
+  toast(faltan.length
+    ?'Guardado. Ojo: '+faltan.join(', ')+' quedó sin código (nadie va a poder entrar como vecino ahí).'
+    :(enLinea()?'Códigos guardados para todos':'Códigos guardados solo en este aparato (sin conexión)'));
+}
+function guardarLimiteLote(){
+  const v=Number(document.getElementById('inLimiteLote').value);
+  if(!v||v<1){toast('Poné un número válido, mayor a 0');return;}
+  S.cfg.limiteLote=v;
+  guardar();
+  guardarConfigRemota({limite_lote:v});
+  toast(enLinea()?'Límite guardado para todos':'Límite guardado solo en este aparato (sin conexión)');
+}
+function guardarLimiteLotesBarrio(){
+  const v=Number(document.getElementById('inLimiteLotesBarrio').value);
+  if(!v||v<1){toast('Poné un número válido, mayor a 0');return;}
+  S.cfg.limiteLotesPorBarrio=v;
+  guardar();
+  guardarConfigRemota({limite_lotes_barrio:v});
+  toast(enLinea()?'Máximo guardado para todos':'Máximo guardado solo en este aparato (sin conexión)');
+}
+
+/* ===================== base / identidad ===================== */
+function pintarBase(){
+  document.getElementById('sbUrl').value=CONN.url||'';
+  document.getElementById('sbKey').value=CONN.key||'';
+  const b=document.getElementById('bannerBase');
+  b.className='banner '+(enLinea()?'good':'warn');
+  b.innerHTML=enLinea()
+    ?'<b>Base conectada.</b> Los prestadores y los pedidos se comparten entre todos los celulares.'
+    :'<b>Sin base.</b> Todo queda guardado solo en este aparato. Para usarlo en serio, conectá la base.';
+  const s=document.getElementById('segModo').querySelectorAll('button');
+  s[0].classList.toggle('on',esDemo());s[1].classList.toggle('on',!esDemo());
+  document.getElementById('modoNota').innerHTML=esDemo()
+    ?'<b>Demostración:</b> vienen cargados barrios y prestadores de ejemplo para mostrar la app.'
+    :'<b>Real:</b> solo se ve lo que cargaste vos.';
+}
+function setModo(d){
+  S.cfg.demo=!!d;
+  if(!d){S.prestadores=S.prestadores.filter(p=>p.trabajos!=='demo');S.vecinos=(S.vecinos||[]).filter(v=>!v.demo);}
+  guardar();refrescar();pintarBase();
+  guardarConfigRemota({demo:!!d});
+  toast(d?'Modo demostración':'Modo real: se quitaron los prestadores de ejemplo');
+}
+function guardarConexion(){
+  const url=document.getElementById('sbUrl').value.trim().replace(/\/$/,'');
+  const key=document.getElementById('sbKey').value.trim();
+  if(!url||!key){toast('Completá la URL y la clave');return;}
+  CONN={url,key};try{localStorage.setItem(KC,JSON.stringify(CONN));}catch(e){}
+  pintarBase();probarConexion();
+}
+async function probarConexion(){
+  if(!enLinea()){toast('Todavía no cargaste la conexión');return;}
+  try{await sb('prestadores?select=id&limit=1');toast('Conexión lista');await refrescar();}
+  catch(e){toast('No conecta: revisá URL, clave y el SQL: '+(e&&e.message?e.message:'error de conexión'));}
+}
+function desconectar(){
+  try{localStorage.removeItem(KC);}catch(e){}
+  CONN=clonar(CONN_DEFAULT);
+  pintarBase();refrescar();toast('Restablecida la conexión por defecto');
+}
+function llenarConfig(){
+  document.getElementById('cfgName').value=S.cfg.name;
+  document.getElementById('cfgTag').value=S.cfg.tag;
+  document.getElementById('cfgTel').value=S.cfg.tel||'';
+}
+function guardarIdentidad(){
+  S.cfg.name=document.getElementById('cfgName').value.trim()||S.cfg.name;
+  S.cfg.tag=document.getElementById('cfgTag').value.trim()||S.cfg.tag;
+  S.cfg.tel=document.getElementById('cfgTel').value.trim();
+  guardar();aplicar();
+  guardarConfigRemota({nombre:S.cfg.name,tag:S.cfg.tag,tel:S.cfg.tel});
+  toast(enLinea()?'Identidad guardada para todos':'Identidad guardada solo en este aparato (sin conexión)');
+}
+function aplicar(){
+  document.getElementById('brandName').childNodes[0].nodeValue=S.cfg.name;
+  document.getElementById('brandTag').textContent=S.cfg.tag;
+  document.title=S.cfg.name;
+}
+
+/* ===================== asistente IA ===================== */
+let CHAT_HIST=[];
+let CHAT_ABIERTO=false;
+
+function abrirChat(){
+  document.getElementById('chatSub').textContent=S.cfg.name||'BarrioKey';
+  document.getElementById('chatWrap').classList.add('show');
+  CHAT_ABIERTO=true;
+  if(CHAT_HIST.length===0){
+    pintarMsgChat('bot','¡Hola! Soy el asistente de '+(S.cfg.name||'BarrioKey')+'. ¿En qué te puedo ayudar? Puedo explicarte cómo publicar un servicio, cómo contratar, cómo funcionan las reseñas o los precios por barrio.');
+  }
+  setTimeout(()=>document.getElementById('chatInput').focus(),200);
+}
+function cerrarChat(){
+  document.getElementById('chatWrap').classList.remove('show');
+  CHAT_ABIERTO=false;
+}
+function pintarMsgChat(rol,texto){
+  const box=document.getElementById('chatMsgs');
+  const d=document.createElement('div');
+  d.className='msg '+(rol==='user'?'user':rol==='think'?'think':'bot');
+  d.textContent=texto;
+  d.id = rol==='think' ? 'chatThinking' : '';
+  box.appendChild(d);
+  box.scrollTop=box.scrollHeight;
+  return d;
+}
+function contextoParaAsistente(){
+  // Contexto real armado con los datos ya sincronizados desde Supabase (CACHE/CACHEV),
+  // así el asistente nunca inventa disponibilidad. No hay cupos ni límites por rubro:
+  // el orden de aparición es por barrio activo primero, luego rating.
+  try{
+    const barrio=S.cfg.barrio||'(sin elegir)';
+    const oficiosBarrio=(CACHE||[]).filter(p=>entraEn(p,barrio));
+
+    const oficiosPorRubro=RUBROS.map(r=>{
+      const n=oficiosBarrio.filter(p=>p.rubro===r.id).length;
+      return `${r.lb}: ${n}`;
+    }).join(' | ');
+
+    const vecinosDestacadosBarrio=(CACHEV||[])
+      .filter(v=>v.aprobado && vendeEn(v,barrio) && destActivo(v)).length;
+    const vecinosBarrio=(CACHEV||[]).filter(v=>v.aprobado && vendeEn(v,barrio)).length;
+
+    return [
+      `Modelo de precios vigente: 3 barrios a elección gratis para siempre (Oficios y Vecinos). Para estar en los 10 barrios, existe el Plan Pro pago ($30.000/mes Oficios, $15.000/mes Vecinos), que dura 30 días y se renueva.`,
+      `Barrios actuales cargados en la app (esta lista puede crecer con el tiempo): ${(S.barrios||[]).join(', ')}.`,
+      `Barrio actualmente seleccionado por el usuario: ${barrioTxt()}.`,
+      `Oficios activos en este barrio, por rubro (sin límite de cupo): ${oficiosPorRubro}.`,
+      `Vecinos publicando en este barrio: ${vecinosBarrio} (de los cuales ${vecinosDestacadosBarrio} tienen Plan Pro/Destacado activo).`,
+      `Total de oficios verificados cargados en la app: ${(CACHE||[]).filter(p=>p.verificado).length} de ${(CACHE||[]).length}.`
+    ].join(' ');
+  }catch(e){ return ''; }
+}
+async function enviarChat(){
+  const input=document.getElementById('chatInput');
+  const texto=input.value.trim();
+  if(!texto) return;
+  input.value='';
+  pintarMsgChat('user',texto);
+  CHAT_HIST.push({role:'user',content:texto});
+  const pensando=pintarMsgChat('think','Escribiendo...');
+
+  try{
+    const resp=await fetch('/.netlify/functions/asistente',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        messages: CHAT_HIST.slice(-12),
+        contexto: contextoParaAsistente()
+      })
+    });
+    const data=await resp.json();
+    pensando.remove();
+    if(!resp.ok || data.error){
+      pintarMsgChat('bot','Perdón, no pude responder ahora. Probá de nuevo en un momento o contactá al soporte.');
+      return;
+    }
+    pintarMsgChat('bot', data.respuesta || 'No obtuve respuesta, intentá de nuevo.');
+    CHAT_HIST.push({role:'assistant',content:data.respuesta||''});
+  }catch(e){
+    pensando.remove();
+    pintarMsgChat('bot','Hubo un problema de conexión. Probá de nuevo en unos segundos.');
+  }
+}
+
+function pintarTextosLanzamiento(){
+  const banner=document.getElementById('freeBanner');
+  if(banner){
+    banner.innerHTML='🎉 Publicar es gratis, siempre. 3 barrios a elección, gratis para siempre. Para estar en todos los barrios, sumate al Plan Pro.';
+  }
+}
+/* ===================== arranque ===================== */
+['shDet','shPedir','shNuevo'].forEach(id=>{
+  document.getElementById(id).addEventListener('click',e=>{if(e.target.id===id)cerrar(id);});
+});
+aplicar();pintarBarrios();pintarFiltros();pintarRubros();pintarSugerencias();pintarTextosLanzamiento();
+arrancarSegunAcceso();
+refrescar();
+</script>
+</body>
+</html>

@@ -80,6 +80,46 @@ exports.handler = async (event) => {
       return { statusCode: 200, body: JSON.stringify({ ok: true }) };
     }
 
+    if (accion === 'editarPropio') {
+      // Edición de la propia publicación (solo Plan Pro activo, verificado server-side).
+      // Solo permite tocar: foto, foto2, link y descripción/qué ofrece. Nada más.
+      const { tipo, id, patch } = body;
+      if (!id || !patch || (tipo !== 'o' && tipo !== 'v')) {
+        return { statusCode: 400, body: JSON.stringify({ ok: false, error: 'Datos incompletos' }) };
+      }
+      const tabla = tipo === 'o' ? 'prestadores' : 'vecinos';
+
+      const permitidos = ['foto', 'foto2', 'link'];
+      permitidos.push(tipo === 'o' ? 'descripcion' : 'que');
+      const datos = {};
+      for (const k of permitidos) {
+        if (Object.prototype.hasOwnProperty.call(patch, k)) datos[k] = patch[k];
+      }
+      if (!Object.keys(datos).length) {
+        return { statusCode: 400, body: JSON.stringify({ ok: false, error: 'Nada para actualizar' }) };
+      }
+
+      // Verificar server-side que tiene Plan Pro activo antes de permitir la edición
+      const rGet = await fetch(base + tabla + '?select=*&id=eq.' + encodeURIComponent(id), { headers });
+      if (!rGet.ok) return { statusCode: 200, body: JSON.stringify({ ok: false, error: await rGet.text() }) };
+      const rows = await rGet.json();
+      const rec = rows && rows[0];
+      if (!rec) return { statusCode: 200, body: JSON.stringify({ ok: false, error: 'Publicación no encontrada' }) };
+
+      let esPro = false;
+      if (tipo === 'o') {
+        const n = String(rec.barriosAprobados || '').split(',').map(x => x.trim()).filter(Boolean).length;
+        esPro = n > 2;
+      } else {
+        esPro = !!(rec.destacado_hasta && new Date(rec.destacado_hasta) > new Date());
+      }
+      if (!esPro) return { statusCode: 200, body: JSON.stringify({ ok: false, error: 'La edición requiere Plan Pro activo' }) };
+
+      const rPatch = await fetch(base + tabla + '?id=eq.' + encodeURIComponent(id), { method: 'PATCH', headers, body: JSON.stringify(datos) });
+      if (!rPatch.ok) return { statusCode: 200, body: JSON.stringify({ ok: false, error: await rPatch.text() }) };
+      return { statusCode: 200, body: JSON.stringify({ ok: true }) };
+    }
+
     return { statusCode: 400, body: JSON.stringify({ ok: false, error: 'Acción desconocida' }) };
   } catch (e) {
     return { statusCode: 500, body: JSON.stringify({ ok: false, error: 'Error de conexión: ' + (e && e.message ? e.message : '') }) };

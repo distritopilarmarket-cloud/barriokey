@@ -125,11 +125,26 @@ exports.handler = async (event) => {
       const { barrio, dispositivo } = body;
       if (!barrio) return { statusCode: 400, body: JSON.stringify({ ok: false, error: 'Falta barrio' }) };
 
+      // Buscar el nombre del vecino que invita, para que quede trazado en el Panel.
+      let creadoPorNombre = null;
+      if (dispositivo) {
+        try {
+          const rLote = await fetch(base + 'lote_registros?select=lote&barrio=eq.' + encodeURIComponent(barrio) + '&dispositivo=eq.' + encodeURIComponent(dispositivo), { headers });
+          const filasLote = rLote.ok ? await rLote.json() : [];
+          const lote = filasLote && filasLote[0] && filasLote[0].lote;
+          if (lote) {
+            const rFam = await fetch(base + 'familias?select=nombre&barrio=eq.' + encodeURIComponent(barrio) + '&lote=eq.' + encodeURIComponent(lote), { headers });
+            const filasFam = rFam.ok ? await rFam.json() : [];
+            if (filasFam && filasFam[0]) creadoPorNombre = filasFam[0].nombre;
+          }
+        } catch (e) { /* si falla, seguimos sin nombre */ }
+      }
+
       const token = generarToken();
       const rPost = await fetch(base + 'invitaciones', {
         method: 'POST',
         headers: Object.assign({}, headers, { Prefer: 'return=representation' }),
-        body: JSON.stringify({ token, barrio, usado: false, creado_por_dispositivo: dispositivo || null, creado_en: new Date().toISOString() }),
+        body: JSON.stringify({ token, barrio, usado: false, creado_por_dispositivo: dispositivo || null, creado_por_nombre: creadoPorNombre, creado_en: new Date().toISOString() }),
       });
       if (!rPost.ok) return { statusCode: 200, body: JSON.stringify({ ok: false, error: await rPost.text() }) };
       return { statusCode: 200, body: JSON.stringify({ ok: true, token }) };

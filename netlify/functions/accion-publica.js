@@ -120,8 +120,119 @@ exports.handler = async (event) => {
       return { statusCode: 200, body: JSON.stringify({ ok: true }) };
     }
 
+    if (accion === 'crearInvitacion') {
+      // Un vecino ya registrado genera un link de invitación nuevo para su barrio.
+      const { barrio, dispositivo } = body;
+      if (!barrio) return { statusCode: 400, body: JSON.stringify({ ok: false, error: 'Falta barrio' }) };
+
+      const token = generarToken();
+      const rPost = await fetch(base + 'invitaciones', {
+        method: 'POST',
+        headers: Object.assign({}, headers, { Prefer: 'return=representation' }),
+        body: JSON.stringify({ token, barrio, usado: false, creado_por_dispositivo: dispositivo || null, creado_en: new Date().toISOString() }),
+      });
+      if (!rPost.ok) return { statusCode: 200, body: JSON.stringify({ ok: false, error: await rPost.text() }) };
+      return { statusCode: 200, body: JSON.stringify({ ok: true, token }) };
+    }
+
+    if (accion === 'registrarInvitado') {
+      // El titular se registra usando un link de invitación. Genera su código de familia (único).
+      const { token, nombre, apellido, lote, dispositivo } = body;
+      if (!token || !nombre || !lote || !dispositivo) {
+        return { statusCode: 400, body: JSON.stringify({ ok: false, error: 'Datos incompletos' }) };
+      }
+      const loteNorm = String(parseInt(String(lote).trim(), 10));
+      if (!loteNorm || loteNorm === 'NaN') {
+        return { statusCode: 400, body: JSON.stringify({ ok: false, error: 'Lote inválido' }) };
+      }
+
+      // 1) Validar que la invitación existe y no fue usada
+      const rInv = await fetch(base + 'invitaciones?select=*&token=eq.' + encodeURIComponent(token), { headers });
+      if (!rInv.ok) return { statusCode: 200, body: JSON.stringify({ ok: false, error: await rInv.text() }) };
+      const invFilas = await rInv.json();
+      const inv = invFilas && invFilas[0];
+      if (!inv) return { statusCode: 200, body: JSON.stringify({ ok: false, error: 'Invitación no encontrada' }) };
+      if (inv.usado) return { statusCode: 200, body: JSON.stringify({ ok: false, error: 'Esta invitación ya fue usada' }) };
+
+      const barrio = inv.barrio;
+
+      // 2) Generar código de familia único (6 dígitos)
+      let codigo = null;
+      for (let i = 0; i < 15; i++) {
+        const candidato = String(Math.floor(100000 + Math.random() * 900000));
+        const rChk = await fetch(base + 'familias?select=id&codigo_familia=eq.' + candidato, { headers });
+        const filas = rChk.ok ? await rChk.json() : [];
+        if (!filas || !filas.length) { codigo = candidato; break; }
+      }
+      if (!codigo) return { statusCode: 200, body: JSON.stringify({ ok: false, error: 'No se pudo generar el código, probá de nuevo' }) };
+
+      // 3) Crear el registro de familia
+      const nombreCompleto = String(nombre).trim() + (apellido ? ' ' + String(apellido).trim() : '');
+      const rFam = await fetch(base + 'familias', {
+        method: 'POST',
+        headers: Object.assign({}, headers, { Prefer: 'return=representation' }),
+        body: JSON.stringify({
+          barrio, lote: loteNorm, nombre: nombreCompleto,
+          codigo_familia: codigo, token_invitacion: token,
+          creado_en: new Date().toISOString(),
+        }),
+      });
+      if (!rFam.ok) return { statusCode: 200, body: JSON.stringify({ ok: false, error: await rFam.text() }) };
+
+      // 4) Marcar la invitación como usada
+      await fetch(base + 'invitaciones?token=eq.' + encodeURIComponent(token), {
+        method: 'PATCH', headers, body: JSON.stringify({ usado: true, usado_en: new Date().toISOString() }),
+      });
+
+      // 5) Registrar el dispositivo del titular (como cualquier miembro de la familia)
+      await fetch(base + 'lote_registros', {
+        method: 'POST', headers,
+        body: JSON.stringify({ barrio, lote: loteNorm, dispositivo, creado_en: new Date().toISOString() }),
+      });
+
+      return { statusCode: 200, body: JSON.stringify({ ok: true, barrio, lote: loteNorm, codigo }) };
+    }
+
+    if (accion === 'validarCodigoFamilia') {
+      // Un miembro de una familia ya creada ingresa el código de 6 dígitos.
+      const { codigo, dispositivo } = body;
+      if (!codigo || !dispositivo) return { statusCode: 400, body: JSON.stringify({ ok: false, error: 'Datos incompletos' }) };
+
+      const rFam = await fetch(base + 'familias?select=*&codigo_familia=eq.' + encodeURIComponent(String(codigo).trim()), { headers });
+      if (!rFam.ok) return { statusCode: 200, body: JSON.stringify({ ok: false, error: await rFam.text() }) };
+      const filas = await rFam.json();
+      const fam = filas && filas[0];
+      if (!fam) return { statusCode: 200, body: JSON.stringify({ ok: false, error: 'Código incorrecto' }) };
+
+      const { barrio, lote } = fam;
+
+      const rDisp = await fetch(base + 'lote_registros?select=dispositivo&barrio=eq.' + encodeURIComponent(barrio) + '&lote=eq.' + encodeURIComponent(lote), { headers });
+      const existentes = rDisp.ok ? await rDisp.json() : [];
+      const yaRegistrado = (existentes || []).some(x => x.dispositivo === dispositivo);
+
+      if (!yaRegistrado) {
+        const limite = 12;
+        if ((existentes || []).length >= limite) {
+          return { statusCode: 200, body: JSON.stringify({ ok: false, error: 'limite', barrio, lote }) };
+        }
+        await fetch(base + 'lote_registros', {
+          method: 'POST', headers,
+          body: JSON.stringify({ barrio, lote, dispositivo, creado_en: new Date().toISOString() }),
+        });
+      }
+
+      return { statusCode: 200, body: JSON.stringify({ ok: true, barrio, lote }) };
+    }
+
     return { statusCode: 400, body: JSON.stringify({ ok: false, error: 'Acción desconocida' }) };
   } catch (e) {
     return { statusCode: 500, body: JSON.stringify({ ok: false, error: 'Error de conexión: ' + (e && e.message ? e.message : '') }) };
   }
 };
+
+function generarToken() {
+  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  let t = '';
+  for (let i = 0; i < 12; i++) t += chars[Math.floor(Math.random() * chars.length)];
+  return t;
+}

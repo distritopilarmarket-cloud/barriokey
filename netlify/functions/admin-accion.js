@@ -6,7 +6,7 @@
 // Requiere las mismas variables de entorno que clave-admin.js:
 //   SUPABASE_URL, SUPABASE_SERVICE_KEY
 
-const TABLAS_PERMITIDAS = ['prestadores', 'vecinos', 'resenas', 'pedidos', 'config_app'];
+const TABLAS_PERMITIDAS = ['prestadores', 'vecinos', 'resenas', 'pedidos', 'config_app', 'invitaciones', 'familias'];
 const METODOS_PERMITIDOS = ['GET', 'PATCH', 'DELETE', 'POST'];
 
 exports.handler = async (event) => {

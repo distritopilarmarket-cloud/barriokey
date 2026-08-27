@@ -8,20 +8,29 @@
 //                           OJO: es distinta de la "anon public" que usa la app.
 //                           Nunca compartir ni pegar esta clave en index.html.
 
+const CORS_HEADERS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
+};
+
 exports.handler = async (event) => {
+  if (event.httpMethod === 'OPTIONS') {
+    return { statusCode: 200, headers: CORS_HEADERS, body: '' };
+  }
   if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: JSON.stringify({ error: 'Método no permitido' }) };
+    return { statusCode: 405, headers: CORS_HEADERS, body: JSON.stringify({ error: 'Método no permitido' }) };
   }
 
   const SUPABASE_URL = process.env.SUPABASE_URL;
   const SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
   if (!SUPABASE_URL || !SERVICE_KEY) {
-    return { statusCode: 500, body: JSON.stringify({ error: 'Falta configurar SUPABASE_URL / SUPABASE_SERVICE_KEY en Netlify' }) };
+    return { statusCode: 500, headers: CORS_HEADERS, body: JSON.stringify({ error: 'Falta configurar SUPABASE_URL / SUPABASE_SERVICE_KEY en Netlify' }) };
   }
 
   let body;
   try { body = JSON.parse(event.body || '{}'); }
-  catch (e) { return { statusCode: 400, body: JSON.stringify({ error: 'JSON inválido' }) }; }
+  catch (e) { return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ error: 'JSON inválido' }) }; }
 
   const { accion, clave, claveActual, claveNueva } = body;
 
@@ -37,33 +46,33 @@ exports.handler = async (event) => {
     const filas = await rGet.json();
     const claveGuardada = filas && filas[0] ? String(filas[0].clave) : null;
     if (!claveGuardada) {
-      return { statusCode: 500, body: JSON.stringify({ ok: false, error: 'No se encontró la clave configurada' }) };
+      return { statusCode: 500, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: 'No se encontró la clave configurada' }) };
     }
 
     if (accion === 'validar') {
       const ok = String(clave || '') === claveGuardada;
-      return { statusCode: 200, body: JSON.stringify({ ok }) };
+      return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok }) };
     }
 
     if (accion === 'cambiar') {
       if (String(claveActual || '') !== claveGuardada) {
-        return { statusCode: 200, body: JSON.stringify({ ok: false, error: 'La clave actual no coincide' }) };
+        return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: 'La clave actual no coincide' }) };
       }
       if (!claveNueva || String(claveNueva).length < 4) {
-        return { statusCode: 200, body: JSON.stringify({ ok: false, error: 'La clave nueva debe tener al menos 4 caracteres' }) };
+        return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: 'La clave nueva debe tener al menos 4 caracteres' }) };
       }
       const rPatch = await fetch(
         SUPABASE_URL.replace(/\/$/, '') + '/rest/v1/config_admin?clave=eq.' + encodeURIComponent(claveGuardada),
         { method: 'PATCH', headers, body: JSON.stringify({ clave: String(claveNueva) }) }
       );
       if (!rPatch.ok) {
-        return { statusCode: 200, body: JSON.stringify({ ok: false, error: 'No se pudo actualizar' }) };
+        return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: 'No se pudo actualizar' }) };
       }
-      return { statusCode: 200, body: JSON.stringify({ ok: true }) };
+      return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: true }) };
     }
 
-    return { statusCode: 400, body: JSON.stringify({ error: 'Acción desconocida' }) };
+    return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ error: 'Acción desconocida' }) };
   } catch (e) {
-    return { statusCode: 500, body: JSON.stringify({ error: 'Error de conexión: ' + (e && e.message ? e.message : '') }) };
+    return { statusCode: 500, headers: CORS_HEADERS, body: JSON.stringify({ error: 'Error de conexión: ' + (e && e.message ? e.message : '') }) };
   }
 };

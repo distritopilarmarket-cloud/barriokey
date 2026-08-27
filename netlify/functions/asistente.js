@@ -37,11 +37,21 @@ Si no sabés algo específico (precios exactos, disponibilidad en tiempo real), 
 
 Respondé siempre en español, salvo que el usuario escriba en otro idioma.`;
 
+const CORS_HEADERS = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
+};
+
 exports.handler = async function (event) {
+  if (event.httpMethod === "OPTIONS") {
+    return { statusCode: 200, headers: CORS_HEADERS, body: "" };
+  }
   // Solo permitir POST
   if (event.httpMethod !== "POST") {
     return {
       statusCode: 405,
+      headers: CORS_HEADERS,
       body: JSON.stringify({ error: "Método no permitido" }),
     };
   }
@@ -52,6 +62,7 @@ exports.handler = async function (event) {
     if (!messages || !Array.isArray(messages)) {
       return {
         statusCode: 400,
+        headers: CORS_HEADERS,
         body: JSON.stringify({ error: "Falta el array de messages" }),
       };
     }
@@ -82,6 +93,7 @@ exports.handler = async function (event) {
       console.error("Error de API Claude:", errText);
       return {
         statusCode: 502,
+        headers: CORS_HEADERS,
         body: JSON.stringify({ error: "Error al contactar al asistente" }),
       };
     }
@@ -94,13 +106,14 @@ exports.handler = async function (event) {
 
     return {
       statusCode: 200,
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...CORS_HEADERS },
       body: JSON.stringify({ respuesta: textoRespuesta }),
     };
   } catch (err) {
     console.error("Error interno:", err);
     return {
       statusCode: 500,
+      headers: CORS_HEADERS,
       body: JSON.stringify({ error: "Error interno del servidor" }),
     };
   }

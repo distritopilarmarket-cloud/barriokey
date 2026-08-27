@@ -9,20 +9,29 @@
 const TABLAS_PERMITIDAS = ['prestadores', 'vecinos', 'resenas', 'pedidos', 'config_app', 'invitaciones', 'familias'];
 const METODOS_PERMITIDOS = ['GET', 'PATCH', 'DELETE', 'POST'];
 
+const CORS_HEADERS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
+};
+
 exports.handler = async (event) => {
+  if (event.httpMethod === 'OPTIONS') {
+    return { statusCode: 200, headers: CORS_HEADERS, body: '' };
+  }
   if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: JSON.stringify({ error: 'Método no permitido' }) };
+    return { statusCode: 405, headers: CORS_HEADERS, body: JSON.stringify({ error: 'Método no permitido' }) };
   }
 
   const SUPABASE_URL = process.env.SUPABASE_URL;
   const SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
   if (!SUPABASE_URL || !SERVICE_KEY) {
-    return { statusCode: 500, body: JSON.stringify({ error: 'Falta configurar SUPABASE_URL / SUPABASE_SERVICE_KEY en Netlify' }) };
+    return { statusCode: 500, headers: CORS_HEADERS, body: JSON.stringify({ error: 'Falta configurar SUPABASE_URL / SUPABASE_SERVICE_KEY en Netlify' }) };
   }
 
   let body;
   try { body = JSON.parse(event.body || '{}'); }
-  catch (e) { return { statusCode: 400, body: JSON.stringify({ error: 'JSON inválido' }) }; }
+  catch (e) { return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ error: 'JSON inválido' }) }; }
 
   const { clave, tabla, metodo, filtro, datos } = body;
 
@@ -38,15 +47,15 @@ exports.handler = async (event) => {
     const filas = await rGet.json();
     const claveGuardada = filas && filas[0] ? String(filas[0].clave) : null;
     if (!claveGuardada || String(clave || '') !== claveGuardada) {
-      return { statusCode: 401, body: JSON.stringify({ ok: false, error: 'Clave incorrecta' }) };
+      return { statusCode: 401, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: 'Clave incorrecta' }) };
     }
 
     // 2) Validar tabla y método contra la lista blanca
     if (!TABLAS_PERMITIDAS.includes(tabla)) {
-      return { statusCode: 400, body: JSON.stringify({ ok: false, error: 'Tabla no permitida' }) };
+      return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: 'Tabla no permitida' }) };
     }
     if (!METODOS_PERMITIDOS.includes(metodo)) {
-      return { statusCode: 400, body: JSON.stringify({ ok: false, error: 'Método no permitido' }) };
+      return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: 'Método no permitido' }) };
     }
 
     // 3) Ejecutar la acción real contra Supabase con la clave service_role
@@ -62,12 +71,12 @@ exports.handler = async (event) => {
     });
     if (!r.ok) {
       const txt = await r.text();
-      return { statusCode: 200, body: JSON.stringify({ ok: false, error: txt || ('HTTP ' + r.status) }) };
+      return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: txt || ('HTTP ' + r.status) }) };
     }
     const texto = await r.text();
     const resultado = texto ? JSON.parse(texto) : null;
-    return { statusCode: 200, body: JSON.stringify({ ok: true, data: resultado }) };
+    return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: true, data: resultado }) };
   } catch (e) {
-    return { statusCode: 500, body: JSON.stringify({ ok: false, error: 'Error de conexión: ' + (e && e.message ? e.message : '') }) };
+    return { statusCode: 500, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: 'Error de conexión: ' + (e && e.message ? e.message : '') }) };
   }
 };

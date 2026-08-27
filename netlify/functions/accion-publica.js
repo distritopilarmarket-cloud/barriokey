@@ -5,20 +5,30 @@
 // Requiere las mismas variables de entorno que clave-admin.js:
 //   SUPABASE_URL, SUPABASE_SERVICE_KEY
 
+const CORS_HEADERS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
+};
+
 exports.handler = async (event) => {
+  // Preflight: el navegador/app pregunta permiso antes del POST real.
+  if (event.httpMethod === 'OPTIONS') {
+    return { statusCode: 200, headers: CORS_HEADERS, body: '' };
+  }
   if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: JSON.stringify({ error: 'Método no permitido' }) };
+    return { statusCode: 405, headers: CORS_HEADERS, body: JSON.stringify({ error: 'Método no permitido' }) };
   }
 
   const SUPABASE_URL = process.env.SUPABASE_URL;
   const SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
   if (!SUPABASE_URL || !SERVICE_KEY) {
-    return { statusCode: 500, body: JSON.stringify({ error: 'Falta configurar SUPABASE_URL / SUPABASE_SERVICE_KEY en Netlify' }) };
+    return { statusCode: 500, headers: CORS_HEADERS, body: JSON.stringify({ error: 'Falta configurar SUPABASE_URL / SUPABASE_SERVICE_KEY en Netlify' }) };
   }
 
   let body;
   try { body = JSON.parse(event.body || '{}'); }
-  catch (e) { return { statusCode: 400, body: JSON.stringify({ error: 'JSON inválido' }) }; }
+  catch (e) { return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ error: 'JSON inválido' }) }; }
 
   const { accion } = body;
   const base = SUPABASE_URL.replace(/\/$/, '') + '/rest/v1/';
@@ -32,52 +42,52 @@ exports.handler = async (event) => {
     if (accion === 'reportar') {
       const { tabla, id, motivo } = body;
       if (!['vecinos', 'resenas'].includes(tabla) || !id) {
-        return { statusCode: 400, body: JSON.stringify({ ok: false, error: 'Datos inválidos' }) };
+        return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: 'Datos inválidos' }) };
       }
       const patch = { reportado: true, reporte_motivo: String(motivo || '').slice(0, 300), reportado_en: new Date().toISOString() };
       const r = await fetch(base + tabla + '?id=eq.' + encodeURIComponent(id), { method: 'PATCH', headers, body: JSON.stringify(patch) });
-      if (!r.ok) return { statusCode: 200, body: JSON.stringify({ ok: false, error: await r.text() }) };
-      return { statusCode: 200, body: JSON.stringify({ ok: true }) };
+      if (!r.ok) return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: await r.text() }) };
+      return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: true }) };
     }
 
     if (accion === 'marcarCalificado') {
       const { id } = body;
-      if (!id) return { statusCode: 400, body: JSON.stringify({ ok: false, error: 'Falta id' }) };
+      if (!id) return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: 'Falta id' }) };
       const r = await fetch(base + 'pedidos?id=eq.' + encodeURIComponent(id), { method: 'PATCH', headers, body: JSON.stringify({ calificado: true }) });
-      if (!r.ok) return { statusCode: 200, body: JSON.stringify({ ok: false, error: await r.text() }) };
-      return { statusCode: 200, body: JSON.stringify({ ok: true }) };
+      if (!r.ok) return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: await r.text() }) };
+      return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: true }) };
     }
 
     if (accion === 'crearPedido') {
       const { datos } = body;
-      if (!datos) return { statusCode: 400, body: JSON.stringify({ ok: false, error: 'Faltan datos' }) };
+      if (!datos) return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: 'Faltan datos' }) };
       const r = await fetch(base + 'pedidos', { method: 'POST', headers: Object.assign({}, headers, { Prefer: 'return=representation' }), body: JSON.stringify(datos) });
-      if (!r.ok) return { statusCode: 200, body: JSON.stringify({ ok: false, error: await r.text() }) };
+      if (!r.ok) return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: await r.text() }) };
       const data = await r.json();
-      return { statusCode: 200, body: JSON.stringify({ ok: true, data }) };
+      return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: true, data }) };
     }
 
     if (accion === 'misPedidos') {
       const { dispositivo } = body;
-      if (!dispositivo) return { statusCode: 400, body: JSON.stringify({ ok: false, error: 'Falta dispositivo' }) };
+      if (!dispositivo) return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: 'Falta dispositivo' }) };
       const r = await fetch(base + 'pedidos?dispositivo=eq.' + encodeURIComponent(dispositivo) + '&select=*&order=creado_en.desc&limit=100', { headers });
-      if (!r.ok) return { statusCode: 200, body: JSON.stringify({ ok: false, error: await r.text() }) };
+      if (!r.ok) return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: await r.text() }) };
       const data = await r.json();
-      return { statusCode: 200, body: JSON.stringify({ ok: true, data }) };
+      return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: true, data }) };
     }
 
     if (accion === 'vencerPro') {
       const { tabla, id, campoVence, campoBarrios, valorPrevio } = body;
       if (!['prestadores', 'vecinos'].includes(tabla) || !id) {
-        return { statusCode: 400, body: JSON.stringify({ ok: false, error: 'Datos inválidos' }) };
+        return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: 'Datos inválidos' }) };
       }
       // Solo revierte (nunca otorga) — riesgo mínimo de abuso.
       const patch = {};
       patch[campoBarrios] = valorPrevio || '';
       patch[campoVence] = null;
       const r = await fetch(base + tabla + '?id=eq.' + encodeURIComponent(id), { method: 'PATCH', headers, body: JSON.stringify(patch) });
-      if (!r.ok) return { statusCode: 200, body: JSON.stringify({ ok: false, error: await r.text() }) };
-      return { statusCode: 200, body: JSON.stringify({ ok: true }) };
+      if (!r.ok) return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: await r.text() }) };
+      return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: true }) };
     }
 
     if (accion === 'editarPropio') {
@@ -85,7 +95,7 @@ exports.handler = async (event) => {
       // Solo permite tocar: foto, foto2, link y descripción/qué ofrece. Nada más.
       const { tipo, id, patch } = body;
       if (!id || !patch || (tipo !== 'o' && tipo !== 'v')) {
-        return { statusCode: 400, body: JSON.stringify({ ok: false, error: 'Datos incompletos' }) };
+        return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: 'Datos incompletos' }) };
       }
       const tabla = tipo === 'o' ? 'prestadores' : 'vecinos';
 
@@ -96,15 +106,15 @@ exports.handler = async (event) => {
         if (Object.prototype.hasOwnProperty.call(patch, k)) datos[k] = patch[k];
       }
       if (!Object.keys(datos).length) {
-        return { statusCode: 400, body: JSON.stringify({ ok: false, error: 'Nada para actualizar' }) };
+        return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: 'Nada para actualizar' }) };
       }
 
       // Verificar server-side que tiene Plan Pro activo antes de permitir la edición
       const rGet = await fetch(base + tabla + '?select=*&id=eq.' + encodeURIComponent(id), { headers });
-      if (!rGet.ok) return { statusCode: 200, body: JSON.stringify({ ok: false, error: await rGet.text() }) };
+      if (!rGet.ok) return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: await rGet.text() }) };
       const rows = await rGet.json();
       const rec = rows && rows[0];
-      if (!rec) return { statusCode: 200, body: JSON.stringify({ ok: false, error: 'Publicación no encontrada' }) };
+      if (!rec) return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: 'Publicación no encontrada' }) };
 
       let esPro = false;
       if (tipo === 'o') {
@@ -113,17 +123,17 @@ exports.handler = async (event) => {
       } else {
         esPro = !!(rec.destacado_hasta && new Date(rec.destacado_hasta) > new Date());
       }
-      if (!esPro) return { statusCode: 200, body: JSON.stringify({ ok: false, error: 'La edición requiere Plan Pro activo' }) };
+      if (!esPro) return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: 'La edición requiere Plan Pro activo' }) };
 
       const rPatch = await fetch(base + tabla + '?id=eq.' + encodeURIComponent(id), { method: 'PATCH', headers, body: JSON.stringify(datos) });
-      if (!rPatch.ok) return { statusCode: 200, body: JSON.stringify({ ok: false, error: await rPatch.text() }) };
-      return { statusCode: 200, body: JSON.stringify({ ok: true }) };
+      if (!rPatch.ok) return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: await rPatch.text() }) };
+      return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: true }) };
     }
 
     if (accion === 'crearInvitacion') {
       // Un vecino ya registrado genera un link de invitación nuevo para su barrio.
       const { barrio, dispositivo } = body;
-      if (!barrio) return { statusCode: 400, body: JSON.stringify({ ok: false, error: 'Falta barrio' }) };
+      if (!barrio) return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: 'Falta barrio' }) };
 
       // Buscar el nombre del vecino que invita, para que quede trazado en el Panel.
       let creadoPorNombre = null;
@@ -146,28 +156,28 @@ exports.handler = async (event) => {
         headers: Object.assign({}, headers, { Prefer: 'return=representation' }),
         body: JSON.stringify({ token, barrio, usado: false, creado_por_dispositivo: dispositivo || null, creado_por_nombre: creadoPorNombre, creado_en: new Date().toISOString() }),
       });
-      if (!rPost.ok) return { statusCode: 200, body: JSON.stringify({ ok: false, error: await rPost.text() }) };
-      return { statusCode: 200, body: JSON.stringify({ ok: true, token }) };
+      if (!rPost.ok) return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: await rPost.text() }) };
+      return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: true, token }) };
     }
 
     if (accion === 'registrarInvitado') {
       // El titular se registra usando un link de invitación. Genera su código de familia (único).
       const { token, nombre, apellido, lote, dispositivo } = body;
       if (!token || !nombre || !lote || !dispositivo) {
-        return { statusCode: 400, body: JSON.stringify({ ok: false, error: 'Datos incompletos' }) };
+        return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: 'Datos incompletos' }) };
       }
       const loteNorm = String(parseInt(String(lote).trim(), 10));
       if (!loteNorm || loteNorm === 'NaN') {
-        return { statusCode: 400, body: JSON.stringify({ ok: false, error: 'Lote inválido' }) };
+        return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: 'Lote inválido' }) };
       }
 
       // 1) Validar que la invitación existe y no fue usada (salvo que sea multiuso)
       const rInv = await fetch(base + 'invitaciones?select=*&token=eq.' + encodeURIComponent(token), { headers });
-      if (!rInv.ok) return { statusCode: 200, body: JSON.stringify({ ok: false, error: await rInv.text() }) };
+      if (!rInv.ok) return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: await rInv.text() }) };
       const invFilas = await rInv.json();
       const inv = invFilas && invFilas[0];
-      if (!inv) return { statusCode: 200, body: JSON.stringify({ ok: false, error: 'Invitación no encontrada' }) };
-      if (inv.usado && !inv.multiuso) return { statusCode: 200, body: JSON.stringify({ ok: false, error: 'Esta invitación ya fue usada' }) };
+      if (!inv) return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: 'Invitación no encontrada' }) };
+      if (inv.usado && !inv.multiuso) return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: 'Esta invitación ya fue usada' }) };
 
       const barrio = inv.barrio;
 
@@ -179,7 +189,7 @@ exports.handler = async (event) => {
         const filas = rChk.ok ? await rChk.json() : [];
         if (!filas || !filas.length) { codigo = candidato; break; }
       }
-      if (!codigo) return { statusCode: 200, body: JSON.stringify({ ok: false, error: 'No se pudo generar el código, probá de nuevo' }) };
+      if (!codigo) return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: 'No se pudo generar el código, probá de nuevo' }) };
 
       // 3) Crear el registro de familia
       const nombreCompleto = String(nombre).trim() + (apellido ? ' ' + String(apellido).trim() : '');
@@ -192,7 +202,7 @@ exports.handler = async (event) => {
           creado_en: new Date().toISOString(),
         }),
       });
-      if (!rFam.ok) return { statusCode: 200, body: JSON.stringify({ ok: false, error: await rFam.text() }) };
+      if (!rFam.ok) return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: await rFam.text() }) };
 
       // 4) Marcar la invitación como usada (solo si NO es multiuso — el multiuso nunca se gasta)
       if (!inv.multiuso) {
@@ -207,19 +217,19 @@ exports.handler = async (event) => {
         body: JSON.stringify({ barrio, lote: loteNorm, dispositivo, creado_en: new Date().toISOString() }),
       });
 
-      return { statusCode: 200, body: JSON.stringify({ ok: true, barrio, lote: loteNorm, codigo }) };
+      return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: true, barrio, lote: loteNorm, codigo }) };
     }
 
     if (accion === 'validarCodigoFamilia') {
       // Un miembro de una familia ya creada ingresa el código de 6 dígitos.
       const { codigo, dispositivo } = body;
-      if (!codigo || !dispositivo) return { statusCode: 400, body: JSON.stringify({ ok: false, error: 'Datos incompletos' }) };
+      if (!codigo || !dispositivo) return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: 'Datos incompletos' }) };
 
       const rFam = await fetch(base + 'familias?select=*&codigo_familia=eq.' + encodeURIComponent(String(codigo).trim()), { headers });
-      if (!rFam.ok) return { statusCode: 200, body: JSON.stringify({ ok: false, error: await rFam.text() }) };
+      if (!rFam.ok) return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: await rFam.text() }) };
       const filas = await rFam.json();
       const fam = filas && filas[0];
-      if (!fam) return { statusCode: 200, body: JSON.stringify({ ok: false, error: 'Código incorrecto' }) };
+      if (!fam) return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: 'Código incorrecto' }) };
 
       const { barrio, lote } = fam;
 
@@ -230,7 +240,7 @@ exports.handler = async (event) => {
       if (!yaRegistrado) {
         const limite = 12;
         if ((existentes || []).length >= limite) {
-          return { statusCode: 200, body: JSON.stringify({ ok: false, error: 'limite', barrio, lote }) };
+          return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: 'limite', barrio, lote }) };
         }
         await fetch(base + 'lote_registros', {
           method: 'POST', headers,
@@ -238,12 +248,12 @@ exports.handler = async (event) => {
         });
       }
 
-      return { statusCode: 200, body: JSON.stringify({ ok: true, barrio, lote }) };
+      return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: true, barrio, lote }) };
     }
 
-    return { statusCode: 400, body: JSON.stringify({ ok: false, error: 'Acción desconocida' }) };
+    return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: 'Acción desconocida' }) };
   } catch (e) {
-    return { statusCode: 500, body: JSON.stringify({ ok: false, error: 'Error de conexión: ' + (e && e.message ? e.message : '') }) };
+    return { statusCode: 500, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: 'Error de conexión: ' + (e && e.message ? e.message : '') }) };
   }
 };
 

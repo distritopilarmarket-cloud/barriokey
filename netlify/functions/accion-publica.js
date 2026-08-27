@@ -161,13 +161,13 @@ exports.handler = async (event) => {
         return { statusCode: 400, body: JSON.stringify({ ok: false, error: 'Lote inválido' }) };
       }
 
-      // 1) Validar que la invitación existe y no fue usada
+      // 1) Validar que la invitación existe y no fue usada (salvo que sea multiuso)
       const rInv = await fetch(base + 'invitaciones?select=*&token=eq.' + encodeURIComponent(token), { headers });
       if (!rInv.ok) return { statusCode: 200, body: JSON.stringify({ ok: false, error: await rInv.text() }) };
       const invFilas = await rInv.json();
       const inv = invFilas && invFilas[0];
       if (!inv) return { statusCode: 200, body: JSON.stringify({ ok: false, error: 'Invitación no encontrada' }) };
-      if (inv.usado) return { statusCode: 200, body: JSON.stringify({ ok: false, error: 'Esta invitación ya fue usada' }) };
+      if (inv.usado && !inv.multiuso) return { statusCode: 200, body: JSON.stringify({ ok: false, error: 'Esta invitación ya fue usada' }) };
 
       const barrio = inv.barrio;
 
@@ -194,10 +194,12 @@ exports.handler = async (event) => {
       });
       if (!rFam.ok) return { statusCode: 200, body: JSON.stringify({ ok: false, error: await rFam.text() }) };
 
-      // 4) Marcar la invitación como usada
-      await fetch(base + 'invitaciones?token=eq.' + encodeURIComponent(token), {
-        method: 'PATCH', headers, body: JSON.stringify({ usado: true, usado_en: new Date().toISOString() }),
-      });
+      // 4) Marcar la invitación como usada (solo si NO es multiuso — el multiuso nunca se gasta)
+      if (!inv.multiuso) {
+        await fetch(base + 'invitaciones?token=eq.' + encodeURIComponent(token), {
+          method: 'PATCH', headers, body: JSON.stringify({ usado: true, usado_en: new Date().toISOString() }),
+        });
+      }
 
       // 5) Registrar el dispositivo del titular (como cualquier miembro de la familia)
       await fetch(base + 'lote_registros', {

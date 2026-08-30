@@ -251,6 +251,29 @@ exports.handler = async (event) => {
       return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: true, barrio, lote }) };
     }
 
+    if (accion === 'chequearRecuperacion') {
+      // Un dispositivo pregunta si el administrador ya aprobó su pedido de recuperar
+      // la edición de una publicación Pro. Si hay alguno aprobado, lo devuelve y lo
+      // marca como "aplicado" para no volver a entregarlo de nuevo.
+      const { dispositivo } = body;
+      if (!dispositivo) return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: 'Falta dispositivo' }) };
+
+      const rGet = await fetch(
+        base + 'consultas_acceso?select=*&dispositivo=eq.' + encodeURIComponent(dispositivo) + '&motivo=eq.recuperacion&estado=eq.aprobada',
+        { headers }
+      );
+      if (!rGet.ok) return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: await rGet.text() }) };
+      const filas = await rGet.json();
+
+      for (const f of (filas || [])) {
+        await fetch(base + 'consultas_acceso?id=eq.' + encodeURIComponent(f.id), {
+          method: 'PATCH', headers, body: JSON.stringify({ estado: 'aplicada' }),
+        });
+      }
+
+      return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: true, data: filas }) };
+    }
+
     return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: 'Acción desconocida' }) };
   } catch (e) {
     return { statusCode: 500, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: 'Error de conexión: ' + (e && e.message ? e.message : '') }) };

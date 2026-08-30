@@ -99,7 +99,7 @@ exports.handler = async (event) => {
       }
       const tabla = tipo === 'o' ? 'prestadores' : 'vecinos';
 
-      const permitidos = ['foto', 'foto2', 'link', 'foto_sin_revisar'];
+      const permitidos = ['foto', 'foto2', 'link', 'foto_sin_revisar', 'novedad_texto', 'novedad_fecha'];
       permitidos.push(tipo === 'o' ? 'descripcion' : 'que');
       const datos = {};
       for (const k of permitidos) {

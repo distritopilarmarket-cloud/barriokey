@@ -523,7 +523,8 @@
       <div id="offlineBanner"></div>
       <p style="text-align:right;font-size:11.5px;color:var(--moss);font-weight:600;margin:-6px 0 8px;cursor:pointer" onclick="abrirPlanes()">💳 ¿Sos Oficio o Vecino? Consultá tu Plan Pro</p>
       <p id="lnkInvitarVecino" style="display:none;text-align:right;font-size:11.5px;color:var(--moss);font-weight:600;margin:6px 0 4px;cursor:pointer" onclick="invitarVecino()">➕ Invitar a un vecino</p>
-      <p id="miCodigoFamilia" style="display:none;text-align:right;font-size:11.5px;color:var(--muted);margin:0 0 14px;cursor:pointer" onclick="toggleMiCodigo()">🔑 Tu código de casa: <span style="font-family:'Space Mono',monospace;font-weight:700;letter-spacing:1.5px">•••••• (tocá para ver)</span></p>
+      <p id="miCodigoFamilia" style="display:none;text-align:right;font-size:11.5px;color:var(--muted);margin:0 0 6px;cursor:pointer" onclick="toggleMiCodigo()">🔑 Tu código de casa: <span style="font-family:'Space Mono',monospace;font-weight:700;letter-spacing:1.5px">•••••• (tocá para ver)</span></p>
+      <p id="compartirCodigoFamilia" style="display:none;text-align:right;font-size:11.5px;margin:0 0 14px"><span onclick="compartirCodigoFamilia()" style="text-decoration:underline;color:var(--barrera2);font-weight:600;cursor:pointer">💬 Compartir con mi familia por WhatsApp</span></p>
       <div class="mundo-cards center" id="segMundo">
         <button id="mgOficios" class="on" onclick="setMundo('oficios')">
           <span class="mc-ic">🔧</span><span class="mc-tit">Oficios</span><span class="mc-sub">Encontrá profesionales</span>
@@ -1743,6 +1744,16 @@ function toggleMiCodigo(){
   if(!el||!acc||!acc.codigo)return;
   MI_CODIGO_VISIBLE=!MI_CODIGO_VISIBLE;
   el.querySelector('span').textContent=MI_CODIGO_VISIBLE?acc.codigo:'•••••• (tocá para ver)';
+  const btn=document.getElementById('compartirCodigoFamilia');
+  if(btn)btn.style.display=MI_CODIGO_VISIBLE?'block':'none';
+}
+function compartirCodigoFamilia(){
+  const acc=cargarAcceso();
+  if(!acc||!acc.codigo){toast('No encontramos tu código');return;}
+  const msg='👋 Este es el código de acceso de nuestra casa a BarrioKey: *'+acc.codigo+'*\n\n'
+    +'Es SOLO para gente de nuestra familia (hasta 12 dispositivos). No hace falta que nadie te invite de nuevo — cuando entres a la app y te pida un código, poné este mismo.\n\n'
+    +'👉 https://mibarriojob.netlify.app';
+  window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
 }
 function cambiarRolAcceso(){
   if(!confirm('¿Volver a elegir cómo usar BarrioKey? Si sos Vecino vas a tener que ingresar el código de tu casa de nuevo.'))return;

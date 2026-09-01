@@ -101,9 +101,10 @@ exports.handler = async (event) => {
       }
       const tabla = tipo === 'o' ? 'prestadores' : 'vecinos';
 
-      const esPedidoUpgrade = Object.prototype.hasOwnProperty.call(patch, 'pro_pendiente') && patch.pro_pendiente === true;
+      const esCambioProPendiente = Object.prototype.hasOwnProperty.call(patch, 'pro_pendiente');
+      const esPedidoUpgrade = esCambioProPendiente;
       const permitidos = esPedidoUpgrade
-        ? ['foto2', 'link', 'pro_pendiente', 'foto_sin_revisar']
+        ? (patch.pro_pendiente === true ? ['foto2', 'link', 'pro_pendiente', 'foto_sin_revisar'] : ['pro_pendiente'])
         : ['foto', 'foto2', 'link', 'foto_sin_revisar', 'novedad_texto', 'novedad_fecha'];
       if (!esPedidoUpgrade) permitidos.push(tipo === 'o' ? 'descripcion' : 'que');
       const datos = {};

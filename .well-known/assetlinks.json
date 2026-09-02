@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.barriokey.app",
+      "sha256_cert_fingerprints": [
+        "3A:34:D3:4C:60:FF:F7:8E:21:CD:76:DE:D4:EC:0A:C1:66:12:B6:70:3B:EF:89:00:C3:B8:A5:9E:A5:0B:74:E3"
+      ]
+    }
+  }
+]

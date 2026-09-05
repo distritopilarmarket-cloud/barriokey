@@ -91,10 +91,14 @@ exports.handler = async (event) => {
     }
 
     if (accion === 'editarPropio') {
-      // Edición de la propia publicación. Dos casos:
-      //  1) Ya es Pro: puede tocar foto, foto2, link, descripción/qué ofrece, novedad.
-      //  2) Todavía NO es Pro pero pide pasar a Plan Pro (patch.pro_pendiente === true):
-      //     solo puede tocar foto2, link y el propio flag pro_pendiente. Nada más.
+      // Edición de la propia publicación.
+      //  1) Pedido de pasar/renovar Plan Pro (patch.pro_pendiente): sin cambios, va directo
+      //     (lo revisa el admin manualmente al confirmar el pago).
+      //  2) Edición normal ya con la publicación aprobada:
+      //     - Textos (descripción/qué ofrecés, novedad) SOLO si ya es Pro: se publican directo.
+      //     - Foto: gratis y Pro pueden tocarla. Foto2 y link: solo Pro.
+      //       En los tres casos queda en <campo>_pendiente hasta que el admin lo apruebe
+      //       desde el Panel — mientras tanto se sigue mostrando lo anterior.
       const { tipo, id, patch } = body;
       if (!id || !patch || (tipo !== 'o' && tipo !== 'v')) {
         return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: 'Datos incompletos' }) };
@@ -102,40 +106,62 @@ exports.handler = async (event) => {
       const tabla = tipo === 'o' ? 'prestadores' : 'vecinos';
 
       const esCambioProPendiente = Object.prototype.hasOwnProperty.call(patch, 'pro_pendiente');
-      const esPedidoUpgrade = esCambioProPendiente;
-      const permitidos = esPedidoUpgrade
-        ? (patch.pro_pendiente === true ? ['foto2', 'link', 'pro_pendiente', 'foto_sin_revisar'] : ['pro_pendiente'])
-        : ['foto', 'foto2', 'link', 'foto_sin_revisar', 'novedad_texto', 'novedad_fecha'];
-      if (!esPedidoUpgrade) permitidos.push(tipo === 'o' ? 'descripcion' : 'que');
-      const datos = {};
-      for (const k of permitidos) {
-        if (Object.prototype.hasOwnProperty.call(patch, k)) datos[k] = patch[k];
+      if (esCambioProPendiente) {
+        const permitidos = patch.pro_pendiente === true ? ['foto2', 'link', 'pro_pendiente'] : ['pro_pendiente'];
+        const datos = {};
+        for (const k of permitidos) if (Object.prototype.hasOwnProperty.call(patch, k)) datos[k] = patch[k];
+        if (!Object.keys(datos).length) {
+          return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: 'Nada para actualizar' }) };
+        }
+        const rPatch = await fetch(base + tabla + '?id=eq.' + encodeURIComponent(id), { method: 'PATCH', headers, body: JSON.stringify(datos) });
+        if (!rPatch.ok) return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: await rPatch.text() }) };
+        return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: true }) };
       }
-      if (!Object.keys(datos).length) {
+
+      // Buscamos el registro para saber si tiene Plan Pro activo.
+      const rGet = await fetch(base + tabla + '?select=*&id=eq.' + encodeURIComponent(id), { headers });
+      if (!rGet.ok) return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: await rGet.text() }) };
+      const rows = await rGet.json();
+      const rec = rows && rows[0];
+      if (!rec) return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: 'Publicación no encontrada' }) };
+
+      let esPro = false;
+      if (tipo === 'o') {
+        const n = String(rec.barriosAprobados || '').split(',').map(x => x.trim()).filter(Boolean).length;
+        esPro = n > 2;
+      } else {
+        esPro = !!(rec.destacado_hasta && new Date(rec.destacado_hasta) > new Date());
+      }
+
+      // Texto: solo Pro, se publica directo (no es medio/riesgoso, y ya fue revisado en el alta).
+      const permitidosTexto = esPro ? ['novedad_texto', 'novedad_fecha'].concat(tipo === 'o' ? ['descripcion'] : ['que']) : [];
+      const datosTexto = {};
+      for (const k of permitidosTexto) if (Object.prototype.hasOwnProperty.call(patch, k)) datosTexto[k] = patch[k];
+
+      // Medios: foto (gratis y Pro), foto2 y link (solo Pro) — siempre quedan pendientes de aprobación.
+      const permitidosMedia = esPro ? ['foto', 'foto2', 'link'] : ['foto'];
+      const datosPendientes = {};
+      for (const k of permitidosMedia) {
+        if (Object.prototype.hasOwnProperty.call(patch, k) && patch[k]) datosPendientes[k + '_pendiente'] = patch[k];
+      }
+
+      // Si mandan un link nuevo, lo chequeamos contra Google Safe Browsing antes de aceptarlo.
+      if (datosPendientes.link_pendiente) {
+        const linkSeguro = await chequearLinkSeguro(datosPendientes.link_pendiente);
+        if (!linkSeguro) {
+          return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: 'Ese link fue marcado como inseguro y no se puede usar. Revisalo o probá con otro.' }) };
+        }
+      }
+
+      const datosFinal = Object.assign({}, datosTexto, datosPendientes);
+      if (Object.keys(datosPendientes).length) datosFinal.cambio_pendiente = true;
+      if (!Object.keys(datosFinal).length) {
         return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: 'Nada para actualizar' }) };
       }
 
-      // Si NO es un pedido de upgrade, verificar server-side que ya tiene Plan Pro activo.
-      if (!esPedidoUpgrade) {
-        const rGet = await fetch(base + tabla + '?select=*&id=eq.' + encodeURIComponent(id), { headers });
-        if (!rGet.ok) return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: await rGet.text() }) };
-        const rows = await rGet.json();
-        const rec = rows && rows[0];
-        if (!rec) return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: 'Publicación no encontrada' }) };
-
-        let esPro = false;
-        if (tipo === 'o') {
-          const n = String(rec.barriosAprobados || '').split(',').map(x => x.trim()).filter(Boolean).length;
-          esPro = n > 2;
-        } else {
-          esPro = !!(rec.destacado_hasta && new Date(rec.destacado_hasta) > new Date());
-        }
-        if (!esPro) return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: 'La edición requiere Plan Pro activo' }) };
-      }
-
-      const rPatch = await fetch(base + tabla + '?id=eq.' + encodeURIComponent(id), { method: 'PATCH', headers, body: JSON.stringify(datos) });
+      const rPatch = await fetch(base + tabla + '?id=eq.' + encodeURIComponent(id), { method: 'PATCH', headers, body: JSON.stringify(datosFinal) });
       if (!rPatch.ok) return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: await rPatch.text() }) };
-      return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: true }) };
+      return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: true, pendiente: Object.keys(datosPendientes).length > 0 }) };
     }
 
     if (accion === 'crearInvitacion') {
@@ -293,4 +319,33 @@ function generarToken() {
   let t = '';
   for (let i = 0; i < 12; i++) t += chars[Math.floor(Math.random() * chars.length)];
   return t;
+}
+
+async function chequearLinkSeguro(url) {
+  // Chequea el link contra Google Safe Browsing (gratis, hasta 10.000 consultas/día).
+  // Requiere la variable de entorno SAFE_BROWSING_KEY en Netlify.
+  // Si la key no está configurada o la consulta falla, dejamos pasar el link
+  // (fail-open) para que un problema de esta API nunca le rompa la app a nadie.
+  const KEY = process.env.SAFE_BROWSING_KEY;
+  if (!KEY) return true;
+  try {
+    const r = await fetch('https://safebrowsing.googleapis.com/v4/threatMatches:find?key=' + KEY, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        client: { clientId: 'barriokey', clientVersion: '1.0' },
+        threatInfo: {
+          threatTypes: ['MALWARE', 'SOCIAL_ENGINEERING', 'UNWANTED_SOFTWARE', 'POTENTIALLY_HARMFUL_APPLICATION'],
+          platformTypes: ['ANY_PLATFORM'],
+          threatEntryTypes: ['URL'],
+          threatEntries: [{ url }],
+        },
+      }),
+    });
+    if (!r.ok) return true;
+    const data = await r.json();
+    return !(data && data.matches && data.matches.length);
+  } catch (e) {
+    return true;
+  }
 }

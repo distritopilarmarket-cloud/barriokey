@@ -157,7 +157,27 @@ exports.handler = async (event) => {
   try {
     /* 1. Modo del barrio y tope diario */
     const cfg = await sb('push_config?barrio=eq.' + encodeURIComponent(barrio) + '&select=*');
-    const config = (cfg && cfg[0]) || { modo: 'manual', tope_diario: 3 };
+    let config = (cfg && cfg[0]) || null;
+
+    /* Barrio que todavia no tiene configuracion propia (recien agregado desde el panel):
+       hereda el default global, que es la fila con barrio = '__default__'.
+       Antes se asumia 'manual' y los avisos de un barrio nuevo nunca salian. */
+    if (!config) {
+      let base = { modo: 'auto', tope_diario: 3 };
+      try {
+        const def = await sb('push_config?barrio=eq.__default__&select=*');
+        if (def && def[0]) base = { modo: def[0].modo || 'auto', tope_diario: def[0].tope_diario || 3 };
+      } catch (e) {}
+      config = { barrio, modo: base.modo, tope_diario: base.tope_diario };
+      // Lo dejamos escrito para que el barrio aparezca en el panel con su switch
+      try {
+        await sb('push_config', {
+          method: 'POST',
+          body: { barrio, modo: base.modo, tope_diario: base.tope_diario, actualizado_en: new Date().toISOString() },
+          prefer: 'return=minimal',
+        });
+      } catch (e) {}
+    }
 
     if (origen !== 'manual' && config.modo !== 'auto') {
       // El barrio está en manual: se guarda pendiente, no se manda

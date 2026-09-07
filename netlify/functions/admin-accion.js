@@ -6,7 +6,7 @@
 // Requiere las mismas variables de entorno que clave-admin.js:
 //   SUPABASE_URL, SUPABASE_SERVICE_KEY
 
-const TABLAS_PERMITIDAS = ['prestadores', 'vecinos', 'resenas', 'pedidos', 'config_app', 'invitaciones', 'familias', 'consultas_acceso', 'novedades'];
+const TABLAS_PERMITIDAS = ['prestadores', 'vecinos', 'resenas', 'pedidos', 'config_app', 'invitaciones', 'familias', 'consultas_acceso', 'novedades', 'push_config', 'dispositivos'];
 const METODOS_PERMITIDOS = ['GET', 'PATCH', 'DELETE', 'POST'];
 
 const CORS_HEADERS = {

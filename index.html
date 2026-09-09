@@ -566,6 +566,7 @@
       <p class="nota" id="notaTodosZona" style="display:none;margin:-6px 0 12px">Estás viendo los prestadores que cubren toda la zona. Para ver todos los de tu barrio, elegí tu barrio arriba.</p>
       <div id="lista"></div>
       <p style="text-align:center;margin:24px 0 8px"><a href="javascript:void(0)" onclick="abrir('shPrivacidad')" style="font-size:11px;color:var(--muted);text-decoration:underline">Política de privacidad</a> <span style="color:var(--muted);font-size:11px">·</span> <a href="javascript:void(0)" onclick="abrir('shTerminos')" style="font-size:11px;color:var(--muted);text-decoration:underline">Términos y condiciones</a></p>
+      <p id="pieCerrarSesion" style="text-align:center;margin:0 0 20px;display:none"><a href="javascript:void(0)" onclick="cerrarSesion()" style="font-size:11px;color:var(--muted);text-decoration:underline">Cerrar sesión en este dispositivo</a></p>
     </div>
   </section>
 
@@ -1782,6 +1783,7 @@ const RUBROSV=[
   {id:'vinoteca',ic:'🍷',lb:'Vinoteca / bebidas artesanales'},
   {id:'bebes',ic:'🍼',lb:'Artículos de bebé / Puericultura'},
   {id:'profesionales',ic:'💼',lb:'Profesionales / Oficios del barrio'},
+  {id:'cerrajeria',ic:'🔑',lb:'Cerrajería'},
   {id:'rotiseria',ic:'🍕',lb:'Rotisería (pizza, empanadas, comida al paso)'},
   {id:'sushi',ic:'🍣',lb:'Sushi'},
   {id:'supermercado',ic:'🛒',lb:'Supermercado / Envío a domicilio'},
@@ -2351,6 +2353,10 @@ function ir(id){
 }
 function aplicarRestriccionNav(){
   try{pintarIdentidad();}catch(e){}
+  try{
+    const pieCS=document.getElementById('pieCerrarSesion');
+    if(pieCS)pieCS.style.display=(ROL_ACTUAL==='vecino'||ROL_ACTUAL==='oficio')?'block':'none';
+  }catch(e){}
   const nvI=document.getElementById('nvInicio'), nvP=document.getElementById('nvPedidos');
   const mgV=document.getElementById('mgVecinos');
   const restringir=(ROL_ACTUAL==='oficio');
@@ -2411,8 +2417,23 @@ function compartirCodigoFamilia(){
     +'👉 https://mibarriojob.netlify.app';
   window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
 }
-function cambiarRolAcceso(){
-  if(!confirm('¿Volver a elegir cómo usar BarrioKey? Si sos Vecino vas a tener que ingresar el código de tu casa de nuevo.'))return;
+/* Cerrar sesion de verdad. Antes esto no existia: el que entraba con el link
+   equivocado quedaba en el barrio equivocado para siempre.
+   Le mostramos el codigo ANTES de salir, porque le llego por WhatsApp hace
+   semanas y no lo va a encontrar. */
+function cerrarSesion(){
+  const acc=cargarAcceso()||{};
+  let aviso='¿Cerrar sesión en este dispositivo?\n\n';
+  if(acc.codigo){
+    aviso+='Vas a necesitar tu código para volver a entrar. Es este:\n\n     '+acc.codigo+'\n\nAnotalo antes de seguir.';
+  }else{
+    aviso+='Vas a necesitar tu código de invitación para volver a entrar. Si no lo tenés, pediéselo a quien te invitó.';
+  }
+  if(!confirm(aviso))return;
+  cambiarRolAcceso(true);
+}
+function cambiarRolAcceso(yaConfirmado){
+  if(!yaConfirmado&&!confirm('¿Volver a elegir cómo usar BarrioKey? Si sos Vecino vas a tener que ingresar el código de tu casa de nuevo.'))return;
   try{localStorage.removeItem(KACC);}catch(e){}
   ROL_ACTUAL=null;
   document.getElementById('accPasoVecino').style.display='none';
@@ -4389,6 +4410,7 @@ function pintarAdmLista(){
     +'<button class="tg '+(pago?'si':'no')+'" onclick="destacarOficio(\''+p.id+'\')">'
     +(pago?'Renovar +30d':'Destacar Plan Pro')+'</button>'
     +(pago?'<button class="mini" style="color:#B3261E" onclick="quitarDestaqueOficio(\''+p.id+'\')">Quitar Plan Pro</button>':'')
+    +(pago?'<button class="tg '+(p.facturado?'si':'no')+'" onclick="toggleFacturado(\'o\',\''+p.id+'\')">'+(p.facturado?'🧾 Facturado':'🧾 Falta facturar')+'</button>':'')
     +(pidioUpgradeO?'<button class="mini" style="color:#B3261E" onclick="descartarPedidoPro(\'o\',\''+p.id+'\')">✕ Descartar pedido</button>':'')
     +(p.foto_sin_revisar?'<button class="mini" style="background:var(--warn-bg);color:var(--warn)" onclick="marcarFotoRevisada(\'prestadores\',\''+p.id+'\')">✓ Marcar foto revisada</button>':'')
     +'<button class="mini" onclick="duplicarEnVecinos(\''+p.id+'\')">👥 Publicar también en Vecinos</button>'
@@ -4412,6 +4434,7 @@ function pintarAdmLista(){
       +'<div class="field"><label>Link a catálogo, Instagram o web (Plan Pro)</label><input id="ed_link_'+p.id+'" value="'+esc(p.link||'')+'" placeholder="@tunegocio o link completo"><small style="opacity:.7">Solo: Instagram, Facebook, TikTok, Drive/Docs/Fotos, iCloud, WhatsApp, Linktree o Mercado Libre.</small></div>'
       +campoNovedadPanel(p,'ed_nov_'+p.id)
       +'<div class="field"><label>Cobertura — barrios (separados por coma)</label><input id="apr_'+p.id+'" value="'+esc(p.barriosAprobados||'')+'" placeholder="San Eduardo, San Ramón…"></div>'
+      +'<div class="field"><label>CUIT (para la factura)</label><input id="ed_cuit_'+p.id+'" value="'+esc(p.cuit||'')+'" placeholder="20-12345678-9"><small style="opacity:.7">Si lo dejás vacío, la factura sale a consumidor final.</small></div>'
       +'<button class="mini dash" onclick="guardarEdicionOficio(\''+p.id+'\')">Guardar cambios</button>'
     +'</div></div>';
   }).join('');
@@ -4455,6 +4478,23 @@ function quitarFoto2Oficio(id){
   if(box)box.innerHTML='<span style="font-size:10px">2da foto</span>';
   toast('2da foto marcada para quitar — tocá "Guardar cambios" para confirmar');
 }
+/* Marca si ya se emitio la factura de ese Plan Pro. Julian factura agrupado a
+   fin de mes, y con diez pagos sueltos no se acuerda cual falta. */
+async function toggleFacturado(t,id){
+  const arr=(t==='o')?(CACHE||[]):(CACHEV||[]);
+  const it=arr.find(x=>String(x.id)===String(id));
+  if(!it)return;
+  const nuevo=!it.facturado;
+  const patch={facturado:nuevo, facturado_en:nuevo?new Date().toISOString():null};
+  const tabla=(t==='o')?'prestadores':'vecinos';
+  if(enLinea()){
+    try{await sbAdmin(tabla,'PATCH','id=eq.'+encodeURIComponent(id),patch);}
+    catch(e){toast('No se pudo guardar: '+(e&&e.message?e.message:'error de conexión'));return;}
+  }
+  Object.assign(it,patch);
+  toast(nuevo?'Marcado como facturado':'Marcado como pendiente de facturar');
+  pintarAdmLista();pintarAdmVecinos();
+}
 async function guardarEdicionOficio(id){
   const p=(CACHE||[]).find(x=>String(x.id)===String(id));
   if(!p)return;
@@ -4465,7 +4505,8 @@ async function guardarEdicionOficio(id){
     anios:document.getElementById('ed_anios_'+id).value.trim(),
     descripcion:document.getElementById('ed_desc_'+id).value.trim(),
     link:document.getElementById('ed_link_'+id).value.trim(),
-    barriosAprobados:document.getElementById('apr_'+id).value.trim()
+    barriosAprobados:document.getElementById('apr_'+id).value.trim(),
+    cuit:document.getElementById('ed_cuit_'+id).value.trim()||null
   };
   patchNovedadPanel(p,'ed_nov_'+id,patch);
   if(Object.prototype.hasOwnProperty.call(FOTOS_EDIT_OFICIO,id)){
@@ -4742,6 +4783,7 @@ function pintarAdmVecinos(){
     +'<button class="tg '+(destActivo(v)?'si':'no')+'" onclick="destacar(\''+v.id+'\')">'
     +(destActivo(v)?'Renovar +30d':'Destacar')+'</button>'
     +(destActivo(v)?'<button class="mini" style="color:#B3261E" onclick="quitarDestaque(\''+v.id+'\')">Quitar Plan Pro</button>':'')
+    +(destActivo(v)?'<button class="tg '+(v.facturado?'si':'no')+'" onclick="toggleFacturado(\'v\',\''+v.id+'\')">'+(v.facturado?'🧾 Facturado':'🧾 Falta facturar')+'</button>':'')
     +(pidioUpgradeV?'<button class="mini" style="color:#B3261E" onclick="descartarPedidoPro(\'v\',\''+v.id+'\')">✕ Descartar pedido</button>':'')
     +(v.foto_sin_revisar?'<button class="mini" style="background:var(--warn-bg);color:var(--warn)" onclick="marcarFotoRevisada(\'vecinos\',\''+v.id+'\')">✓ Marcar foto revisada</button>':'')
     +'<button class="mini" onclick="toggleEditarVecino(\''+v.id+'\')">✏️ Editar</button>'
@@ -4762,6 +4804,7 @@ function pintarAdmVecinos(){
       +'<div class="field"><label>WhatsApp</label><input id="edv_tel_'+v.id+'" value="'+esc(v.tel||'')+'"></div>'
       +'<div class="field"><label>Qué ofrece</label><textarea id="edv_que_'+v.id+'" style="min-height:70px">'+esc(v.que||'')+'</textarea></div>'
       +'<div class="field"><label>Link a catálogo/redes (opcional)</label><input id="edv_link_'+v.id+'" value="'+esc(v.link||'')+'"><small style="opacity:.7">Solo: Instagram, Facebook, TikTok, Drive/Docs/Fotos, iCloud, WhatsApp, Linktree o Mercado Libre.</small></div>'
+      +'<div class="field"><label>CUIT (para la factura)</label><input id="edv_cuit_'+v.id+'" value="'+esc(v.cuit||'')+'" placeholder="20-12345678-9"><small style="opacity:.7">Si lo dejás vacío, la factura sale a consumidor final.</small></div>'
       +campoNovedadPanel(v,'edv_nov_'+v.id)
       +'<button class="mini dash" onclick="guardarEdicionVecino(\''+v.id+'\')">Guardar cambios</button>'
     +'</div></div>';
@@ -4815,7 +4858,8 @@ async function guardarEdicionVecino(id){
     negocio:document.getElementById('edv_negocio_'+id).value.trim(),
     tel:document.getElementById('edv_tel_'+id).value.trim(),
     que:document.getElementById('edv_que_'+id).value.trim(),
-    link:document.getElementById('edv_link_'+id).value.trim()
+    link:document.getElementById('edv_link_'+id).value.trim(),
+    cuit:document.getElementById('edv_cuit_'+id).value.trim()||null
   };
   patchNovedadPanel(v,'edv_nov_'+id,patch);
   if(Object.prototype.hasOwnProperty.call(FOTOS_EDIT_VECINO,id)){

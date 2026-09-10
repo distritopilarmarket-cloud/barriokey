@@ -111,7 +111,7 @@
   .row-h .h{margin:0}
   .verTodas{font-size:12px;font-weight:700;color:var(--moss);cursor:pointer}
 
-  .body{flex:1;padding:14px 16px 90px}
+  .body{flex:1;padding:14px 16px calc(env(safe-area-inset-bottom) + 112px)}
   .hero-h{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:26px;line-height:1.15;
     letter-spacing:-.6px;margin:0 0 16px;color:var(--ink)}
 
@@ -1311,6 +1311,8 @@ function fechaEspera(d){
   return d.toLocaleString('es-AR',{weekday:'long',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
 }
 function textoLimiteNovedad(rec){
+  if(esAppleApp())
+    return esProRec(rec)?'Podés poner una novedad por día.':'Podés poner una novedad por semana.';
   return esProRec(rec)
     ? 'Tenés Plan Pro: podés poner una novedad por día.'
     : 'Plan gratis: una novedad por semana. Con el Plan Pro es una por día.';
@@ -1376,7 +1378,7 @@ function pintarMisPubs(){
       +'<div style="font-weight:700;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+esc(it.nombre)+'</div>'
       +(bvTxt?'<div style="font-size:10.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Vendés en: '+esc(bvTxt)+'</div>':'')
       +'</div>'
-      +(it.pro
+      +((it.pro||esAppleApp())
         ?'<button class="mini dash" onclick="abrirEdicionPropia(\''+it.t+'\',\''+it.id+'\')">✏️ Editar</button>'
         :'<span style="font-size:10.5px;color:var(--barrera2);text-decoration:underline;font-weight:600;cursor:pointer" onclick="abrirEdicionPropia(\''+it.t+'\',\''+it.id+'\')">'+(it.vence?'🔄 Renovar Plan Pro':'⭐ Pasar a Plan Pro')+'</span>')
       +'</div>'+aviso+'</div>';
@@ -1408,7 +1410,7 @@ async function cargarEdicionPropia(id,t){
     body.innerHTML=
       '<p class="nota" style="margin:0 0 14px">Tu publicación: <b>'+esc(nombreVisibleNP)+'</b></p>'
       +avisoPendiente
-      +(esRenovacion&&!pendiente?'<p class="nota" style="margin:0 0 14px;font-weight:600">Tu Plan Pro venció. Podés renovarlo cuando quieras.</p>':'')
+      +(esRenovacion&&!pendiente?'<p class="nota" style="margin:0 0 14px;font-weight:600">Tu Plan Pro venció.'+(esAppleApp()?'':' Podés renovarlo cuando quieras.')+'</p>':'')
       +'<div class="field"><label>Foto principal</label>'
         +'<div class="foto-box" id="epBox1" onclick="pedirFotoEdicion(1)">'+(rec.foto?'<img src="'+esc(rec.foto)+'" alt="">':'<span>📷 Tocá para subir una foto</span>')+'</div>'
         +'<input type="file" id="epFile1" accept="image/*" style="display:none" onchange="epTomarFoto(event,1)">'
@@ -1419,16 +1421,16 @@ async function cargarEdicionPropia(id,t){
           +'<p class="nota" style="margin:0;font-weight:600">⏳ Ya pediste '+(esRenovacion?'renovar':'pasar a')+' Plan Pro ('+precio+')</p>'
           +'<p class="nota" style="margin:6px 0 0">Si ya pagaste, no hace falta que hagas nada más — esperá a que lo confirmemos, puede demorar un rato. Se paga mes a mes: este pago te activa 30 días. Para seguir el mes que viene, volvés a pagar vos — no se cobra solo.</p>'
         +'</div>'
-        +'<p class="nota" style="margin:12px 0 6px;font-size:11.5px">¿No llegaste a pagar? Retomá desde acá:</p>'
+        +'<p class="nota solo-no-apple" style="margin:12px 0 6px;font-size:11.5px">¿No llegaste a pagar? Retomá desde acá:</p>'
         +'<button class="btn btn-soft solo-no-apple" onclick="irAPagar(\''+((t==='o')?LINK_PAGO_OFICIOS:LINK_PAGO_VECINOS)+'\')">💳 Ir a pagar ('+precio+')</button>'
         +'<button class="btn btn-soft" style="margin-top:8px;color:#B3261E" onclick="cancelarPedidoPro()">Ya no quiero, cancelar pedido</button>'
-        :'<div class="field"><label>2da foto <span style="font-weight:400;color:var(--muted);font-size:11px">(opcional, se habilita con Plan Pro)</span></label>'
+        :(esAppleApp()?'':'<div class="field"><label>2da foto <span style="font-weight:400;color:var(--muted);font-size:11px">(opcional, se habilita con Plan Pro)</span></label>'
           +'<div class="foto-box" id="epBox2" onclick="pedirFotoEdicion(2)">'+(rec.foto2?'<img src="'+esc(rec.foto2)+'" alt="">':'<span>📷 Tocá para subir otra foto</span>')+'</div>'
           +'<input type="file" id="epFile2" accept="image/*" style="display:none" onchange="epTomarFoto(event,2)">'
         +'</div>'
         +'<div class="field"><label>Link a catálogo, Instagram o web <span style="font-weight:400;color:var(--muted);font-size:11px">(opcional)</span></label>'
           +'<input id="epLink" value="'+esc(rec.link||'')+'" placeholder="Ej: instagram.com/tunegocio">'
-          +'<small style="opacity:.7">Solo: Instagram, Facebook, TikTok, Google Drive/Docs/Fotos, iCloud, WhatsApp o Linktree.</small></div>'
+          +'<small style="opacity:.7">Solo: Instagram, Facebook, TikTok, Google Drive/Docs/Fotos, iCloud, WhatsApp o Linktree.</small></div>')
         +(esAppleApp()?'':'<p class="nota" style="margin:0 0 12px">Al tocar el botón, guardamos estos datos y te llevamos a pagar el Plan Pro ('+precio+') por Mercado Pago. Se paga mes a mes: este pago te activa 30 días. Para seguir el mes que viene, volvés a pagar vos — no se cobra solo. Apenas se acredite, tu publicación pasa a todos los barrios — no hace falta volver a cargar el resto de tus datos.</p>')
         +'<button class="btn btn-main solo-no-apple" onclick="pedirPlanPro()">⭐ '+(esRenovacion?'Renovar mi Plan Pro':'Quiero ser Plan Pro')+'</button>')
       +'<button class="btn btn-soft" onclick="guardarSoloFotoGratis()" style="margin-top:10px">💾 Guardar solo la foto</button>'
@@ -1465,7 +1467,7 @@ async function cargarEdicionPropia(id,t){
                              :(rec.barrio||barriosPorDefecto());
         return '<div class="field" style="background:var(--warn-bg);border-radius:12px;padding:12px;margin-bottom:16px">'
           +'<p class="nota" style="margin:0;font-weight:600;color:var(--warn)">Tu Plan Pro venció</p>'
-          +'<p class="nota" style="margin:6px 0 10px">Volviste al plan gratis y quedaste en: <b>'+esc(donde)+'</b>. Si querés otros barrios, escribinos y te los cambiamos, o volvé al Plan Pro para estar en todos.</p>'
+          +'<p class="nota" style="margin:6px 0 10px">Volviste al plan gratis y quedaste en: <b>'+esc(donde)+'</b>. Si querés otros barrios, escribinos y te los cambiamos.'+(esAppleApp()?'':' O volvé al Plan Pro para estar en todos.')+'</p>'
           +(esAppleApp()?'':'<button class="mini dash" onclick="pedirPlanPro()">Volver al Plan Pro ('+precioEl+')</button>')
         +'</div>';
       })()
@@ -1535,7 +1537,7 @@ async function publicarNovedad(t,id){
   if(espera){
     toast(esProRec(rec)
       ? 'Vas a poder poner otra el '+fechaEspera(espera)+'hs'
-      : 'Ya usaste tu novedad de la semana. La próxima, el '+fechaEspera(espera)+'hs. Con el Plan Pro podés poner una por día.');
+      : ('Ya usaste tu novedad de la semana. La próxima, el '+fechaEspera(espera)+'hs.'+(esAppleApp()?'':' Con el Plan Pro podés poner una por día.')));
     return;
   }
   const texto=document.getElementById('epNovedad').value.trim();
@@ -3765,6 +3767,7 @@ async function enviarAlta(){
     foto2:foto2Url||null,
     link:document.getElementById('sLink').value.trim(),
     verificado:false,destacado:false,rating:'—',trabajos:'nuevo',resp:'a confirmar',
+    plataforma:plataformaApp(),
     acepto_terminos_en:new Date().toISOString()};
   if(enLinea()){
     try{const creado=await sb('prestadores',{method:'POST',body:rec,prefer:'return=representation'});
@@ -3855,6 +3858,7 @@ async function publicarVecino(){
     dias:document.getElementById('vDias').value.trim(),
     que,foto:fotoUrl||null,foto2:foto2Url||null,link:document.getElementById('vLink').value.trim(),
     barrio:barrioV,barriosVenta:elegidos.join(', '),aprobado:false,destacado_hasta:null,pro_pendiente:quiereTodos,creado_en:new Date().toISOString(),
+    plataforma:plataformaApp(),
     acepto_terminos_en:new Date().toISOString()};
   if(enLinea()){try{const creado=await sb('vecinos',{method:'POST',body:rec,prefer:'return=representation'});
     if(creado&&creado[0]&&creado[0].id)guardarMiPub('v',creado[0].id);
@@ -4398,6 +4402,7 @@ function pintarAdmLista(){
     +(posibleDup?' <span style="font-size:10px;font-weight:700;padding:1px 6px;border-radius:8px;background:var(--warn-bg);color:var(--warn)">⚠️ NOMBRE REPETIDO</span>':'')
     +(pagoPendiente?' <span style="font-size:10px;font-weight:700;padding:1px 6px;border-radius:8px;background:var(--warn-bg);color:var(--warn)">⏳ '+(pidioUpgradeO?'Pidió pasar a Plan Pro · revisar pago de $30.000':'PRO · revisar pago de $30.000 antes de aprobar')+'</span>':'')
     +' <span style="font-size:10.5px;font-weight:700;padding:1px 6px;border-radius:8px;background:'+badgeBg+'">'+(semaforo?semaforo+' ':'')+nAprob+' barrio'+(nAprob===1?'':'s')+proTxt+'</span></div>'
+    +badgePlataforma(p.plataforma)
     +'<div class="mt">'+esc(rubroLbCompleto(p))+(p.tel?' · 📱 '+esc(p.tel):'')+'</div>'
     +(p.titular?'<div class="mt" style="margin-top:4px">👤 Responsable: '+esc(p.titular)+'</div>':'<div class="mt" style="margin-top:4px;color:var(--warn)">👤 Sin nombre del responsable</div>')
     +'<div class="mt" style="margin-top:4px">Aprobados: '+aprobadosTxt+'</div>'
@@ -4773,6 +4778,7 @@ function pintarAdmVecinos(){
     +(posibleDup?' <span style="font-size:10px;font-weight:700;padding:1px 6px;border-radius:8px;background:var(--warn-bg);color:var(--warn)">⚠️ NOMBRE REPETIDO</span>':'')
     +(pagoPendiente?' <span style="font-size:10px;font-weight:700;padding:1px 6px;border-radius:8px;background:var(--warn-bg);color:var(--warn)">⏳ '+(pidioUpgradeV?'Pidió pasar a Plan Pro · revisar pago de $15.000':'PRO · revisar pago de $15.000 antes de aprobar')+'</span>':'')
     +' <span style="font-size:10.5px;font-weight:700;padding:1px 6px;border-radius:8px;background:'+badgeBgV+'">'+(semaforoV?semaforoV+' ':'')+nVenta+' barrio'+(nVenta===1?'':'s')+proTxtV+'</span></div>'
+    +badgePlataforma(v.plataforma)
     +'<div class="mt">'+esc(rubroLbCompleto(v))+' · vive en '+esc(v.barrio||'—')+(v.tel?' · 📱 '+esc(v.tel):'')+'</div>'
     +'<div class="mt" style="margin-top:4px;font-size:10.5px;color:var(--muted)">'+(v.acepto_terminos_en?'✓ Aceptó términos: '+new Date(v.acepto_terminos_en).toLocaleString('es-AR',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'}):'⚠️ Sin registro de aceptación')+'</div>'
     +(pagoPendiente&&v.foto2?'<div class="mt" style="margin-top:6px;display:flex;align-items:center;gap:8px"><span>2da foto:</span><img src="'+esc(v.foto2)+'" alt="" style="width:44px;height:44px;border-radius:8px;object-fit:cover;cursor:pointer" onclick="verFotoGrande(\''+esc(v.foto2)+'\')"></div>':'')
@@ -5512,6 +5518,27 @@ function pintarIdentidad(){
   if(ROL_ACTUAL!=='vecino'||!acc.barrio){el.style.display='none';el.textContent='';return;}
   el.textContent='Registrado en '+acc.barrio+(acc.lote?' · Lote '+acc.lote:'');
   el.style.display='block';
+}
+/* Con que dispositivo se registro cada uno. Sirve para saber a quien hay que
+   escribirle por WhatsApp: el de iPhone NUNCA ve la oferta del Plan Pro dentro
+   de la app, asi que si no le escribimos nosotros, no se entera de que existe. */
+function plataformaApp(){
+  try{
+    if(window.Capacitor && typeof Capacitor.getPlatform==='function'){
+      const p=Capacitor.getPlatform();
+      if(p==='ios')return 'ios';
+      if(p==='android')return 'android';
+    }
+  }catch(e){}
+  return 'web';
+}
+function badgePlataforma(v){
+  const p=(v==='ios')?{t:'🍎 iPhone',bg:'#EFEAFB',c:'#4A2E8F'}
+        :(v==='android')?{t:'🤖 Android',bg:'#E8F5E9',c:'#1B5E20'}
+        :(v==='web')?{t:'🌐 Web',bg:'#F1F1F1',c:'#555'}
+        :null;
+  if(!p)return '';
+  return ' <span style="font-size:10px;font-weight:700;padding:1px 6px;border-radius:8px;background:'+p.bg+';color:'+p.c+'">'+p.t+'</span>';
 }
 function esAppleApp(){
   try{

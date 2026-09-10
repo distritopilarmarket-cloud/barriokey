@@ -1753,6 +1753,9 @@ const RUBROS=[
   {id:'reparacion_celulares',ic:'📱',lb:'Reparación de celulares'},
   {id:'sonido_dj',ic:'🎧',lb:'Sonido / DJ para eventos'},
   {id:'masajista',ic:'💆',lb:'Masajista / Kinesiología'},
+  {id:'eventos_alquiler',ic:'⛺',lb:'Eventos y alquiler (carpas, gazebos, mobiliario)'},
+  {id:'colegio',ic:'🎓',lb:'Colegio / Institución educativa'},
+  {id:'gimnasio',ic:'🏋️',lb:'Gimnasio'},
   {id:'otros_of',ic:'✨',lb:'Otros'}
 ];
 const RUBROSV=[
@@ -2811,9 +2814,6 @@ function filtrar(id){
 function entraEn(p,barrio){
   if(barrio==='__TODOS__')return true;
   return barriosVigentesOficio(p).toLowerCase().includes(String(barrio||'').toLowerCase());
-}
-function pideEn(p,barrio){
-  return String(p.barrios||'').toLowerCase().includes(String(barrio||'').toLowerCase());
 }
 function vendeEn(v,barrio){
   if(barrio==='__TODOS__')return true;
@@ -4637,7 +4637,7 @@ async function guardarNuevo(){
   const rec={nombre,titular:document.getElementById('nTitular').value.trim()||null,rubro:document.getElementById('nRubro').value,
     tel:document.getElementById('nTel').value.trim(),
     anios:document.getElementById('nAnios').value.trim(),
-    barrios:document.getElementById('nBarrios').value.trim(),
+    barriosAprobados:document.getElementById('nBarrios').value.trim(),
     descripcion:document.getElementById('nDesc').value.trim(),
     verificado:true,destacado:false,rating:'—',trabajos:'',resp:'responde en el día'};
   if(enLinea()){try{await sbAdmin('prestadores','POST',null,rec);}catch(e){toast('No se pudo guardar: '+(e&&e.message?e.message:'error de conexión'));return;}}

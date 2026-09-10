@@ -690,7 +690,7 @@
         </div>
         <label class="chk-legal"><input type="checkbox" id="vLegal"> <span>Confirmo que la información es mía y verídica. BarrioKey actúa exclusivamente como medio de contacto entre vecinos, sin participar del acto comercial. La plataforma no verifica ni garantiza lo publicado, y se desliga de toda responsabilidad. BarrioKey se reserva el derecho de eliminar publicaciones inadecuadas, ofensivas o reportadas. Acepto los <a href="javascript:void(0)" onclick="abrir('shTerminos')" style="color:var(--barrera2);font-weight:600">Términos y condiciones</a> y la <a href="javascript:void(0)" onclick="abrir('shPrivacidad')" style="color:var(--barrera2);font-weight:600">Política de privacidad</a> de BarrioKey.</span></label>
         <button class="btn btn-main" id="btnEnviarVecino" onclick="publicarVecino()">Publicar gratis</button>
-        <p class="nota">Si querés aparecer arriba de la lista, sumar una 2da foto y un link, <a href="javascript:void(0)" onclick="abrir('shPlanes')" style="color:var(--barrera2);font-weight:600">pasate a Plan Destacado</a>.</p>
+        <p class="nota solo-no-apple">Si querés aparecer arriba de la lista, sumar una 2da foto y un link, <a href="javascript:void(0)" onclick="abrir('shPlanes')" style="color:var(--barrera2);font-weight:600">pasate a Plan Destacado</a>.</p>
       </div>
     </div>
   </section>
@@ -1429,7 +1429,7 @@ async function cargarEdicionPropia(id,t){
         +'<div class="field"><label>Link a catálogo, Instagram o web <span style="font-weight:400;color:var(--muted);font-size:11px">(opcional)</span></label>'
           +'<input id="epLink" value="'+esc(rec.link||'')+'" placeholder="Ej: instagram.com/tunegocio">'
           +'<small style="opacity:.7">Solo: Instagram, Facebook, TikTok, Google Drive/Docs/Fotos, iCloud, WhatsApp o Linktree.</small></div>'
-        +'<p class="nota" style="margin:0 0 12px">Al tocar el botón, guardamos estos datos y te llevamos a pagar el Plan Pro ('+precio+') por Mercado Pago. Se paga mes a mes: este pago te activa 30 días. Para seguir el mes que viene, volvés a pagar vos — no se cobra solo. Apenas se acredite, tu publicación pasa a todos los barrios — no hace falta volver a cargar el resto de tus datos.</p>'
+        +(esAppleApp()?'':'<p class="nota" style="margin:0 0 12px">Al tocar el botón, guardamos estos datos y te llevamos a pagar el Plan Pro ('+precio+') por Mercado Pago. Se paga mes a mes: este pago te activa 30 días. Para seguir el mes que viene, volvés a pagar vos — no se cobra solo. Apenas se acredite, tu publicación pasa a todos los barrios — no hace falta volver a cargar el resto de tus datos.</p>')
         +'<button class="btn btn-main solo-no-apple" onclick="pedirPlanPro()">⭐ '+(esRenovacion?'Renovar mi Plan Pro':'Quiero ser Plan Pro')+'</button>')
       +'<button class="btn btn-soft" onclick="guardarSoloFotoGratis()" style="margin-top:10px">💾 Guardar solo la foto</button>'
       +'<button class="btn btn-soft" onclick="volverDeEdicion()" style="margin-top:8px">Volver</button>'
@@ -1450,7 +1450,7 @@ async function cargarEdicionPropia(id,t){
       ?'<div class="field" style="background:var(--warn-bg);border-radius:12px;padding:12px;margin-bottom:16px">'
         +'<p class="nota" style="margin:0;font-weight:600;color:var(--warn)">🟡 Tu Plan Pro vence en '+diasRestEl+' día'+(diasRestEl===1?'':'s')+'</p>'
         +'<p class="nota" style="margin:6px 0 10px">Ya podés renovarlo para no perder la visibilidad en todos los barrios. Se paga mes a mes: este pago te activa 30 días más. No se cobra solo — si no renovás, al vencer volvés al plan gratis.</p>'
-        +'<button class="mini dash" onclick="pedirPlanPro()">🔄 Renovar ahora ('+precioEl+')</button>'
+        +(esAppleApp()?'':'<button class="mini dash" onclick="pedirPlanPro()">🔄 Renovar ahora ('+precioEl+')</button>')
       +'</div>'
       :(rec.pro_pendiente?'<div class="field" style="background:var(--card);border-radius:12px;padding:12px;margin-bottom:16px">'
         +'<p class="nota" style="margin:0;font-weight:600">⏳ Ya pediste renovar tu Plan Pro</p>'
@@ -1466,7 +1466,7 @@ async function cargarEdicionPropia(id,t){
         return '<div class="field" style="background:var(--warn-bg);border-radius:12px;padding:12px;margin-bottom:16px">'
           +'<p class="nota" style="margin:0;font-weight:600;color:var(--warn)">Tu Plan Pro venció</p>'
           +'<p class="nota" style="margin:6px 0 10px">Volviste al plan gratis y quedaste en: <b>'+esc(donde)+'</b>. Si querés otros barrios, escribinos y te los cambiamos, o volvé al Plan Pro para estar en todos.</p>'
-          +'<button class="mini dash" onclick="pedirPlanPro()">Volver al Plan Pro ('+precioEl+')</button>'
+          +(esAppleApp()?'':'<button class="mini dash" onclick="pedirPlanPro()">Volver al Plan Pro ('+precioEl+')</button>')
         +'</div>';
       })()
     +'<div class="field" style="background:var(--card);border-radius:12px;padding:12px;margin-bottom:16px">'
@@ -2707,7 +2707,7 @@ function limitarBarriosVecino(cb){
   const marcados=document.querySelectorAll('.vb-item:checked');
   if(marcados.length>3){
     cb.checked=false;
-    toast('Máximo 3 barrios gratis. Para más, pasás al Plan Pro por WhatsApp.');
+    toast(esAppleApp()?'Podés elegir hasta 3 barrios.':'Máximo 3 barrios gratis. Para más, pasás al Plan Pro por WhatsApp.');
   }
   const btn=document.getElementById('btnEnviarVecino');
   const todos=document.getElementById('vbTodos');
@@ -2717,7 +2717,7 @@ function limitarBarriosOficio(cb){
   const marcados=document.querySelectorAll('.sb-item:checked');
   if(marcados.length>3){
     cb.checked=false;
-    toast('Máximo 3 barrios gratis. Para más, pasás al Plan Pro por WhatsApp.');
+    toast(esAppleApp()?'Podés elegir hasta 3 barrios.':'Máximo 3 barrios gratis. Para más, pasás al Plan Pro por WhatsApp.');
   }
   const btn=document.getElementById('btnEnviarOficio');
   const todos=document.getElementById('sbTodos');
@@ -3093,7 +3093,7 @@ function pintarVecinos(){
     +'<button class="bsm ghost" onclick="event.stopPropagation();verDetalleVecino(\''+v.id+'\')">Ver publicación</button>'
     +(soloNum(v.tel)?'<button class="bsm w" onclick="event.stopPropagation();waVecino(\''+v.id+'\')">Escribir por WhatsApp</button>':'')
     +'</div>'
-    +(!destActivo(v)?'<div class="destacate-wrap"><span onclick="event.stopPropagation();pedirDestacado(\''+esc(v.nombre)+'\')">⭐ ¿Sos vos? Hacete Destacado</span></div>':'')
+    +((!destActivo(v)&&!esAppleApp())?'<div class="destacate-wrap"><span onclick="event.stopPropagation();pedirDestacado(\''+esc(v.nombre)+'\')">⭐ ¿Sos vos? Hacete Destacado</span></div>':'')
 
     +'</div>').join('')
     +'<button class="mini dash" onclick="publicarLoMio()">+ Publicar lo que vendo</button>'
@@ -3737,7 +3737,7 @@ async function enviarAlta(){
   const matchPrevio=(CACHE||[]).find(p=>norm(p.nombre)===norm(nombre)||telNorm(p.tel)===telNorm(tel));
   const yaUsoCupo=matchPrevio&&(matchPrevio.barriosAprobados||'').split(',').map(x=>x.trim()).filter(Boolean).length>=3;
   if(yaUsoCupo&&!quiereTodos){
-    toast('Ya te registraste antes con este WhatsApp o nombre y usaste tus 3 barrios gratis. Para sumar más barrios, elegí "Todos los barrios" (Plan Pro).');
+    toast(esAppleApp()?'Ya te registraste antes con este WhatsApp o nombre y usaste tus 3 barrios.':'Ya te registraste antes con este WhatsApp o nombre y usaste tus 3 barrios gratis. Para sumar más barrios, elegí "Todos los barrios" (Plan Pro).');
     return;
   }
   const posibleDup=!!matchPrevio;
@@ -3831,7 +3831,7 @@ async function publicarVecino(){
   const matchPrevio=(CACHEV||[]).find(v=>norm(v.nombre)===norm(nombre)||telNorm(v.tel)===telNorm(tel));
   const yaUsoCupo=matchPrevio&&(matchPrevio.barriosVenta||'').toLowerCase().includes('todos')===false&&(matchPrevio.barriosVenta||'').split(',').map(x=>x.trim()).filter(Boolean).length>=3;
   if(yaUsoCupo&&!quiereTodos){
-    toast('Ya te registraste antes con este WhatsApp o nombre y usaste tus 3 barrios gratis. Para sumar más barrios, elegí "Todos los barrios" (Plan Pro).');
+    toast(esAppleApp()?'Ya te registraste antes con este WhatsApp o nombre y usaste tus 3 barrios.':'Ya te registraste antes con este WhatsApp o nombre y usaste tus 3 barrios gratis. Para sumar más barrios, elegí "Todos los barrios" (Plan Pro).');
     return;
   }
   const posibleDup=!!matchPrevio;

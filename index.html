@@ -1660,6 +1660,7 @@ async function pedirPlanPro(){
   const t=ED_PROPIO.t, id=ED_PROPIO.id;
   if(!t||!id)return;
   const linkEl=document.getElementById('epLink');
+  if(linkEl)linkEl.value=normalizarLink(linkEl.value);
   const linkVal=linkEl?linkEl.value.trim():'';
   if(linkVal&&!linkPermitido(linkVal)){toast('El link solo puede ser de Instagram, Facebook, TikTok, Google Drive/Docs/Fotos, iCloud, WhatsApp o Linktree');return;}
   const patch={pro_pendiente:true};
@@ -2980,7 +2981,7 @@ function pintarLista(){
       +'<div class="card-top"><div class="ava" style="background:'+col(p.nombre)+'">'+(p.foto?'<img src="'+esc(p.foto)+'" alt="">':esc(ini(p.nombre)))+'</div>'
       +'<div style="min-width:0"><div class="c-name">'+esc(p.nombre)
       +(p.verificado?'<span class="ver">VERIFICADO</span>':'')
-      +(esPro?'<span class="dest">PLAN PRO</span>':'')+'</div>'
+      +(esPro?'<span class="dest">DESTACADO</span>':'')+'</div>'
       +'<div class="c-rubro">'+esc(rubroLbCompleto(p))+' · '+esc(p.anios||'—')+' años'+(p.localidad?' · '+esc(p.localidad):'')+'</div></div>'
       +(function(){const r=promedio(p.nombre);
          return '<div class="stars"><b>★ '+(r?r.prom:'—')+'</b><span>'+(r?r.n+(r.n===1?' reseña':' reseñas'):'sin reseñas')+'</span></div>';})()
@@ -3198,7 +3199,7 @@ function verDetalle(id){
     +'<p class="sub">'+esc(rubroLbCompleto(p))+' · '+esc(p.anios||'—')+' años en el oficio</p>'
     +'<div class="chips">'+(p.verificado?'<span class="chip">✓ Verificado</span>':'<span class="chip">Sin verificar</span>')
     +'<span class="chip">★ '+esc(p.rating||'—')+'</span>'
-    +(esPro?'<span class="chip">PLAN PRO</span>':'')
+    +(esPro?'<span class="chip">DESTACADO</span>':'')
     +(entra?'<span class="chip">En '+esc(barrioTxt())+'</span>':'')+'</div>'
     +'<div class="datos">'
     +'<div class="dato"><span>Cobertura</span><b>'+esc(barriosTxt)+'</b></div>'
@@ -4498,7 +4499,12 @@ async function toggleFacturado(t,id){
 async function guardarEdicionOficio(id){
   const p=(CACHE||[]).find(x=>String(x.id)===String(id));
   if(!p)return;
-  if(!linkPermitido(document.getElementById('ed_link_'+id).value.trim())){toast('El link solo puede ser de Instagram, Facebook, TikTok, Google Drive/Docs/Fotos, iCloud, WhatsApp o Linktree');return;}
+  /* Igual que en el alta: primero se normaliza ("@usuario" -> instagram.com/usuario)
+     y recien despues se valida. Sin esto, editar desde el panel rechazaba
+     cualquier arroba — se detecto el 9/9 con @aquamaster.ar */
+  const edLinkEl=document.getElementById('ed_link_'+id);
+  if(edLinkEl)edLinkEl.value=normalizarLink(edLinkEl.value);
+  if(!linkPermitido(edLinkEl?edLinkEl.value.trim():'')){toast('El link solo puede ser de Instagram, Facebook, TikTok, Google Drive/Docs/Fotos, iCloud, WhatsApp o Linktree');return;}
   const patch={
     nombre:document.getElementById('ed_nombre_'+id).value.trim()||p.nombre,
     tel:document.getElementById('ed_tel_'+id).value.trim(),
@@ -4852,7 +4858,9 @@ function quitarFoto2Vecino(id){
 async function guardarEdicionVecino(id){
   const v=(CACHEV||[]).find(x=>String(x.id)===String(id));
   if(!v)return;
-  if(!linkPermitido(document.getElementById('edv_link_'+id).value.trim())){toast('El link solo puede ser de Instagram, Facebook, TikTok, Google Drive/Docs/Fotos, iCloud, WhatsApp o Linktree');return;}
+  const edvLinkEl=document.getElementById('edv_link_'+id);
+  if(edvLinkEl)edvLinkEl.value=normalizarLink(edvLinkEl.value);
+  if(!linkPermitido(edvLinkEl?edvLinkEl.value.trim():'')){toast('El link solo puede ser de Instagram, Facebook, TikTok, Google Drive/Docs/Fotos, iCloud, WhatsApp o Linktree');return;}
   const patch={
     nombre:document.getElementById('edv_nombre_'+id).value.trim()||v.nombre,
     negocio:document.getElementById('edv_negocio_'+id).value.trim(),

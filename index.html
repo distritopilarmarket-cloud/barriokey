@@ -3575,7 +3575,11 @@ function verDetalle(id){
     +'<h3>'+esc(p.nombre)+'</h3>'
     +'<p class="sub">'+esc(rubroLbCompleto(p))+' · '+esc(p.anios||'—')+' años en el oficio</p>'
     +'<div class="chips">'+(p.verificado?'<span class="chip">✓ Verificado</span>':'<span class="chip">Sin verificar</span>')
-    +'<span class="chip">★ '+esc(p.rating||'—')+'</span>'
+    /* El promedio se calcula de las reseñas reales, igual que en el listado.
+       Antes leia p.rating, una columna que nunca se llena: la ficha mostraba
+       "★ —" aunque abajo hubiera reseñas de 5 estrellas a la vista. */
+    +(function(){const r=promedio(p.nombre);
+      return '<span class="chip">★ '+(r?r.prom+' ('+r.n+')':'—')+'</span>';})()
     +(esPro?'<span class="chip">DESTACADO</span>':'')
     +chipVive(p)
     +(entra?'<span class="chip">En '+esc(barrioTxt())+'</span>':'')+'</div>'
@@ -4060,16 +4064,53 @@ function setEstrellas(n){
   const b=document.getElementById('rsStars').querySelectorAll('button');
   b.forEach((x,i)=>x.classList.toggle('on',i<n));
 }
+/* Candado contra el doble toque.
+   Entre que se aprieta "Publicar reseña" y que se cierra la ventanita hay dos
+   idas al servidor. En ese rato el boton seguia vivo: si el dedo rebotaba, o la
+   conexion tardaba y la persona volvia a tocar, se grababan DOS reseñas
+   identicas. Paso de verdad el 11/9 con Aquamaster.
+   El flag se pone antes de la primera espera y se suelta en el finally, asi que
+   tambien se libera si el envio falla y la persona quiere reintentar. */
+let ENVIANDO_RESENA=false;
+function botonResena(){
+  return document.querySelector('#shResena .btn-main');
+}
 async function enviarResena(){
+  if(ENVIANDO_RESENA)return;
   if(!RESPED)return;
   if(!ESTRELLAS){toast('Tocá las estrellas para puntuar');return;}
   if(!document.getElementById('rsLegal').checked){toast('Tenés que aceptar el aviso para publicar la reseña');return;}
   if(!pasaModeracion(document.getElementById('rsTexto').value)){return;}
+  ENVIANDO_RESENA=true;
+  const btn=botonResena();
+  const txtBtn=btn?btn.textContent:'';
+  if(btn){btn.disabled=true;btn.style.opacity=.6;btn.textContent='Publicando…';}
+  try{
+    await enviarResenaAhora();
+  }finally{
+    ENVIANDO_RESENA=false;
+    if(btn){btn.disabled=false;btn.style.opacity='';btn.textContent=txtBtn||'Publicar reseña';}
+  }
+}
+async function enviarResenaAhora(){
   if(await estoyBloqueado()){toast('Tu cuenta no puede publicar reseñas. Escribinos desde Consultas si creés que es un error.');return;}
   const accR=cargarAcceso()||{};
   const rec={prestador:RESPED.prestador,rubro:RESPED.rubro,vecino:RESPED.vecino,
     barrio:RESPED.barrio,lote:accR.lote||null,estrellas:ESTRELLAS,texto:document.getElementById('rsTexto').value.trim(),
     creado_en:new Date().toISOString(),acepto_terminos_en:new Date().toISOString()};
+  /* Segunda red, por si el candado del boton no alcanza (se corto la conexion y
+     el POST entro igual, o la persona entra de nuevo mas tarde): una reseña por
+     vecino y por prestador. Si ya calificó, se avisa y no se graba de nuevo. */
+  const yaCalifico=(CACHER||[]).some(r=>
+    norm(r.prestador||'')===norm(rec.prestador||'')
+    && norm(r.vecino||'')===norm(rec.vecino||'')
+    && norm(r.barrio||'')===norm(rec.barrio||'')
+    && String(r.lote||'')===String(rec.lote||''));
+  if(yaCalifico){
+    toast('Ya dejaste tu reseña a '+rec.prestador+'. Solo se puede calificar una vez.');
+    cerrar('shResena');
+    return;
+  }
   if(enLinea()){
     try{
       await sb('resenas',{method:'POST',body:rec});

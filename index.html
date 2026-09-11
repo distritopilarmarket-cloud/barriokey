@@ -235,6 +235,12 @@
   .story-name{font-size:11px;font-weight:600;color:var(--ink);margin-top:6px;line-height:1.2;
     max-width:76px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
     overflow:hidden;word-break:break-word}
+  /* El rubro, entre parentesis, abajo del nombre. Va en su propio renglon:
+     en el carrusel entran 4 por pantalla y las columnas son angostas — con el
+     rubro en la misma linea, "La Ganchera Pilar (Carniceria)" se cortaba. */
+  .story-rubro{font-size:9.5px;color:var(--muted);line-height:1.15;margin-top:2px;
+    max-width:76px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+    overflow:hidden;word-break:break-word}
   .stories-nota{font-size:10px;color:var(--muted);margin:5px 0 0}
 
   .cupos-box{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:16px}
@@ -264,8 +270,11 @@
     padding-top:12px;border-top:1px solid var(--line2)}
 
   /* ---- detalle ---- */
+  /* El fondo estaba en .6 y a traves del velo se seguia leyendo toda la lista
+     del panel: al abrir "Cargar prestador" no quedaba claro que habia una hoja
+     encima. Con .82 el fondo queda claramente atras. */
   .sheet-wrap{position:fixed;inset:0;z-index:60;display:none;align-items:flex-end;justify-content:center;
-    background:rgba(8,22,17,.6)}
+    background:rgba(8,22,17,.82)}
   .sheet-wrap.show{display:flex}
   .sheet{width:100%;max-width:460px;background:var(--paper);border-radius:22px 22px 0 0;
     max-height:92dvh;overflow:auto;animation:up .24s ease}
@@ -342,8 +351,14 @@
      "Renovar" compartian renglon con el texto y lo dejaban en 3 letras de ancho. */
   @media (max-width:560px){
     .adm-row{align-items:flex-start}
-    .adm-row .adm-info{flex:1 1 100%;min-width:0;order:2}
+    /* Por defecto TODO va al final. Sin esta linea, los botones .mini
+       ("Editar", "Eliminar", "Quitar Plan Pro") y el bloque de edicion se
+       quedaban en order:0 y se dibujaban ARRIBA del nombre: bajando se leian
+       tres botones sueltos y recien despues de quien eran. Se podia tocar
+       Eliminar sin saber a quien se estaba borrando. */
+    .adm-row > *{order:4}
     .adm-row .ava{order:1}
+    .adm-row .adm-info{flex:1 1 100%;min-width:0;order:2}
     .adm-row .tg{margin-left:0;order:3}
   }
   .tg.si{background:var(--ok-bg);color:var(--ok)}
@@ -625,6 +640,16 @@
         <small style="opacity:.7">Si trabajás a domicilio, dejalo vacío.</small></div>
       <div class="field"><label>Cuándo atendés <span style="font-weight:400;color:var(--muted);font-size:11px">(opcional)</span></label>
         <select id="sDias"></select></div>
+      <!-- El profesional que VIVE en el barrio (el kinesiologo del lote 40, la
+           veterinaria de la otra cuadra). No es un rubro aparte: es una marca
+           sobre su rubro real, para que se lo encuentre por lo que hace y ademas
+           se sepa que es del barrio. Se muestra solo si ademas esta registrado
+           como vecino de ese barrio — eso es lo que la valida. -->
+      <label class="chk" style="display:flex;align-items:flex-start;gap:8px;margin:-4px 0 14px;cursor:pointer">
+        <input type="checkbox" id="sViveBarrio" style="margin-top:2px">
+        <span style="font-size:12.5px;line-height:1.35">🏡 <b>Vivo en el barrio</b><br>
+        <span style="color:var(--muted);font-size:11.5px">Si vivís en uno de los barrios donde publicás, se muestra al lado de tu nombre. Se verifica con tu registro de vecino.</span></span>
+      </label>
       <div class="row2">
         <div class="field"><label>WhatsApp</label><input id="sTel" inputmode="tel" placeholder="11 5555 5555"></div>
         <div class="field"><label>Años en el oficio</label><input id="sAnios" inputmode="numeric" placeholder="10"></div>
@@ -1770,6 +1795,46 @@ const RUBROS=[
   {id:'eventos_alquiler',ic:'⛺',lb:'Eventos y alquiler (carpas, gazebos, mobiliario)'},
   {id:'colegio',ic:'🎓',lb:'Colegio / Institución educativa'},
   {id:'gimnasio',ic:'🏋️',lb:'Gimnasio'},
+  {id:'calefaccion',ic:'🔥',lb:'Calefacción / calderas / losa radiante'},
+  {id:'destapaciones',ic:'🚽',lb:'Destapaciones y desagües cloacales'},
+  {id:'bombas_agua',ic:'💧',lb:'Bombas de agua, tanques y cisternas'},
+  {id:'zingueria',ic:'🏠',lb:'Zinguería / canaletas y pluviales'},
+  {id:'aberturas',ic:'🪟',lb:'Aberturas de aluminio'},
+  {id:'placards',ic:'🚪',lb:'Placards y amoblamientos de cocina'},
+  {id:'toldos',ic:'⛱️',lb:'Toldos y lonas'},
+  {id:'mosquiteros',ic:'🦟',lb:'Mosquiteros'},
+  {id:'decks',ic:'🪵',lb:'Decks y pérgolas'},
+  {id:'alambrados',ic:'🔗',lb:'Alambrados y cercos perimetrales'},
+  {id:'revestimientos',ic:'🧱',lb:'Revestimientos / piedra'},
+  {id:'soldadura',ic:'⚡',lb:'Soldadura'},
+  {id:'poda',ic:'🌳',lb:'Poda y extracción de árboles'},
+  {id:'paisajismo',ic:'🌺',lb:'Paisajismo / parquización'},
+  {id:'cesped_sintetico',ic:'🟩',lb:'Césped sintético'},
+  {id:'redes',ic:'📶',lb:'Redes / internet / wifi'},
+  {id:'alarmas',ic:'🚨',lb:'Alarmas y monitoreo'},
+  {id:'domotica',ic:'🎛️',lb:'Domótica / automatización'},
+  {id:'solar',ic:'☀️',lb:'Energía solar / paneles'},
+  {id:'generadores',ic:'🔋',lb:'Grupos electrógenos'},
+  {id:'hidrolavado',ic:'🚿',lb:'Hidrolavado y limpieza de fachadas'},
+  {id:'tapizados',ic:'🛋️',lb:'Limpieza de tapizados y alfombras'},
+  {id:'fin_obra',ic:'🧹',lb:'Limpieza fin de obra'},
+  {id:'arquitectura',ic:'📐',lb:'Arquitectura / dirección de obra'},
+  {id:'agrimensura',ic:'📏',lb:'Agrimensura'},
+  {id:'contador',ic:'🧮',lb:'Estudio contable'},
+  {id:'abogado',ic:'⚖️',lb:'Estudio jurídico'},
+  {id:'escribania',ic:'📜',lb:'Escribanía'},
+  {id:'seguros',ic:'🛟',lb:'Seguros'},
+  {id:'diseno',ic:'🖥️',lb:'Diseño gráfico / web / redes'},
+  {id:'peluqueria',ic:'💇',lb:'Peluquería y barbería'},
+  {id:'maquillaje',ic:'💄',lb:'Maquillaje y peinado'},
+  {id:'catering',ic:'🍽️',lb:'Catering / chef a domicilio'},
+  {id:'mozos',ic:'🤵',lb:'Mozos y servicio para eventos'},
+  {id:'enfermeria',ic:'💉',lb:'Enfermería a domicilio'},
+  {id:'transporte_escolar',ic:'🚌',lb:'Transporte escolar'},
+  {id:'chapa_pintura',ic:'🚙',lb:'Chapa y pintura'},
+  {id:'auxilio',ic:'🛻',lb:'Auxilio mecánico / remolque'},
+  {id:'adiestramiento',ic:'🐕',lb:'Adiestramiento canino'},
+  {id:'guarderia_canina',ic:'🏡',lb:'Guardería / hotel canino'},
   {id:'otros_of',ic:'✨',lb:'Otros'}
 ];
 const RUBROSV=[
@@ -1843,6 +1908,27 @@ function opcionesRubro(lista){
 const rubroLb=id=>{const r=RUBROS.concat(RUBROSV).find(x=>x.id===id);return r?r.lb:id;};
 const rubroLbCompleto=rec=>{const base=rubroLb(rec.rubro);return((rec.rubro==='otros'||rec.rubro==='otros_of')&&rec.rubro_otro)?rec.rubro_otro:base;};
 const COLORES_RUBRO = {
+  /* --- rubros nuevos (1.7) — siguen las mismas familias de color de abajo --- */
+  // Instalaciones -> azul-petroleo
+  calefaccion:'#2E5C78', destapaciones:'#3E6E8C', bombas_agua:'#4A82A0',
+  redes:'#2E5C78', alarmas:'#3E6E8C', domotica:'#4A82A0', solar:'#3E6E8C',
+  generadores:'#2E5C78',
+  // Obra / estructura -> terracota
+  zingueria:'#9C5F30', aberturas:'#B5713A', placards:'#8A5228', toldos:'#B5713A',
+  mosquiteros:'#9C5F30', decks:'#8A5228', alambrados:'#9C5F30',
+  revestimientos:'#B5713A', soldadura:'#8A5228',
+  // Exterior / verde -> salvia
+  poda:'#4F7A4A', paisajismo:'#5B8C6A', cesped_sintetico:'#4F7A4A',
+  // Hogar / servicios -> mostaza
+  hidrolavado:'#B5943A', tapizados:'#9C7E30', fin_obra:'#B5943A',
+  transporte_escolar:'#9C7E30', chapa_pintura:'#B5943A', auxilio:'#9C7E30',
+  // Profesionales -> ciruela
+  arquitectura:'#6B4E7D', agrimensura:'#7D5C8F', contador:'#6B4E7D',
+  abogado:'#7D5C8F', escribania:'#6B4E7D', seguros:'#7D5C8F', diseno:'#6B4E7D',
+  // Personas / mascotas -> rosa viejo
+  peluqueria:'#9C5F7A', maquillaje:'#A86B87', catering:'#9C5F7A',
+  mozos:'#A86B87', enfermeria:'#9C5F7A',
+  adiestramiento:'#A86B87', guarderia_canina:'#9C5F7A',
   // Instalaciones (cerrajería, plomería, electricidad, aire, gas, electrodomésticos, cámaras, portones, seguridad, riego, piletero, telefonía) → familia azul-petróleo
   cerrajeria:'#3E6E8C', plomeria:'#2E5C78', electricidad:'#4A82A0', aire:'#3E6E8C', gas:'#3E6E8C',
   electrodomesticos:'#2E5C78', camaras:'#2E5C78', portones:'#2E5C78', seguridad:'#4A82A0',
@@ -2806,22 +2892,114 @@ function pintarSugerencias(){
   const top=rubrosDelMundo().slice(0,5);
   el.innerHTML=top.map(r=>'<button class="chf" onclick="filtrar(\''+r.id+'\');window.scrollTo({top:0,behavior:\'smooth\'})">'+r.lb+'</button>').join('');
 }
+/* ===== Nombre corto, SOLO para los cuadraditos de la home =====
+   El nombre largo sigue mandando en la ficha, en los selectores y en el
+   buscador; aca se usa uno corto porque en la grilla de la home el texto se
+   cortaba a la mitad ("Bienestar / Te-", "Camaras / se-") o se comia tres
+   renglones ("Animacion y fotografia de eventos").
+   Si un rubro no esta en esta lista, se usa su nombre completo. */
+const RUBRO_CORTO={
+  construccion:'Construcción', domestica:'Empleadas', techos:'Techos',
+  electrodomesticos:'Electrodomésticos', cortinas:'Cortinas', vidrieria:'Vidriería',
+  computacion:'Computación', fumigacion:'Fumigación', camaras:'Cámaras',
+  bienestar:'Bienestar', clases_edu:'Clases', clases_arte:'Música y arte',
+  gestoria:'Gestoría', lavadoautos:'Lavado de autos', bicicleteria:'Bicicletería',
+  salud:'Salud', fotografia:'Eventos y fotos', traslados:'Traslados',
+  portones:'Portones', seguridad:'Seguridad', riego:'Riego', piletero:'Piletero',
+  mecanica:'Mecánica', tapiceria:'Tapicería', mensajeria:'Mensajería',
+  zapateria:'Zapatería', peluqueria_canina:'Peluquería canina', pisos:'Pisos',
+  durlock:'Durlock', decoracion:'Decoración', reparacion_celulares:'Celulares',
+  sonido_dj:'Sonido / DJ', masajista:'Masajes', eventos_alquiler:'Eventos y alquiler',
+  colegio:'Colegio',
+  /* --- rubros nuevos (1.7) --- */
+  calefaccion:'Calefacción', destapaciones:'Destapaciones', bombas_agua:'Bombas de agua',
+  zingueria:'Zinguería', aberturas:'Aberturas', placards:'Placards y cocinas',
+  toldos:'Toldos', mosquiteros:'Mosquiteros', decks:'Decks y pérgolas',
+  alambrados:'Alambrados', revestimientos:'Revestimientos', soldadura:'Soldadura',
+  poda:'Poda de árboles', paisajismo:'Paisajismo', cesped_sintetico:'Césped sintético',
+  redes:'Redes / wifi', alarmas:'Alarmas', domotica:'Domótica', solar:'Energía solar',
+  generadores:'Generadores', hidrolavado:'Hidrolavado', tapizados:'Limpieza de tapizados',
+  fin_obra:'Limpieza fin de obra', arquitectura:'Arquitectura', agrimensura:'Agrimensura',
+  contador:'Contador', abogado:'Abogado', escribania:'Escribanía', seguros:'Seguros',
+  diseno:'Diseño y web', peluqueria:'Peluquería', maquillaje:'Maquillaje',
+  catering:'Catering', mozos:'Mozos', enfermeria:'Enfermería',
+  transporte_escolar:'Transporte escolar', chapa_pintura:'Chapa y pintura',
+  auxilio:'Auxilio mecánico', adiestramiento:'Adiestramiento canino',
+  guarderia_canina:'Guardería canina',
+  /* --- vecinos --- */
+  segundamano:'Segunda mano', costura:'Costura', ninera:'Niñera',
+  cuidadoadultos:'Cuidado de adultos', panaderia:'Panadería', entrenador:'Entrenador',
+  paseador:'Paseador de perros', frutasyverduras:'Frutas y verduras',
+  inmobiliaria:'Inmobiliaria', estetica:'Estética', muebles:'Muebles',
+  almacen:'Almacén', blanqueria:'Blanquería', telefonia:'Telefonía',
+  vinoteca:'Vinoteca', bebes:'Artículos de bebé', profesionales:'Profesionales',
+  rotiseria:'Rotisería', supermercado:'Supermercado', libreria:'Librería',
+  regaleria:'Regalería', perfumeria:'Perfumería', alquiler_eventos:'Alquiler eventos',
+  conservas:'Conservas', granja:'Granja', jabones:'Jabones y velas',
+  deportivos:'Deportivos', parrillas:'Parrillas', manicura:'Manicura'
+};
+const rubroCorto=r=>RUBRO_CORTO[r.id]||r.lb;
 let RUBROS_EXPANDIDO=false;
 const RUBROS_LIMITE=8;
+/* ===== Que rubros se ven primero en la home =====
+   Antes esto salia ordenado alfabeticamente, y era un problema real: la pantalla
+   pregunta "¿Que necesitas resolver hoy?" y respondia con Aire acondicionado,
+   Albanileria, Animacion y fotografia y Bicicleteria — mientras Plomeria,
+   Electricidad y Gas quedaban escondidas detras de "Ver mas rubros". El que tiene
+   una perdida de agua abria la app y no veia Plomeria.
+   Ahora estos van primero, y el resto atras. Dentro de cada grupo el orden es
+   alfabetico, para que nadie tenga que adivinar por que uno esta antes que otro.
+   Para cambiar cuales son, editar estas dos listas y nada mas. */
+const RUBROS_PRIMERO={
+  oficios:['plomeria','electricidad','gas','cerrajeria','jardineria','pileta','aire','limpieza'],
+  vecinos:['comida','tortas','panaderia','ninera','clases_edu','costura','artesanias','mascotas']
+};
+function ordenHome(lista,mundo){
+  const prio=RUBROS_PRIMERO[mundo]||[];
+  const grupo=id=>prio.includes(id)?0:1;
+  return [...lista].sort((a,b)=>{
+    const ga=grupo(a.id), gb=grupo(b.id);
+    if(ga!==gb)return ga-gb;              // primero los elegidos, despues el resto
+    return a.lb.localeCompare(b.lb,'es'); // y DENTRO de cada grupo, alfabetico
+  });
+}
+/* ===== Que rubros tienen a alguien cargado en el barrio que se esta mirando =====
+   Oficios paso de 56 a 96 rubros. Mostrar los 96 seria una grilla de 24 filas
+   donde 80 y pico llevan a "Todavia no hay nadie cargado en este oficio": dos
+   toques para llegar a la nada.
+   Asi que la grilla arranca con los 8 elegidos + los que tienen gente de verdad,
+   y la lista completa queda detras de "Ver todos los rubros". A medida que se
+   cargan proveedores, la grilla crece sola. */
+function rubrosConGente(){
+  const b=S.cfg.barrio;
+  const ids=new Set();
+  if(MUNDO==='vecinos'){
+    (CACHEV||[]).forEach(v=>{ if(v.rubro&&vendeEn(v,b))ids.add(v.rubro); });
+  }else{
+    (CACHE||[]).forEach(p=>{ if(p.rubro&&p.verificado&&entraEn(p,b))ids.add(p.rubro); });
+  }
+  return ids;
+}
 function pintarRubros(){
-  const lista=[...rubrosDelMundo()].sort((a,b)=>a.lb.localeCompare(b.lb,'es'));
-  const hayMas=lista.length>RUBROS_LIMITE;
-  const visibles=(RUBROS_EXPANDIDO||!hayMas)?lista:lista.slice(0,RUBROS_LIMITE);
+  const lista=ordenHome(rubrosDelMundo(),MUNDO);
+  const conGente=rubrosConGente();
+  const prio=RUBROS_PRIMERO[MUNDO]||[];
+  /* los 8 elegidos van siempre, tengan o no gente: son las urgencias, y que
+     aparezcan vacias tambien es informacion ("no hay gasista en tu barrio") */
+  const utiles=lista.filter(r=>prio.includes(r.id)||conGente.has(r.id));
+  const base=utiles.length>=RUBROS_LIMITE?utiles:lista;
+  const hayMas=lista.length>base.length||base.length>RUBROS_LIMITE;
+  const visibles=RUBROS_EXPANDIDO?lista:base.slice(0,Math.max(RUBROS_LIMITE,base.length));
   let html=visibles.map(r=>{
     return '<div class="rubro'+(RUBRO_ACTIVO===r.id?' on':'')+'" onclick="filtrar(\''+r.id+'\')">'
-    +'<div class="rb-badge" style="background:'+(COLORES_RUBRO[r.id]||'#3D6A5C')+'">'+(ICONOS_RUBRO[r.id]||r.ic)+'</div><div class="rb-lb">'+r.lb+'</div></div>';
+    +'<div class="rb-badge" style="background:'+(COLORES_RUBRO[r.id]||'#3D6A5C')+'">'+(ICONOS_RUBRO[r.id]||r.ic)+'</div><div class="rb-lb">'+esc(rubroCorto(r))+'</div></div>';
   }).join('');
   document.getElementById('rubros').innerHTML=html;
   const verMasEl=document.getElementById('verMasRubros');
   if(verMasEl){
     if(hayMas){
       verMasEl.style.display='block';
-      verMasEl.textContent=RUBROS_EXPANDIDO?'Ver menos ↑':'Ver más rubros ↓';
+      verMasEl.textContent=RUBROS_EXPANDIDO?'Ver menos ↑':'Ver todos los rubros ('+lista.length+') ↓';
     }else{
       verMasEl.style.display='none';
     }
@@ -2929,7 +3107,48 @@ const SINONIMOS={
   dietetica:'almacen',nueces:'almacen',suplementos:'almacen',organicos:'almacen',almacen:'almacen',frutossecos:'almacen',
   toallon:'blanqueria',sabanas:'blanqueria',blanqueria:'blanqueria',toalla:'blanqueria',
   celular:'telefonia',funda:'telefonia',cargador:'telefonia',telefono:'telefonia',
-  balanceado:'mascotas',croquetas:'mascotas',cuidador:'mascotas',cuidadora:'mascotas'
+  balanceado:'mascotas',croquetas:'mascotas',cuidador:'mascotas',cuidadora:'mascotas',
+  /* ===== rubros nuevos (1.7) ===== */
+  caldera:'calefaccion',radiador:'calefaccion',estufa:'calefaccion',calefaccion:'calefaccion',
+  calefactor:'calefaccion',termotanque:'calefaccion',calefon:'calefaccion',
+  destapar:'destapaciones',destapacion:'destapaciones',destapaciones:'destapaciones',
+  cloaca:'destapaciones',cloacas:'destapaciones',desagote:'destapaciones',
+  cisterna:'bombas_agua',presurizador:'bombas_agua',hidroneumatico:'bombas_agua',
+  zinguero:'zingueria',zingueria:'zingueria',canaleta:'zingueria',pluvial:'zingueria',babeta:'zingueria',
+  aluminio:'aberturas',abertura:'aberturas',aberturas:'aberturas',corrediza:'aberturas',
+  placard:'placards',placares:'placards',vestidor:'placards',alacena:'placards',amoblamiento:'placards',
+  toldo:'toldos',toldos:'toldos',lona:'toldos',
+  mosquitero:'mosquiteros',mosquiteros:'mosquiteros',
+  deck:'decks',pergola:'decks',quincho:'decks',
+  alambrado:'alambrados',cerco:'alambrados',perimetral:'alambrados',tejido:'alambrados',
+  revestimiento:'revestimientos',piedra:'revestimientos',laja:'revestimientos',
+  soldador:'soldadura',soldadura:'soldadura',soldar:'soldadura',
+  poda:'poda',podar:'poda',arbol:'poda',arboles:'poda',tala:'poda',
+  paisajista:'paisajismo',paisajismo:'paisajismo',parquizacion:'paisajismo',
+  sintetico:'cesped_sintetico',
+  wifi:'redes',internet:'redes',router:'redes',fibra:'redes',cableado:'redes',
+  alarma:'alarmas',monitoreo:'alarmas',
+  domotica:'domotica',automatizacion:'domotica',
+  solar:'solar',fotovoltaico:'solar',
+  generador:'generadores',electrogeno:'generadores',
+  hidrolavado:'hidrolavado',hidrolavadora:'hidrolavado',fachada:'hidrolavado',
+  arquitecto:'arquitectura',arquitecta:'arquitectura',arquitectura:'arquitectura',plano:'arquitectura',
+  agrimensor:'agrimensura',agrimensura:'agrimensura',mensura:'agrimensura',amojonamiento:'agrimensura',
+  contador:'contador',contadora:'contador',impuestos:'contador',monotributo:'contador',balance:'contador',
+  abogado:'abogado',abogada:'abogado',juicio:'abogado',sucesion:'abogado',
+  escribano:'escribania',escribana:'escribania',escribania:'escribania',escritura:'escribania',
+  seguro:'seguros',seguros:'seguros',poliza:'seguros',siniestro:'seguros',
+  disenador:'diseno',logo:'diseno',
+  peluqueria:'peluqueria',peluquero:'peluqueria',peluquera:'peluqueria',
+  barberia:'peluqueria',barbero:'peluqueria',
+  maquillaje:'maquillaje',maquilladora:'maquillaje',peinado:'maquillaje',
+  catering:'catering',chef:'catering',cocinero:'catering',banquete:'catering',
+  mozo:'mozos',moza:'mozos',mozos:'mozos',camarero:'mozos',
+  enfermera:'enfermeria',enfermero:'enfermeria',enfermeria:'enfermeria',inyeccion:'enfermeria',
+  escolar:'transporte_escolar',
+  grua:'auxilio',remolque:'auxilio',auxilio:'auxilio',
+  adiestrador:'adiestramiento',adiestramiento:'adiestramiento',
+  guarderia:'guarderia_canina'
 };
 /* Sinonimos propios del lado Oficios. Se miran ANTES que el mapa general por dos
    motivos: hay palabras que en cada mundo significan cosas distintas
@@ -2938,6 +3157,27 @@ const SINONIMOS={
    caia en cerrajeria por la palabra "llave". Las claves se prueban de la mas
    larga a la mas corta, asi gana la mas especifica. */
 const SINONIMOS_OFICIOS={
+  /* --- rubros nuevos (1.7). Van ACA y no en el mapa general los que:
+         a) son frases de varias palabras (las claves se prueban de la mas larga
+            a la mas corta, asi gana la mas especifica), o
+         b) chocan con una palabra que en Vecinos significa otra cosa. --- */
+  'transporte escolar':'transporte_escolar','combi escolar':'transporte_escolar',
+  'traslado de chicos':'transporte_escolar',
+  'losa radiante':'calefaccion','tiro balanceado':'calefaccion',
+  'camara septica':'destapaciones','pozo ciego':'destapaciones',
+  'bomba de agua':'bombas_agua','tanque de agua':'bombas_agua',
+  'cesped sintetico':'cesped_sintetico','pasto sintetico':'cesped_sintetico',
+  'fin de obra':'fin_obra','post obra':'fin_obra',
+  'direccion de obra':'arquitectura','casa inteligente':'domotica',
+  'grupo electrogeno':'generadores','panel solar':'solar','paneles solares':'solar',
+  'chef a domicilio':'catering','hotel canino':'guarderia_canina',
+  'educacion canina':'adiestramiento','auxilio mecanico':'auxilio',
+  'extraccion de arboles':'poda','limpieza de tapizados':'tapizados',
+  /* "sillon" en Vecinos es el rubro Muebles; en Oficios tiene que traer tapizados */
+  sillon:'tapizados',tapizado:'tapizados',alfombra:'tapizados',
+  /* "chapa" sola es chapista; la zingueria se busca por canaleta o zinguero */
+  chapa:'chapa_pintura',chapista:'chapa_pintura',granizo:'chapa_pintura',
+  /* "bomba" sola caia en pileta; con agua/tanque manda bombas_agua */
   'desarrollo inmobiliario':'construccion','llave en mano':'construccion',
   inmobiliaria:'construccion',inmobiliario:'construccion',inmobiliarias:'construccion',
   construccion:'construccion',construcciones:'construccion',constructor:'construccion',
@@ -3091,7 +3331,9 @@ function pintarStories(){
   track.innerHTML=items.map(it=>
     '<div class="story" onclick="'+(it.tipo==='oficio'?'verDetalle(\''+it.id+'\')':'verDetalleVecino(\''+it.id+'\')')+'">'
     +'<div class="story-ring"><div class="story-ring-in">'+(it.foto?'<img src="'+esc(it.foto)+'" alt="">':esc(ini(it.nombre)))+'</div></div>'
-    +'<div class="story-name">'+esc(it.nombre)+'</div></div>'
+    +'<div class="story-name">'+esc(it.nombre)+'</div>'
+    +(rubroLbCompleto(it)?'<div class="story-rubro">('+esc(rubroCorto({id:it.rubro,lb:rubroLbCompleto(it)}))+')</div>':'')
+    +'</div>'
   ).join('');
 }
 /* El carrusel NO se mueve solo: se desliza con el dedo. Un elemento que se
@@ -3234,6 +3476,22 @@ async function traerVecinos(){
 }
 
 /* ===================== detalle ===================== */
+/* ===== La marca "Vive en el barrio" =====
+   Sale solo si el prestador tildo que vive ahi Y ademas existe un vecino
+   registrado en ese barrio con el mismo WhatsApp. Ese cruce es la validacion:
+   registrarse como vecino exige link de invitacion y numero de lote, asi que
+   el de afuera no la puede tener. No hubo que construir nada nuevo para esto. */
+function viveEnBarrio(p){
+  if(!p||!p.vive_en_barrio)return '';
+  const t=telNorm(p.tel);
+  if(!t)return '';
+  const esVecino=(CACHEV||[]).some(v=>telNorm(v.tel)===t&&norm(v.barrio||'')===norm(p.vive_en_barrio));
+  return esVecino?p.vive_en_barrio:'';
+}
+function chipVive(p){
+  const b=viveEnBarrio(p);
+  return b?'<span class="chip" style="background:var(--pine-soft);color:var(--pine)">🏡 Vive en '+esc(b)+'</span>':'';
+}
 function verDetalle(id){
   const p=(CACHE||[]).find(x=>String(x.id)===String(id));if(!p)return;
   DET=p;
@@ -3249,6 +3507,7 @@ function verDetalle(id){
     +'<div class="chips">'+(p.verificado?'<span class="chip">✓ Verificado</span>':'<span class="chip">Sin verificar</span>')
     +'<span class="chip">★ '+esc(p.rating||'—')+'</span>'
     +(esPro?'<span class="chip">DESTACADO</span>':'')
+    +chipVive(p)
     +(entra?'<span class="chip">En '+esc(barrioTxt())+'</span>':'')+'</div>'
     +'<div class="datos">'
     +'<div class="dato"><span>Cobertura</span><b>'+esc(barriosTxt)+'</b></div>'
@@ -3804,6 +4063,7 @@ async function enviarAlta(){
     anios,
     localidad:document.getElementById('sLocalidad').value.trim()||null,
     direccion:document.getElementById('sDireccion').value.trim()||null,
+    vive_en_barrio:(document.getElementById('sViveBarrio')||{}).checked?(cargarAcceso()||{}).barrio||null:null,
     dias:document.getElementById('sDias').value.trim()||null,
     rubro_otro:document.getElementById('sRubro').value==='otros_of'?(document.getElementById('sRubroOtro').value.trim()||null):null,
     barriosAprobados:elegidos.join(', '),
@@ -3823,6 +4083,7 @@ async function enviarAlta(){
   }else{rec.id=Date.now();S.prestadores.push(rec);guardar();}
   if(btnOf){btnOf.disabled=false;btnOf.textContent='Enviar mis datos';}
   ['sName','sTitular','sTel','sAnios','sDesc','sLink','sDireccion'].forEach(i=>{const e=document.getElementById(i);if(e)e.value='';});
+  const vb=document.getElementById('sViveBarrio');if(vb)vb.checked=false;
   document.querySelectorAll('.sb-item').forEach(cb=>{cb.checked=false;});
   document.getElementById('sLegal').checked=false;
   quitarFoto('oficio');

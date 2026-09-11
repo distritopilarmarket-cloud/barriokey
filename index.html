@@ -1835,6 +1835,18 @@ const RUBROS=[
   {id:'auxilio',ic:'🛻',lb:'Auxilio mecánico / remolque'},
   {id:'adiestramiento',ic:'🐕',lb:'Adiestramiento canino'},
   {id:'guarderia_canina',ic:'🏡',lb:'Guardería / hotel canino'},
+  /* Comercios de verdad, de afuera del barrio. Estos mismos ids existen tambien
+     en Vecinos, y no es un error: son dos cosas distintas. "Panaderia" en
+     Oficios es la panaderia de Pilar que reparte; en Vecinos es la que amasa en
+     su casa del barrio. La regla de siempre: Oficios viene de afuera, Vecinos
+     vive adentro. Sin estos rubros, cualquier comercio real caia en "Otros" y
+     no aparecia bajo ningun cuadradito de la home. */
+  {id:'carniceria',ic:'🥩',lb:'Carnicería'},
+  {id:'panaderia',ic:'🥖',lb:'Panadería / repostería'},
+  {id:'verduleria',ic:'🥬',lb:'Verdulería / frutería'},
+  {id:'almacen',ic:'🫒',lb:'Almacén / Dietética'},
+  {id:'rotiseria',ic:'🍕',lb:'Rotisería (pizza, empanadas, comida al paso)'},
+  {id:'vinoteca',ic:'🍷',lb:'Vinoteca / bebidas artesanales'},
   {id:'otros_of',ic:'✨',lb:'Otros'}
 ];
 const RUBROSV=[
@@ -1897,13 +1909,36 @@ function rubrosOrdenados(lista){
     return a.lb.localeCompare(b.lb,'es',{sensitivity:'base'});
   });
 }
-function opcionesRubro(lista){
+function opcionesRubro(lista,sel){
   const esOtros=r=>r.id==='otros'||r.id==='otros_of';
   const ord=lista.slice().sort((a,b)=>{
     if(esOtros(a)!==esOtros(b))return esOtros(a)?1:-1;
     return a.lb.localeCompare(b.lb,'es',{sensitivity:'base'});
   });
-  return ord.map(r=>'<option value="'+r.id+'">'+r.lb+'</option>').join('');
+  return ord.map(r=>'<option value="'+r.id+'"'+(sel&&r.id===sel?' selected':'')+'>'+r.lb+'</option>').join('');
+}
+/* El rubro se puede corregir desde el panel. Hasta la 1.7 no se podia: si
+   alguien se anotaba en "Otros" quedaba en "Otros" para siempre y no aparecia
+   bajo ningun cuadradito de la home, que es por donde busca casi todo el mundo.
+   Se arregla desde el panel y no hace falta que el prestador vuelva a cargarse. */
+function campoRubroEdit(rec,pref,lista,idOtros){
+  const selId='ed_rubro_'+pref+rec.id;
+  const otroId='ed_rubroOtro_'+pref+rec.id;
+  const wrapId='ed_rubroOtroWrap_'+pref+rec.id;
+  const esOtro=rec.rubro===idOtros;
+  return '<div class="field"><label>Rubro</label>'
+    +'<select id="'+selId+'" onchange="document.getElementById(\''+wrapId+'\').style.display=(this.value===\''+idOtros+'\')?\'block\':\'none\'">'
+    +opcionesRubro(lista,rec.rubro)+'</select></div>'
+    +'<div class="field" id="'+wrapId+'" style="display:'+(esOtro?'block':'none')+'">'
+    +'<label>¿Cuál? (solo si elegís "Otros")</label>'
+    +'<input id="'+otroId+'" value="'+esc(rec.rubro_otro||'')+'" placeholder="Ej: Kinesiología"></div>';
+}
+function patchRubroEdit(patch,pref,id,idOtros){
+  const sel=document.getElementById('ed_rubro_'+pref+id);
+  if(!sel)return;
+  patch.rubro=sel.value;
+  const otro=document.getElementById('ed_rubroOtro_'+pref+id);
+  patch.rubro_otro=(sel.value===idOtros&&otro)?(otro.value.trim()||null):null;
 }
 const rubroLb=id=>{const r=RUBROS.concat(RUBROSV).find(x=>x.id===id);return r?r.lb:id;};
 const rubroLbCompleto=rec=>{const base=rubroLb(rec.rubro);return((rec.rubro==='otros'||rec.rubro==='otros_of')&&rec.rubro_otro)?rec.rubro_otro:base;};
@@ -1950,6 +1985,7 @@ const COLORES_RUBRO = {
   // Comercios / almacén / rubros de Vecinos → familia mostaza (mismo grupo que "hogar/servicios")
   comida:'#B5943A', tortas:'#9C7E30', segundamano:'#4F7A4A', costura:'#9C5F7A',
   mascotas:'#9C5F7A', panaderia:'#9C7E30', carniceria:'#B5943A', frutasyverduras:'#4F7A4A',
+  verduleria:'#4F7A4A',
   almacen:'#9C7E30', blanqueria:'#3E6E8C', vinoteca:'#9C5F7A', muebles:'#8A5228',
   artesanias:'#B5713A', inmobiliaria:'#2E5C78', traslados:'#3E6E8C', carbon:'#8A5228',
   // Nuevos — Oficios
@@ -2934,6 +2970,7 @@ const RUBRO_CORTO={
   almacen:'Almacén', blanqueria:'Blanquería', telefonia:'Telefonía',
   vinoteca:'Vinoteca', bebes:'Artículos de bebé', profesionales:'Profesionales',
   rotiseria:'Rotisería', supermercado:'Supermercado', libreria:'Librería',
+  carniceria:'Carnicería', verduleria:'Verdulería',
   regaleria:'Regalería', perfumeria:'Perfumería', alquiler_eventos:'Alquiler eventos',
   conservas:'Conservas', granja:'Granja', jabones:'Jabones y velas',
   deportivos:'Deportivos', parrillas:'Parrillas', manicura:'Manicura'
@@ -3148,7 +3185,12 @@ const SINONIMOS={
   escolar:'transporte_escolar',
   grua:'auxilio',remolque:'auxilio',auxilio:'auxilio',
   adiestrador:'adiestramiento',adiestramiento:'adiestramiento',
-  guarderia:'guarderia_canina'
+  guarderia:'guarderia_canina',
+  /* Comercios. "carne" y "pan" ya estaban, pero antes no llevaban a ningun lado
+     en Oficios porque esos rubros solo existian en Vecinos. */
+  achuras:'carniceria',fiambreria:'carniceria',
+  pizzeria:'rotiseria',empanadas:'rotiseria',rotiseria:'rotiseria',
+  vinoteca:'vinoteca',bodega:'vinoteca'
 };
 /* Sinonimos propios del lado Oficios. Se miran ANTES que el mapa general por dos
    motivos: hay palabras que en cada mundo significan cosas distintas
@@ -4769,6 +4811,7 @@ function pintarAdmLista(){
         +(p.foto2?'<button class="mini" onclick="quitarFoto2Oficio(\''+p.id+'\')">Quitar</button>':'')
       +'</div>'
       +'<div class="field"><label>Nombre</label><input id="ed_nombre_'+p.id+'" value="'+esc(p.nombre||'')+'"></div>'
+      +campoRubroEdit(p,'o_',RUBROS,'otros_of')
       +'<div class="field"><label>WhatsApp</label><input id="ed_tel_'+p.id+'" value="'+esc(p.tel||'')+'"></div>'
       +'<div class="field"><label>Años de experiencia</label><input id="ed_anios_'+p.id+'" value="'+esc(p.anios||'')+'"></div>'
       +'<div class="field"><label>Descripción</label><textarea id="ed_desc_'+p.id+'" style="min-height:70px">'+esc(p.descripcion||'')+'</textarea></div>'
@@ -4858,6 +4901,7 @@ async function guardarEdicionOficio(id){
     direccion:document.getElementById('ed_dir_'+id).value.trim()||null,
     dias:document.getElementById('ed_dias_'+id).value.trim()||null
   };
+  patchRubroEdit(patch,'o_',id,'otros_of');
   patchNovedadPanel(p,'ed_nov_'+id,patch);
   if(Object.prototype.hasOwnProperty.call(FOTOS_EDIT_OFICIO,id)){
     patch.foto=FOTOS_EDIT_OFICIO[id];
@@ -5152,6 +5196,7 @@ function pintarAdmVecinos(){
       +'</div>'
       +'<div class="field"><label>Nombre</label><input id="edv_nombre_'+v.id+'" value="'+esc(v.nombre||'')+'"></div>'
       +'<div class="field"><label>Negocio/marca (opcional)</label><input id="edv_negocio_'+v.id+'" value="'+esc(v.negocio||'')+'"></div>'
+      +campoRubroEdit(v,'v_',RUBROSV,'otros')
       +'<div class="field"><label>WhatsApp</label><input id="edv_tel_'+v.id+'" value="'+esc(v.tel||'')+'"></div>'
       +'<div class="field"><label>Qué ofrece</label><textarea id="edv_que_'+v.id+'" style="min-height:70px">'+esc(v.que||'')+'</textarea></div>'
       +'<div class="field"><label>Link a catálogo/redes (opcional)</label><input id="edv_link_'+v.id+'" value="'+esc(v.link||'')+'"><small style="opacity:.7">Solo: Instagram, Facebook, TikTok, Drive/Docs/Fotos, iCloud, WhatsApp, Linktree o Mercado Libre.</small></div>'
@@ -5216,6 +5261,7 @@ async function guardarEdicionVecino(id){
     cuit:document.getElementById('edv_cuit_'+id).value.trim()||null,
     direccion:document.getElementById('edv_dir_'+id).value.trim()||null
   };
+  patchRubroEdit(patch,'v_',id,'otros');
   patchNovedadPanel(v,'edv_nov_'+id,patch);
   if(Object.prototype.hasOwnProperty.call(FOTOS_EDIT_VECINO,id)){
     patch.foto=FOTOS_EDIT_VECINO[id];

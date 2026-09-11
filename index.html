@@ -3312,9 +3312,9 @@ function pintarStories(){
   const oficiosDest=(CACHE||[]).filter(p=>{
     const nAprobP=(p.barriosAprobados||'').split(',').map(x=>x.trim()).filter(Boolean).length;
     return p.verificado && nAprobP>3;
-  }).map(p=>({tipo:'oficio',id:p.id,nombre:p.nombre,foto:p.foto}));
+  }).map(p=>({tipo:'oficio',id:p.id,nombre:p.nombre,foto:p.foto,rubro:p.rubro,rubro_otro:p.rubro_otro}));
   const vecinosDest=(ROL_ACTUAL==='oficio')?[]:(CACHEV||[]).filter(v=>v.aprobado && destActivo(v))
-    .map(v=>({tipo:'vecino',id:v.id,nombre:v.negocio||soloNombre(v.nombre),foto:v.foto}));
+    .map(v=>({tipo:'vecino',id:v.id,nombre:v.negocio||soloNombre(v.nombre),foto:v.foto,rubro:v.rubro,rubro_otro:v.rubro_otro}));
   /* Un mismo negocio puede estar publicado en los dos mundos (oficio + vecino).
      Solo se esconde el duplicado cuando se repiten NOMBRE Y FOTO: ahi serian dos
      circulitos identicos pegados y se lee como un error, y ademas ocuparia dos
@@ -3335,9 +3335,37 @@ function pintarStories(){
     +(rubroLbCompleto(it)?'<div class="story-rubro">('+esc(rubroCorto({id:it.rubro,lb:rubroLbCompleto(it)}))+')</div>':'')
     +'</div>'
   ).join('');
+  guinoStories(track);
 }
 /* El carrusel NO se mueve solo: se desliza con el dedo. Un elemento que se
-   corre cada 3 segundos es dificil de tocar y distrae mientras se lee. */
+   corre cada 3 segundos es dificil de tocar y distrae mientras se lee.
+
+   PERO la primera vez de la sesion hace un guiño: se corre un poquito y vuelve,
+   una sola vez, para que se entienda que ahi hay mas cosas al costado. Sin esto
+   mucha gente no descubre que se desliza y se pierde la mitad de los destacados.
+
+   Tres cuidados:
+   - Una sola vez por sesion (STORIES_GUINADO), no en cada repintado.
+   - Solo si hay algo tapado a la derecha. Si entran todos en la pantalla no hay
+     nada que insinuar y el movimiento seria ruido.
+   - Se respeta "reducir movimiento" del celular: quien lo pidio no ve el guiño. */
+let STORIES_GUINADO=false;
+function guinoStories(track){
+  if(STORIES_GUINADO||!track)return;
+  try{
+    if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  }catch(e){}
+  if(track.scrollWidth<=track.clientWidth+12)return;
+  STORIES_GUINADO=true;
+  setTimeout(function(){
+    try{
+      track.scrollTo({left:48,behavior:'smooth'});
+      setTimeout(function(){
+        try{track.scrollTo({left:0,behavior:'smooth'});}catch(e){}
+      },560);
+    }catch(e){}
+  },800);
+}
 
 function pintarVecinos(){
   const q=norm(document.getElementById('buscar').value);

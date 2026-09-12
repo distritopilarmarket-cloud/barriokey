@@ -242,6 +242,21 @@
     max-width:76px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
     overflow:hidden;word-break:break-word}
   .stories-nota{font-size:10px;color:var(--muted);margin:5px 0 0}
+  /* El 🔥 sobre el circulito: marca al que tiene novedad de hoy. El carrusel
+     es lo primero que se ve al abrir la app, asi que es el mejor lugar para
+     avisar "aca hay algo nuevo" sin agregar una pantalla. */
+  .story-ring-wrap{position:relative;width:60px;margin:0 auto}
+  .story-fuego{position:absolute;right:-2px;top:-2px;width:21px;height:21px;border-radius:50%;
+    background:var(--paper);border:1.5px solid var(--paper);box-shadow:0 1px 3px rgba(0,0,0,.18);
+    display:flex;align-items:center;justify-content:center;font-size:11px;line-height:1;pointer-events:none}
+  /* Recomendar (solo Vecinos). No existe el lado negativo: o recomendas o no
+     dice nada. Por eso el boton apagado no se lee como "no recomiendo". */
+  .rec-btn{width:100%;border:1.5px solid var(--line);background:#fff;color:var(--ink);
+    border-radius:12px;padding:11px 12px;font-size:13.5px;font-weight:700;cursor:pointer;
+    margin-bottom:10px;font-family:inherit;transition:background .15s,border-color .15s}
+  .rec-btn.on{background:var(--pine-soft);border-color:var(--moss);color:var(--pine)}
+  .rec-btn[disabled]{opacity:.55;cursor:default}
+  .rec-cont{font-size:12px;color:var(--pine);font-weight:600;margin:8px 0 8px 2px}
 
   .cupos-box{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:16px}
   .cupos-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px;font-size:13.5px}
@@ -829,7 +844,7 @@
         </label>
         <button class="btn btn-main" onclick="admGuardarNovedad()" style="margin-bottom:10px">📢 Publicar novedad</button>
         <p class="nota" id="admNovActualInfo" style="margin:0 0 8px"></p>
-        <button class="btn btn-soft" onclick="admQuitarNovedadActual()">🗑️ Quitar novedad activa de este barrio</button>
+        <button class="btn btn-soft" id="admNovQuitar" onclick="admQuitarNovedadActual()">🗑️ Quitar la novedad activa</button>
         <hr style="border:none;border-top:1px solid var(--line);margin:18px 0">
         <p class="nota" style="margin:0 0 4px;font-weight:600">🔔 Avisos al celular</p>
         <p class="nota" style="margin:0 0 12px">Les llega la notificación al teléfono a los vecinos de este barrio que tengan la app instalada.</p>
@@ -1059,7 +1074,7 @@
     <div class="field"><label>Lote o casa (opcional)</label><input id="pdLote" placeholder="Lote 214"></div>
   </div>
   <div class="field"><label>Tu teléfono (opcional)</label><input id="pdTel" inputmode="tel" placeholder="11 5555 5555"></div>
-  <div class="field"><label>Qué necesitás (opcional)</label><textarea id="pdDesc" placeholder="Contá el problema en dos líneas."></textarea></div>
+  <div class="field"><label id="pdLabelQue">Qué necesitás (opcional)</label><textarea id="pdDesc" placeholder="Contá el problema en dos líneas."></textarea></div>
   <div class="field"><label>Cuándo</label><select id="pdCuando">
     <option>Es urgente</option><option>Esta semana</option><option>Sin apuro</option></select></div>
   <p class="nota" style="margin:0 0 10px">El resto lo coordinás directo por WhatsApp con el prestador.</p>
@@ -2120,6 +2135,27 @@ function lineaLugarHorario(r){
   if(r.dias)partes.push('<div class="acceso"><span class="flag"></span><span class="txt">🕒 '+esc(r.dias)+'</span></div>');
   return partes.join('');
 }
+/* "Cómo llegar" abre el mapa que ya tiene el telefono (Google Maps en Android,
+   Mapas en iPhone) con la direccion ya escrita.
+   A proposito NO se embebe un mapa adentro de la app: eso necesita una API key
+   de Google con tarjeta asociada y cobra pasado un tope. Esto no cuesta nada,
+   no suma ninguna libreria, y lleva al lugar donde la persona ya sabe manejarse.
+   Nace de una charla real con una pinturería: "en Google Maps estoy
+   desactualizado y no lo puedo arreglar".
+   El boton NO se dibuja si no hay direccion — la mayoria de los oficios no
+   tiene local (el plomero no tiene direccion que mostrar) y medio listado
+   quedaria con un boton que no lleva a ningun lado. */
+function botonComoLlegar(r){
+  const dir=(r&&r.direccion||'').trim();
+  if(!dir)return '';
+  const consulta=dir+(r.barrio?(' '+r.barrio):'')+', Pilar, Buenos Aires';
+  return '<button class="btn btn-soft" style="margin-bottom:10px" onclick="abrirMapa(\''
+    +esc(consulta).replace(/'/g,"\\'")+'\')">📍 Cómo llegar</button>';
+}
+function abrirMapa(consulta){
+  if(!consulta)return;
+  window.open('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(consulta),'_blank');
+}
 function coincideDia(dias,f){
   const d=norm(dias);
   if(f==='diario')return d.includes('todos los dias');
@@ -2274,6 +2310,23 @@ const semilla={
 
 const CONN_DEFAULT={url:'https://bovnkvqqrswfatgmrjtj.supabase.co',key:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJvdm5rdnFxcnN3ZmF0Z21yanRqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxOTYzMzksImV4cCI6MjEwMDc3MjMzOX0.AsB4NfxhgOZJmpA7lrmReC5_IJqrmeU-tU2DkrPkAqw'};
 let S=cargar(), CONN=cargarConn(), CACHE=[], CACHEV=[], CACHER=[], RUBRO_ACTIVO='', FILTRO='', DET=null, MUNDO='oficios', RESPED=null, ESTRELLAS=0, CUPOS_EXPANDIDO=false;
+/* CACHEC  = los contactos por WhatsApp de ESTE dispositivo (Oficios)
+   CACHEREC = todas las recomendaciones, para contar (Vecinos) */
+let CACHEC=[], CACHEREC=[];
+
+/* ===== LOS COMERCIOS NO SE CALIFICAN CON UN PRESUPUESTO =====
+   A un plomero le pedis presupuesto; a una carniceria entras, comprás y te vas.
+   Hasta hoy la unica forma de calificar era desde un pedido de presupuesto, asi
+   que estos rubros no se podian calificar NUNCA — y son justo los que mas viven
+   de la calificacion: a un plomero lo elegis por recomendacion, a una carniceria
+   por las estrellas.
+   Para estos, el boton principal de la ficha es "Escribir por WhatsApp", y ese
+   toque queda registrado en `contactos`. Sigue habiendo una accion real de por
+   medio, que es lo que hace que las estrellas signifiquen algo. */
+const RUBROS_COMERCIO=new Set(['carniceria','panaderia','verduleria','almacen','rotiseria',
+  'vinoteca','ferreteria','gomeria','lavanderia','zapateria','colegio','gimnasio',
+  'veterinaria','peluqueria','bicicleteria','reparacion_celulares']);
+function esComercio(p){return !!p&&RUBROS_COMERCIO.has(p.rubro);}
 // Si el dispositivo ya tenía datos guardados de antes de agregar códigos de barrio,
 // completamos los que falten con los valores por defecto (no pisa los que ya editaste).
 if(!S.cfg.codigosBarrio)S.cfg.codigosBarrio={};
@@ -3049,7 +3102,12 @@ function ordenHome(lista,mundo){
   return [...lista].sort((a,b)=>{
     const ga=grupo(a.id), gb=grupo(b.id);
     if(ga!==gb)return ga-gb;              // primero los elegidos, despues el resto
-    return a.lb.localeCompare(b.lb,'es'); // y DENTRO de cada grupo, alfabetico
+    /* Y DENTRO de cada grupo, alfabetico POR LA ETIQUETA QUE SE VE.
+       Antes ordenaba por `lb` (el nombre largo) y dibujaba `rubroCorto`, asi que
+       la grilla parecia rota: "Animación y fotografía de eventos" ordenaba entre
+       Almacén y Arquitectura, pero en pantalla dice "Eventos y fotos".
+       Lo encontro Julian el 12/9 desplegando "Ver todos los rubros". */
+    return rubroCorto(a).localeCompare(rubroCorto(b),'es',{sensitivity:'base'});
   });
 }
 /* ===== Que rubros tienen a alguien cargado en el barrio que se esta mirando =====
@@ -3406,9 +3464,14 @@ function pintarStories(){
   const oficiosDest=(CACHE||[]).filter(p=>{
     const nAprobP=(p.barriosAprobados||'').split(',').map(x=>x.trim()).filter(Boolean).length;
     return p.verificado && nAprobP>3;
-  }).map(p=>({tipo:'oficio',id:p.id,nombre:p.nombre,foto:p.foto,rubro:p.rubro,rubro_otro:p.rubro_otro}));
+  /* OJO: lo que no se copia acá, no existe para el carrusel. Ya paso el 11/9
+     con el rubro (se agrego a la ficha y el carrusel seguia mudo porque este
+     .map no lo traia). Por eso van tambien los campos de la novedad. */
+  }).map(p=>({tipo:'oficio',id:p.id,nombre:p.nombre,foto:p.foto,rubro:p.rubro,rubro_otro:p.rubro_otro,
+              novedad_texto:p.novedad_texto,novedad_fecha:p.novedad_fecha}));
   const vecinosDest=(ROL_ACTUAL==='oficio')?[]:(CACHEV||[]).filter(v=>v.aprobado && destActivo(v))
-    .map(v=>({tipo:'vecino',id:v.id,nombre:v.negocio||soloNombre(v.nombre),foto:v.foto,rubro:v.rubro,rubro_otro:v.rubro_otro}));
+    .map(v=>({tipo:'vecino',id:v.id,nombre:v.negocio||soloNombre(v.nombre),foto:v.foto,rubro:v.rubro,rubro_otro:v.rubro_otro,
+              novedad_texto:v.novedad_texto,novedad_fecha:v.novedad_fecha}));
   /* Un mismo negocio puede estar publicado en los dos mundos (oficio + vecino).
      Solo se esconde el duplicado cuando se repiten NOMBRE Y FOTO: ahi serian dos
      circulitos identicos pegados y se lee como un error, y ademas ocuparia dos
@@ -3424,7 +3487,13 @@ function pintarStories(){
   wrap.style.display='block';
   track.innerHTML=items.map(it=>
     '<div class="story" onclick="'+(it.tipo==='oficio'?'verDetalle(\''+it.id+'\')':'verDetalleVecino(\''+it.id+'\')')+'">'
-    +'<div class="story-ring"><div class="story-ring-in">'+(it.foto?'<img src="'+esc(it.foto)+'" alt="">':esc(ini(it.nombre)))+'</div></div>'
+    +'<div class="story-ring-wrap">'
+      +'<div class="story-ring"><div class="story-ring-in">'+(it.foto?'<img src="'+esc(it.foto)+'" alt="">':esc(ini(it.nombre)))+'</div></div>'
+      /* El 🔥 solo si la novedad esta vigente (dura 24hs). El carrusel es lo
+         primero que se ve al abrir la app: es el lugar mas barato para avisar
+         que ahi hay algo nuevo hoy. */
+      +(novedadVigente(it)?'<span class="story-fuego" title="Tiene novedad de hoy">🔥</span>':'')
+    +'</div>'
     +'<div class="story-name">'+esc(it.nombre)+'</div>'
     +(rubroLbCompleto(it)?'<div class="story-rubro">('+esc(rubroCorto({id:it.rubro,lb:rubroLbCompleto(it)}))+')</div>':'')
     +'</div>'
@@ -3498,6 +3567,10 @@ function pintarVecinos(){
     +'<div style="min-width:0"><div class="c-name">'+esc(v.negocio||soloNombre(v.nombre))
     +(destActivo(v)?'<span class="dest">DESTACADO</span>':'')+'</div>'
     +'<div class="c-rubro">'+esc(rubroLbCompleto(v))+' · '+esc(v.barrio||('Todos los '+etiquetaBarrios()))+'</div></div></div>'
+    /* Solo el numero, nunca los nombres: si se muestra quien recomendo, el que
+       NO recomendo queda expuesto por ausencia y recomendar se vuelve una
+       obligacion social. */
+    +(textoRecomendaciones(v.id)?'<p class="rec-cont" style="margin:6px 0 0">'+esc(textoRecomendaciones(v.id))+'</p>':'')
     +'<p class="v-que">'+esc(v.que||'')+'</p>'
     +(v.dias?'<div class="acceso"><span class="flag"></span><span class="txt">'+esc(v.dias)+'</span></div>':'')
     +(destActivo(v)&&v.link?'<div class="acceso"><span class="txt">'+linkTocable(v.link)+'</span></div>':'')
@@ -3583,6 +3656,129 @@ async function traerResenas(){
   if(!enLinea())return S.resenas||[];
   return await sb('resenas?select=*&order=creado_en.desc&limit=400');
 }
+
+/* ===================== contactos por WhatsApp (Oficios) ===================== */
+async function traerContactos(){
+  if(!enLinea())return [];
+  const id=obtenerDispositivoId();
+  if(!id)return [];
+  return await sb('contactos?select=*&dispositivo=eq.'+encodeURIComponent(id)
+    +'&order=creado_en.desc&limit=200')||[];
+}
+/* Guarda el toque de WhatsApp para que despues se pueda calificar.
+   `ignore-duplicates` + el indice unico (dispositivo, prestador) hacen que
+   escribirle diez veces a la misma carniceria deje UNA sola ficha, no diez. */
+async function registrarContacto(p){
+  if(!p||!enLinea())return;
+  const acc=cargarAcceso()||{};
+  const rec={
+    dispositivo:obtenerDispositivoId(),
+    prestador:p.nombre||'',
+    rubro:p.rubro||'',
+    /* El barrio del REGISTRO manda, no el que esta mirando en el selector: es
+       el mismo criterio que usan las reseñas, y si no, el que anda curioseando
+       otro barrio queda anotado en uno donde no vive. */
+    barrio:acc.barrio||((S.cfg.barrio&&S.cfg.barrio!=='__TODOS__')?S.cfg.barrio:null),
+    lote:acc.lote||null,
+    vecino:soloNombre(acc.nombre||'')||null,
+    creado_en:new Date().toISOString()};
+  try{
+    /* El `on_conflict` en la URL NO es decorativo: sin el, PostgREST ignora el
+       Prefer y el segundo contacto al mismo comercio devuelve 409. Probado
+       contra la base real el 12/9 — con la base simulada no se notaba. */
+    await sb('contactos?on_conflict=dispositivo,prestador',
+      {method:'POST',body:rec,prefer:'resolution=ignore-duplicates'});
+    CACHEC=await traerContactos();
+  }catch(e){
+    /* Si falla, el vecino igual tiene que poder escribir por WhatsApp: lo unico
+       que se pierde es la posibilidad de calificar. No se le corta el camino. */
+  }
+}
+/* Una sola reseña por vecino y por prestador, venga del pedido o del contacto.
+   Sin esto, el que pide presupuesto Y ademas escribe por WhatsApp podria
+   calificar dos veces al mismo. Es la misma llave que usa enviarResenaAhora. */
+function yaHayResena(rec){
+  if(!rec)return false;
+  const accR=cargarAcceso()||{};
+  const lote=accR.lote||'';
+  /* A proposito NO se compara el barrio. El pedido guarda el barrio que la
+     persona eligio en el formulario y el contacto guarda el del registro: si
+     no coinciden, el mismo vecino podria calificar dos veces al mismo
+     prestador, una por cada origen. La casa (nombre + lote) alcanza para
+     identificar a quien califica, y de paso la regla queda mas estricta, que
+     es el lado seguro para errar. */
+  return (CACHER||[]).some(r=>
+    norm(r.prestador||'')===norm(rec.prestador||'')
+    && norm(r.vecino||'')===norm(rec.vecino||'')
+    && String(r.lote||'')===String(lote));
+}
+
+/* ===================== recomendaciones (Vecinos) =====================
+   Vecinos NO lleva estrellas: fue una decision deliberada desde el principio
+   para que no se arme lio entre gente que vive a cuatro cuadras. Lleva
+   "Recomendado por N vecinos", que solo suma y no tiene lado negativo. */
+async function traerRecomendaciones(){
+  if(!enLinea())return [];
+  return await sb('recomendaciones?select=vecino_id,dispositivo&limit=3000')||[];
+}
+function recomendacionesDe(id){
+  return (CACHEREC||[]).filter(r=>String(r.vecino_id)===String(id)).length;
+}
+function yoRecomende(id){
+  const mi=String(obtenerDispositivoId()||'');
+  return (CACHEREC||[]).some(r=>String(r.vecino_id)===String(id)&&String(r.dispositivo)===mi);
+}
+function textoRecomendaciones(id){
+  const n=recomendacionesDe(id);
+  if(!n)return '';
+  return n===1?'👍 Recomendado por 1 vecino':('👍 Recomendado por '+n+' vecinos');
+}
+let RECOMENDANDO=false;
+async function toggleRecomendar(id){
+  if(RECOMENDANDO)return;
+  if(!enLinea()){toast('Sin conexión — probá de nuevo en un rato');return;}
+  const mi=String(obtenerDispositivoId()||'');
+  if(!mi)return;
+  const yaEstaba=yoRecomende(id);
+  RECOMENDANDO=true;
+  const btn=document.getElementById('recBtn_'+id);
+  if(btn)btn.disabled=true;
+  try{
+    if(yaEstaba){
+      await sb('recomendaciones?vecino_id=eq.'+encodeURIComponent(id)
+        +'&dispositivo=eq.'+encodeURIComponent(mi),{method:'DELETE'});
+    }else{
+      const acc=cargarAcceso()||{};
+      await sb('recomendaciones?on_conflict=vecino_id,dispositivo',
+        {method:'POST',prefer:'resolution=ignore-duplicates',
+        body:{vecino_id:String(id),dispositivo:mi,barrio:acc.barrio||null,
+              creado_en:new Date().toISOString()}});
+    }
+    CACHEREC=await traerRecomendaciones();
+    pintarBotonRecomendar(id);
+    if(MUNDO==='vecinos')pintarVecinos();
+    toast(yaEstaba?'Sacaste tu recomendación':'¡Gracias! Ya la recomendaste');
+  }catch(e){
+    toast('No se pudo guardar: '+(e&&e.message?e.message:'error de conexión'));
+  }finally{
+    RECOMENDANDO=false;
+    if(btn)btn.disabled=false;
+  }
+}
+function pintarBotonRecomendar(id){
+  const btn=document.getElementById('recBtn_'+id);
+  const cont=document.getElementById('recCont_'+id);
+  if(btn){
+    const yo=yoRecomende(id);
+    btn.classList.toggle('on',yo);
+    btn.textContent=yo?'👍 La recomendás — tocá para sacarlo':'👍 Recomendar';
+  }
+  if(cont){
+    const t=textoRecomendaciones(id);
+    cont.textContent=t;
+    cont.style.display=t?'block':'none';
+  }
+}
 function resenasDe(nombre){
   return (CACHER||[]).filter(r=>norm(r.prestador)===norm(nombre));
 }
@@ -3641,6 +3837,7 @@ function verDetalle(id){
     +(esPro&&p.link?'<p class="nota" style="margin:0 0 12px">'+linkTocable(p.link)+'</p>':'')
     +'<p class="nota" style="margin:0 0 16px">'+esc(p.descripcion||'')+'</p>'
     +lineaLugarHorario(p)
+    +botonComoLlegar(p)
     +(function(){
        const l=resenasDe(p.nombre).slice(0,3);
        if(!l.length)return '<p class="nota" style="margin:0 0 16px">Todavía no tiene reseñas de vecinos.</p>';
@@ -3653,7 +3850,15 @@ function verDetalle(id){
            +'<div class="reportar-wrap"><button class="reportar" onclick="reportar(\'resenas\',\''+r.id+'\')">🚩 Reportar</button></div>'
            +'</div>').join('');
      })()
-    +'<button class="btn btn-main" onclick="abrirPedir()">Pedir presupuesto</button>'
+    /* A un comercio se le escribe derecho — y ese toque queda registrado, que es
+       lo que despues le habilita la estrella. Pero el formulario NO se saca: a
+       una rotiseria le encargás tres docenas de empanadas para el sábado, y eso
+       es un pedido igual que el del plomero. Lo que cambia es cual va primero y
+       como se llama: "Hacer un pedido", no "Pedir presupuesto". */
+    +(esComercio(p)&&soloNum(p.tel)
+        ? '<button class="btn btn-main" onclick="waDe(\''+p.id+'\')">Escribir por WhatsApp</button>'
+          +'<button class="btn btn-soft" onclick="abrirPedir()">📝 Hacer un pedido</button>'
+        : '<button class="btn btn-main" onclick="abrirPedir()">Pedir presupuesto</button>')
     +'<button class="btn btn-soft" onclick="cerrar(\'shDet\')">Cerrar</button>';
   abrir('shDet');
 }
@@ -3669,12 +3874,20 @@ function verDetalleVecino(id){
     +(pro&&v.link?'<p class="nota" style="margin:0 0 12px">'+linkTocable(v.link)+'</p>':'')
     +'<p class="nota" style="margin:0 0 16px">'+esc(v.que||'')+'</p>'
     +lineaLugarHorario(v)
+    +botonComoLlegar(v)
     +(soloNum(v.tel)?'<button class="btn btn-main" onclick="waVecino(\''+v.id+'\')">Escribir por WhatsApp</button>':'')
+    /* Recomendar, no calificar. Sin estrellas, sin nombres y sin lado negativo:
+       el que no recomienda simplemente no toca el boton y nadie se entera.
+       Eso es lo que evita el conflicto entre gente que vive a cuatro cuadras.
+       Se puede destildar, para el "me lo aprete sin querer". */
+    +'<p class="rec-cont" id="recCont_'+v.id+'"></p>'
+    +'<button class="rec-btn" id="recBtn_'+v.id+'" onclick="toggleRecomendar(\''+v.id+'\')">👍 Recomendar</button>'
     +'<button class="btn btn-soft" onclick="cerrar(\'shDetV\')">Cerrar</button>'
     /* Reportar vive ACA adentro, no en la tarjeta del listado: para reportar
        algo primero hay que mirarlo, y una banderita en cada tarjeta es ruido
        que ademas planta la idea. Sigue estando a un toque. */
     +(puedeAvisar()?'<div class="reportar-wrap" style="margin-top:10px"><button class="reportar" onclick="reportar(\'vecinos\',\''+v.id+'\')">🚩 Reportar</button></div>':'');
+  pintarBotonRecomendar(v.id);
   abrir('shDetV');
 }
 function pedirDesde(id){
@@ -3770,9 +3983,15 @@ async function compartirApp(tipo){
     toast('No se pudo generar la invitación. Probá de nuevo.');
   }
 }
-function waDe(id){
+/* El "Escribir por WhatsApp" de la ficha de un COMERCIO.
+   Registra el contacto ANTES de abrir WhatsApp: es lo que despues le habilita
+   la estrella. Si el registro falla, se abre WhatsApp igual — nunca se le corta
+   el camino al vecino por un problema nuestro. */
+async function waDe(id){
   const p=(CACHE||[]).find(x=>String(x.id)===String(id));if(!p)return;
-  DET=p;waDirecto();
+  DET=p;
+  try{await registrarContacto(p);}catch(e){}
+  waDirecto();
 }
 function barrioTxt(){
   return (S.cfg.barrio==='__TODOS__')?'tu zona':S.cfg.barrio;
@@ -3781,7 +4000,10 @@ function waDirecto(){
   if(!DET)return;
   const t=soloNum(DET.tel);
   if(!t){toast('Este prestador todavía no cargó su WhatsApp');return;}
-  const msg='Hola, te escribo desde '+S.cfg.name+'. Vivo en '+barrioTxt()+' y necesito '+rubroLb(DET.rubro).toLowerCase()+'.';
+  /* A un plomero se le dice "necesito plomería"; a una carnicería, no. */
+  const msg=esComercio(DET)
+    ? 'Hola '+(DET.nombre||'')+', te vi en '+S.cfg.name+' (vivo en '+barrioTxt()+'). Quería consultarte.'
+    : 'Hola, te escribo desde '+S.cfg.name+'. Vivo en '+barrioTxt()+' y necesito '+rubroLb(DET.rubro).toLowerCase()+'.';
   window.open('https://wa.me/'+t+'?text='+encodeURIComponent(msg),'_blank');
 }
 
@@ -3795,8 +4017,18 @@ function toggleOtroBarrio(){
 function abrirPedir(){
   if(!DET)return;
   cerrar('shDet');
-  document.getElementById('pdTitulo').textContent='Pedir presupuesto';
+  /* "Presupuesto" es la palabra del plomero. A una carniceria o a una rotiseria
+     no les pedis un presupuesto: les hacés un pedido. Mismo formulario, misma
+     fila en la base; cambia como se llama. */
+  const comercio=esComercio(DET);
+  document.getElementById('pdTitulo').textContent=comercio?'Hacer un pedido':'Pedir presupuesto';
   document.getElementById('pdSub').textContent=DET.nombre+' · '+rubroLb(DET.rubro);
+  const lblQue=document.getElementById('pdLabelQue');
+  if(lblQue)lblQue.textContent=comercio?'Qué querés encargar (opcional)':'Qué necesitás (opcional)';
+  const phQue=document.getElementById('pdDesc');
+  if(phQue)phQue.placeholder=comercio?'Ej: 3 docenas de empanadas para el sábado.':'Contá el problema en dos líneas.';
+  const lblCuando=document.getElementById('pdCuando');
+  if(lblCuando)lblCuando.options[0].textContent=comercio?'Lo antes posible':'Es urgente';
   const inp=document.getElementById('pdBarrio');
   const sel=document.getElementById('pdBarrioSel');
   if(S.cfg.barrio==='__TODOS__'){
@@ -3858,18 +4090,36 @@ async function pintarPedidos(){
   const miId=obtenerDispositivoId();
   l=l.filter(p=>p.dispositivo===miId);
   window.__pedidosCache=l;
+
+  /* Los contactos por WhatsApp a comercios entran en la MISMA lista, con la
+     misma pinta. Para el vecino son lo mismo: "gente con la que hablé y a la
+     que puedo calificar". No merecen una pantalla aparte. */
+  const contactos=(CACHEC||[]).map(c=>({
+    id:'c'+c.id, __contacto:true,
+    prestador:c.prestador, rubro:c.rubro, barrio:c.barrio, lote:c.lote, vecino:c.vecino,
+    detalle:'Le escribiste por WhatsApp', estado:'contacto', creado_en:c.creado_en}));
+  window.__contactosCache=contactos;
+
+  const todo=[...l,...contactos].sort((a,b)=>
+    new Date(b.creado_en||0)-new Date(a.creado_en||0));
+
   const el=document.getElementById('listaPedidos');
-  if(!l.length){el.innerHTML='<div class="vacio">Todavía no pediste nada.<br>Buscá un oficio en Inicio y pedí presupuesto.</div>';return;}
-  el.innerHTML=l.map(p=>{
+  if(!todo.length){el.innerHTML='<div class="vacio">Todavía no pediste nada.<br>Buscá un oficio en Inicio y pedí presupuesto.</div>';return;}
+  el.innerHTML=todo.map(p=>{
     const f=new Date(p.creado_en).toLocaleString('es-AR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
-    const e=p.estado==='hecho'?'fin':(p.estado==='curso'?'curso':'nuevo');
-    const lb=p.estado==='hecho'?'Terminado':(p.estado==='curso'?'En curso':'Enviado');
+    const e=p.__contacto?'curso':(p.estado==='hecho'?'fin':(p.estado==='curso'?'curso':'nuevo'));
+    const lb=p.__contacto?'Contacto':(p.estado==='hecho'?'Terminado':(p.estado==='curso'?'En curso':'Enviado'));
+    /* `yaHayResena` mira las reseñas de verdad, asi que tapa el boton tanto si
+       califico desde el pedido como desde el contacto. Es lo que evita que el
+       que pidio presupuesto Y ademas escribio por WhatsApp califique dos veces
+       al mismo prestador. */
+    const calificado=p.__contacto?yaHayResena(p):(p.calificado||yaHayResena(p));
     return '<div class="pedido"><div class="pedido-top"><span class="estado '+e+'">'+lb+'</span>'
       +'<span class="p-tit">'+esc(p.prestador||rubroLb(p.rubro))+'</span></div>'
       +'<div class="p-txt">'+esc(p.detalle)+'</div>'
-      +'<div class="p-pie">'+esc(p.barrio)+(p.lote?' · '+esc(p.lote):'')+' · '+f+'</div>'
-      +((p.prestador&&!p.calificado)?'<button class="mini" onclick="calificar(\''+p.id+'\')">★ Calificar a '+esc(p.prestador)+'</button>':'')
-      +(p.calificado?'<div class="p-pie" style="color:var(--ok)">✓ Ya calificaste este trabajo</div>':'')
+      +'<div class="p-pie">'+esc(p.barrio||'')+(p.lote?' · '+esc(p.lote):'')+' · '+f+'</div>'
+      +((p.prestador&&!calificado)?'<button class="mini" onclick="calificar(\''+p.id+'\')">★ Calificar a '+esc(p.prestador)+'</button>':'')
+      +(calificado?'<div class="p-pie" style="color:var(--ok)">✓ Ya calificaste a '+esc(p.prestador||'')+'</div>':'')
       +'</div>';
   }).join('');
 }
@@ -4104,6 +4354,7 @@ function calificar(id){
   const l=(enLinea()?null:S.pedidos)||S.pedidos;
   let p=(l||[]).find(x=>String(x.id)===String(id));
   if(!p&&window.__pedidosCache)p=window.__pedidosCache.find(x=>String(x.id)===String(id));
+  if(!p&&window.__contactosCache)p=window.__contactosCache.find(x=>String(x.id)===String(id));
   if(!p){toast('No encontramos ese pedido');return;}
   RESPED=p;ESTRELLAS=0;
   document.getElementById('rsSub').textContent=p.prestador+' · '+rubroLb(p.rubro);
@@ -4153,11 +4404,7 @@ async function enviarResenaAhora(){
   /* Segunda red, por si el candado del boton no alcanza (se corto la conexion y
      el POST entro igual, o la persona entra de nuevo mas tarde): una reseña por
      vecino y por prestador. Si ya calificó, se avisa y no se graba de nuevo. */
-  const yaCalifico=(CACHER||[]).some(r=>
-    norm(r.prestador||'')===norm(rec.prestador||'')
-    && norm(r.vecino||'')===norm(rec.vecino||'')
-    && norm(r.barrio||'')===norm(rec.barrio||'')
-    && String(r.lote||'')===String(rec.lote||''));
+  const yaCalifico=yaHayResena(rec);
   if(yaCalifico){
     toast('Ya dejaste tu reseña a '+rec.prestador+'. Solo se puede calificar una vez.');
     cerrar('shResena');
@@ -4166,7 +4413,10 @@ async function enviarResenaAhora(){
   if(enLinea()){
     try{
       await sb('resenas',{method:'POST',body:rec});
-      await accionPublica({accion:'marcarCalificado',id:RESPED.id});
+      /* Un contacto no es un pedido: no hay fila en `pedidos` que marcar.
+         Lo que evita la segunda reseña es `yaHayResena`, que mira las reseñas
+         reales y sirve para los dos origenes. */
+      if(!RESPED.__contacto)await accionPublica({accion:'marcarCalificado',id:RESPED.id});
     }catch(e){toast('No se pudo publicar la reseña: '+(e&&e.message?e.message:'error de conexión'));return;}
   }else{
     rec.id=Date.now();S.resenas=S.resenas||[];S.resenas.unshift(rec);
@@ -4451,7 +4701,10 @@ async function admEnviarPush(){
 let NOVEDAD=null, NOV_FOTO1=null, NOV_FOTO2=null;
 async function traerNovedad(){
   if(!enLinea())return null;
-  if(ROL_ACTUAL!=='vecino'&&ROL_ACTUAL!=='oficio')return null;
+  /* El admin tambien ve las novedades: si no, no puede comprobar que lo que
+     publica salio bien (le paso a Julian el 12/9 — publicaba y no veia nada).
+     Ve las de "__TODOS__" y, si tiene un barrio elegido, la de ese barrio. */
+  if(ROL_ACTUAL!=='vecino'&&ROL_ACTUAL!=='oficio'&&ROL_ACTUAL!=='admin')return null;
   const acc=cargarAcceso();
   /* Dos tipos de novedad, a proposito:
      - La de UN barrio es asunto de ese barrio (se rompio la cloaca en Jazmines
@@ -4461,7 +4714,9 @@ async function traerNovedad(){
        enterarse de una funcion nueva. El oficio no vive en el barrio, asi que
        nunca ve la novedad de un barrio.
      Si el registro no tiene barrio, igual se muestran las de la app. */
-  const barrio=(ROL_ACTUAL==='vecino')?((acc&&acc.barrio)||null):null;
+  const barrio=(ROL_ACTUAL==='vecino')?((acc&&acc.barrio)||null)
+              :(ROL_ACTUAL==='admin')?(S.cfg.barrio&&S.cfg.barrio!=='__TODOS__'?S.cfg.barrio:null)
+              :null;
   try{
     // trae la de su barrio y tambien la que se publico para todos; gana la mas nueva
     const enLista=barrio?('"'+encodeURIComponent(barrio)+'","__TODOS__"'):'"__TODOS__"';
@@ -4527,7 +4782,16 @@ async function admCargarNovedadActual(){
   try{
     const r=await sbAdmin('novedades','GET','barrio=eq.'+encodeURIComponent(barrio)+'&vence_en=gt.'+encodeURIComponent(new Date().toISOString())+'&order=creado_en.desc&limit=1');
     const actual=r&&r[0];
-    info.textContent=actual?('Ya hay una novedad activa en este barrio, válida hasta '+new Date(actual.vence_en).toLocaleDateString('es-AR')+'. Publicar una nueva la reemplaza.'):'No hay ninguna novedad activa en este barrio.';
+    /* Nombrar el barrio, siempre. Antes decia "en este barrio" y se leia como
+       si hablara de la app entera: Julian tenia una novedad publicada en
+       "Todos" y con otro barrio elegido arriba el cartel decia que no habia
+       ninguna. El desplegable manda, y ahora se ve. */
+    const lbl=(barrio==='__TODOS__')?'todos los barrios':barrio;
+    info.textContent=actual
+      ? ('Ya hay una novedad activa en '+lbl+', válida hasta '+new Date(actual.vence_en).toLocaleDateString('es-AR')+'. Publicar una nueva la reemplaza.')
+      : ('No hay ninguna novedad activa en '+lbl+'.');
+    const btnQ=document.getElementById('admNovQuitar');
+    if(btnQ)btnQ.textContent='🗑️ Quitar la novedad de '+lbl;
   }catch(e){info.textContent='';}
 }
 async function admGuardarNovedad(){
@@ -4565,7 +4829,12 @@ async function admGuardarNovedad(){
         if(rp&&rp.ok&&rp.enviados)toast('Aviso enviado a '+rp.enviados+' celulares');
         else if(rp&&rp.guardado==='pendiente')toast('El barrio está en manual: el aviso quedó en espera');
       }
-    }catch(e){}
+    }catch(e){
+      /* Antes este catch estaba VACIO: si la clave de envío estaba mal, la
+         novedad se publicaba igual y no aparecía ningún cartel. Se podía tener
+         el cartel andando y el aviso al celular roto sin enterarse nunca. */
+      toast('La novedad se publicó, pero el aviso al celular falló — revisá la clave de envío.');
+    }
     admLimpiarFormNovedad();
   }catch(e){toast('No se pudo publicar: '+(e&&e.message?e.message:'error'));}
 }
@@ -4746,6 +5015,10 @@ async function refrescar(){
   try{CACHE=await traerPrestadores();}catch(e){CACHE=S.prestadores;offline=true;}
   try{CACHEV=await traerVecinos();}catch(e){CACHEV=S.vecinos||[];offline=true;}
   try{CACHER=await traerResenas();}catch(e){CACHER=S.resenas||[];}
+  /* Estas dos no rompen nada si fallan (la tabla puede no estar creada
+     todavia): quedan vacias y la app sigue andando igual que antes. */
+  try{CACHEC=await traerContactos();}catch(e){CACHEC=[];}
+  try{CACHEREC=await traerRecomendaciones();}catch(e){CACHEREC=[];}
   await vencerProsOficios();
   const ob=document.getElementById('offlineBanner');
   if(ob)ob.innerHTML=offline
@@ -5905,11 +6178,35 @@ function cerrarChat(){
   document.getElementById('chatWrap').classList.remove('show');
   CHAT_ABIERTO=false;
 }
+/* ===== El asistente contesta en markdown, y la burbuja lo pintaba crudo =====
+   Las respuestas vienen con `**negrita**` y viñetas con guion, que es como
+   escriben los modelos. Con textContent el vecino leia los asteriscos a la
+   vista: "necesitás el **Plan Pro**". Queda desprolijo justo donde mas se nota,
+   porque preguntarle al asistente es una de las 5 tareas de la consigna.
+
+   SE ESCAPA EL HTML PRIMERO Y DESPUES SE FORMATEA. El orden no es negociable:
+   al reves, cualquier cosa que devuelva el modelo (o que alguien le haga
+   devolver) entraria como HTML de verdad en la pantalla del vecino. Solo se
+   habilitan negrita, cursiva y viñetas; nada que cargue nada de afuera. */
+function formatearMsgChat(texto){
+  let t=esc(String(texto||''));
+  t=t.replace(/\*\*([^*\n]+)\*\*/g,'<strong>$1</strong>');   // **negrita**
+  /* La cursiva NO se abre si hay un espacio pegado al asterisco. Sin esa
+     condicion, "2 * 3 = 6 y 4 * 5 = 20" salia todo en cursiva: el primer
+     asterisco abria y el segundo cerraba. Una multiplicacion no es markdown. */
+  t=t.replace(/(^|[\s(])\*(\S|\S[^*\n]*?\S)\*(?=[\s.,;:!?)]|$)/g,'$1<em>$2</em>');
+  t=t.replace(/(^|\n)\s*[-•]\s+/g,'$1• ');                   // viñetas prolijas
+  t=t.replace(/(^|\n)#{1,6}\s*/g,'$1');                      // titulos: fuera
+  t=t.replace(/\n/g,'<br>');
+  return t;
+}
 function pintarMsgChat(rol,texto){
   const box=document.getElementById('chatMsgs');
   const d=document.createElement('div');
   d.className='msg '+(rol==='user'?'user':rol==='think'?'think':'bot');
-  d.textContent=texto;
+  /* Lo que escribe el vecino va siempre como texto plano: no hay ningun motivo
+     para interpretarle nada de lo que el tipea. */
+  if(rol==='user')d.textContent=texto; else d.innerHTML=formatearMsgChat(texto);
   d.id = rol==='think' ? 'chatThinking' : '';
   box.appendChild(d);
   box.scrollTop=box.scrollHeight;

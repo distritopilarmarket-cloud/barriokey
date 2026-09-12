@@ -3562,12 +3562,17 @@ function pintarLista(){
     return '<div class="card" onclick="verDetalle(\''+p.id+'\')">'+novedadActivaTxt(p)+'<div class="card-in">'
       +'<div class="card-top"><div class="ava" style="background:'+col(p.nombre)+'">'+(p.foto?'<img src="'+esc(p.foto)+'" alt="">':esc(ini(p.nombre)))+'</div>'
       +'<div style="min-width:0"><div class="c-name">'+esc(p.nombre)
-      /* Decia "VERIFICADO" y era mentira: el tilde lo pone el admin cuando mira
-         la publicacion, no cuando comprueba quien es la persona. Los propios
-         Terminos dicen que no verificamos identidad ni residencia, asi que la
-         palabra se contradecia con el texto legal — y "la app decia verificado"
-         es justo la frase que no queres escuchar si algo sale mal. */
-      +(p.verificado?'<span class="ver">REVISADO</span>':'')
+      /* EL SELLO SE SACO, no se renombro.
+         Primero decia "VERIFICADO", que era falso: el tilde lo pone el admin al
+         mirar la publicacion, no al comprobar quien es la persona — y los
+         Terminos dicen justo que no verificamos identidad ni residencia.
+         Se cambio a "Revisado por BarrioKey" y Julian marco lo que faltaba:
+         eso TAMBIEN te engancha. Si el tipo hace un mal trabajo, "ustedes lo
+         revisaron" te vuelve igual.
+         Y al mirarlo de cerca, el sello no informaba NADA: `pintarLista` filtra
+         `p.verificado`, asi que todos los que el vecino ve ya estan aprobados.
+         Estaba en el 100% de las publicaciones. Sacarlo no pierde informacion y
+         saca de encima una promesa que no se puede sostener. */
       +(esPro?'<span class="dest">DESTACADO</span>':'')+'</div>'
       +'<div class="c-rubro">'+esc(rubroLbCompleto(p))+' · '+esc(p.anios||'—')+' años'+(p.localidad?' · '+esc(p.localidad):'')+'</div></div>'
       +(function(){const r=promedio(p.nombre);
@@ -3974,7 +3979,7 @@ function verDetalle(id){
     +(esPro&&p.foto2?'<img src="'+esc(p.foto2)+'" alt="" onclick="verFotoGrande(\''+esc(p.foto2)+'\')" style="width:100%;max-height:340px;object-fit:contain;border-radius:14px;cursor:zoom-in;margin-bottom:14px;background:var(--line2)">':'')
     +'<h3>'+esc(p.nombre)+'</h3>'
     +'<p class="sub">'+esc(rubroLbCompleto(p))+' · '+esc(p.anios||'—')+' años en el oficio</p>'
-    +'<div class="chips">'+(p.verificado?'<span class="chip">✓ Revisado por BarrioKey</span>':'<span class="chip">Sin revisar</span>')
+    +'<div class="chips">'
     /* El promedio se calcula de las reseñas reales, igual que en el listado.
        Antes leia p.rating, una columna que nunca se llena: la ficha mostraba
        "★ —" aunque abajo hubiera reseñas de 5 estrellas a la vista. */

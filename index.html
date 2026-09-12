@@ -956,7 +956,7 @@
         <div id="tableroAdm"></div>
         <div class="cuenta">
           <div class="cu"><b id="cTot">0</b><span>Total</span></div>
-          <div class="cu"><b id="cVer" style="color:var(--ok)">0</b><span>Verificados</span></div>
+          <div class="cu"><b id="cVer" style="color:var(--ok)">0</b><span>Revisados</span></div>
           <div class="cu"><b id="cPen" style="color:var(--warn)">0</b><span>A revisar</span></div>
         </div>
         <div class="field"><input id="admBuscarOficios" placeholder="🔍 Buscar por nombre o WhatsApp" oninput="pintarAdmLista()"></div>
@@ -3562,7 +3562,12 @@ function pintarLista(){
     return '<div class="card" onclick="verDetalle(\''+p.id+'\')">'+novedadActivaTxt(p)+'<div class="card-in">'
       +'<div class="card-top"><div class="ava" style="background:'+col(p.nombre)+'">'+(p.foto?'<img src="'+esc(p.foto)+'" alt="">':esc(ini(p.nombre)))+'</div>'
       +'<div style="min-width:0"><div class="c-name">'+esc(p.nombre)
-      +(p.verificado?'<span class="ver">VERIFICADO</span>':'')
+      /* Decia "VERIFICADO" y era mentira: el tilde lo pone el admin cuando mira
+         la publicacion, no cuando comprueba quien es la persona. Los propios
+         Terminos dicen que no verificamos identidad ni residencia, asi que la
+         palabra se contradecia con el texto legal — y "la app decia verificado"
+         es justo la frase que no queres escuchar si algo sale mal. */
+      +(p.verificado?'<span class="ver">REVISADO</span>':'')
       +(esPro?'<span class="dest">DESTACADO</span>':'')+'</div>'
       +'<div class="c-rubro">'+esc(rubroLbCompleto(p))+' · '+esc(p.anios||'—')+' años'+(p.localidad?' · '+esc(p.localidad):'')+'</div></div>'
       +(function(){const r=promedio(p.nombre);
@@ -3969,7 +3974,7 @@ function verDetalle(id){
     +(esPro&&p.foto2?'<img src="'+esc(p.foto2)+'" alt="" onclick="verFotoGrande(\''+esc(p.foto2)+'\')" style="width:100%;max-height:340px;object-fit:contain;border-radius:14px;cursor:zoom-in;margin-bottom:14px;background:var(--line2)">':'')
     +'<h3>'+esc(p.nombre)+'</h3>'
     +'<p class="sub">'+esc(rubroLbCompleto(p))+' · '+esc(p.anios||'—')+' años en el oficio</p>'
-    +'<div class="chips">'+(p.verificado?'<span class="chip">✓ Verificado</span>':'<span class="chip">Sin verificar</span>')
+    +'<div class="chips">'+(p.verificado?'<span class="chip">✓ Revisado por BarrioKey</span>':'<span class="chip">Sin revisar</span>')
     /* El promedio se calcula de las reseñas reales, igual que en el listado.
        Antes leia p.rating, una columna que nunca se llena: la ficha mostraba
        "★ —" aunque abajo hubiera reseñas de 5 estrellas a la vista. */
@@ -5524,7 +5529,7 @@ function pintarAdmLista(){
     +pintarCambiosPendientes('prestadores',p)+'</div>'
     +(porVencer?'<button class="tg no" style="background:#FBE4E2;color:#C4453F" onclick="recordarVencimiento(\'oficio\',\''+p.id+'\')">📲 Recordar</button>':'')
     +'<button class="tg '+(p.verificado?'si':'no')+'" onclick="verificar(\''+p.id+'\')">'
-    +(p.verificado?'Verificado':'A revisar')+'</button>'
+    +(p.verificado?'Revisado':'A revisar')+'</button>'
     +'<button class="tg '+(pago?'si':'no')+'" onclick="destacarOficio(\''+p.id+'\')">'
     +(pago?'Renovar +30d':'Destacar Plan Pro')+'</button>'
     +(pago?'<button class="mini" style="color:#B3261E" onclick="quitarDestaqueOficio(\''+p.id+'\')">Quitar Plan Pro</button>':'')

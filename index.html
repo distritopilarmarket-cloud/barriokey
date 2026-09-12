@@ -726,7 +726,11 @@
           <input id="vDireccion" maxlength="90" placeholder="Ej: Av. Perón 1234, Pilar">
           <small style="opacity:.7">Si vendés desde tu casa o a domicilio, dejalo vacío.</small></div>
         <div class="field"><label>Contalo en dos líneas</label><textarea id="vQue" placeholder="Ej. Empanadas caseras por docena. Se encargan hasta el jueves."></textarea></div>
-        <div class="field"><label>Foto de lo que vendés <span style="font-weight:400;color:var(--muted);font-size:11px">(opcional — si no subís, se muestra tu inicial)</span></label>
+        <!-- Decia solo "Foto de lo que vendes" y la gente preguntaba si iba el
+             logo o el producto. Como esta es la UNICA foto sin Plan Pro, tiene
+             que servir para las dos cosas. En Oficios ya estaba bien resuelto
+             ("tu cara o el logo de tu negocio"); ahora quedan parejos. -->
+        <div class="field"><label>Foto de tu logo o de lo que vendés <span style="font-weight:400;color:var(--muted);font-size:11px">(opcional — si no subís, se muestra tu inicial)</span></label>
           <div class="foto-box" id="vfBox" onclick="pedirFotoAlta('vecino','vfFile')"><span>📷 Tocá para sacar o elegir una foto</span></div>
           <input type="file" id="vfFile" accept="image/*" class="file-oculto" onchange="tomarFoto(event,'vecino')">
           <button class="mini" id="vfQuitar" style="display:none" onclick="quitarFoto('vecino')">Quitar foto</button>
@@ -5055,18 +5059,34 @@ async function marcarFotoRevisada(tabla,id){
 }
 function pintarCambiosPendientes(tabla,rec){
   if(!rec.cambio_pendiente)return'';
-  const campos=[['foto','Foto principal'],['foto2','2da foto'],['link','Link']];
+  /* La etiqueta va entera, no "campo + nueva": antes salia "Link nueva". */
+  const campos=[['foto','Foto principal nueva'],['foto2','2da foto nueva'],['link','Link nuevo']];
   let html='<div class="mt" style="margin-top:8px;background:var(--warn-bg);border-radius:10px;padding:10px">'
     +'<p class="nota" style="margin:0 0 8px;font-weight:700;color:var(--warn)">⏳ Cambios esperando tu aprobación</p>';
   campos.forEach(([campo,etiqueta])=>{
     const val=rec[campo+'_pendiente'];
     if(!val)return;
     const esImg=campo!=='link';
-    html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">'
-      +(esImg?'<img src="'+esc(val)+'" alt="" style="width:44px;height:44px;border-radius:8px;object-fit:cover;cursor:pointer" onclick="verFotoGrande(\''+esc(val)+'\')">':'<span style="font-size:11px;word-break:break-all;flex:1">'+esc(val)+'</span>')
-      +'<span style="font-size:10.5px;flex:1">'+etiqueta+' nueva</span>'
-      +'<button class="mini" style="background:var(--ok-bg);color:var(--ok)" onclick="aprobarCambioPendiente(\''+tabla+'\',\''+rec.id+'\',\''+campo+'\')">✓ Aprobar</button>'
-      +'<button class="mini" style="color:#B3261E" onclick="rechazarCambioPendiente(\''+tabla+'\',\''+rec.id+'\',\''+campo+'\')">✕ Rechazar</button>'
+    /* Antes esto era UNA fila con cuatro cosas: la foto (o el link), la
+       etiqueta, Aprobar y Rechazar. En el celular no entraba, y el link de
+       Instagram lo remataba: tenia word-break:break-all, que le avisa al
+       navegador que puede cortarlo letra por letra, asi que flexbox achicaba
+       esa columna hasta dejarla de una letra de ancho. Quedaba el link escrito
+       en vertical (lo vio Julian el 11/9).
+       Ahora: la info ocupa el ancho completo y los botones bajan abajo, y el
+       link usa overflow-wrap:anywhere, que corta SOLO si de verdad no entra. */
+    html+='<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:10px">'
+      +'<div style="display:flex;align-items:center;gap:8px;flex:1 1 100%;min-width:0">'
+        +(esImg?'<img src="'+esc(val)+'" alt="" style="width:44px;height:44px;border-radius:8px;object-fit:cover;cursor:pointer;flex:0 0 auto" onclick="verFotoGrande(\''+esc(val)+'\')">':'')
+        +'<div style="min-width:0;flex:1">'
+          +'<div style="font-size:10.5px;font-weight:600">'+etiqueta+'</div>'
+          +(esImg?'':'<div style="font-size:11px;overflow-wrap:anywhere;color:var(--muted);margin-top:2px">'+esc(val)+'</div>')
+        +'</div>'
+      +'</div>'
+      /* .mini es width:100%, asi que los dos botones se apilaban y la tarjeta
+         quedaba larguisima. Con flex:1 y width:auto entran uno al lado del otro. */
+      +'<button class="mini" style="flex:1;width:auto;margin-top:0;background:var(--ok-bg);color:var(--ok)" onclick="aprobarCambioPendiente(\''+tabla+'\',\''+rec.id+'\',\''+campo+'\')">✓ Aprobar</button>'
+      +'<button class="mini" style="flex:1;width:auto;margin-top:0;color:#B3261E" onclick="rechazarCambioPendiente(\''+tabla+'\',\''+rec.id+'\',\''+campo+'\')">✕ Rechazar</button>'
       +'</div>';
   });
   html+='</div>';

@@ -96,9 +96,11 @@ exports.handler = async (event) => {
       //     (lo revisa el admin manualmente al confirmar el pago).
       //  2) Edición normal ya con la publicación aprobada:
       //     - Textos (descripción/qué ofrecés, novedad) SOLO si ya es Pro: se publican directo.
+      //     - Beneficio: TODOS, se publica directo (ver el bloque de abajo).
       //     - Foto: gratis y Pro pueden tocarla. Foto2 y link: solo Pro.
-      //       En los tres casos queda en <campo>_pendiente hasta que el admin lo apruebe
-      //       desde el Panel — mientras tanto se sigue mostrando lo anterior.
+      //     - Desde el 12/9 ni la foto ni el link esperan aprobación: el link se valida
+      //       contra la lista blanca de dominios + Safe Browsing, y la foto sale
+      //       publicada dejando el aviso `cambio_pendiente` para que el admin la mire.
       const { tipo, id, patch } = body;
       if (!id || !patch || (tipo !== 'o' && tipo !== 'v')) {
         return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: 'Datos incompletos' }) };
@@ -138,30 +140,88 @@ exports.handler = async (event) => {
       const datosTexto = {};
       for (const k of permitidosTexto) if (Object.prototype.hasOwnProperty.call(patch, k)) datosTexto[k] = patch[k];
 
-      // Medios: foto (gratis y Pro), foto2 y link (solo Pro) — siempre quedan pendientes de aprobación.
-      const permitidosMedia = esPro ? ['foto', 'foto2', 'link'] : ['foto'];
-      const datosPendientes = {};
-      for (const k of permitidosMedia) {
-        if (Object.prototype.hasOwnProperty.call(patch, k) && patch[k]) datosPendientes[k + '_pendiente'] = patch[k];
+      // EL BENEFICIO VA PARA TODOS, PRO O NO, Y SE PUBLICA DIRECTO.
+      // Es el argumento con el que se sale a buscar comercios ("no te pido que armes
+      // nada, el descuento lo ponés y lo sacás vos"), asi que ponerlo detras del Plan
+      // Pro o de una aprobacion manual lo mata. Son 60 caracteres y el alta ya paso
+      // por revision, asi que el riesgo es chico.
+      if (Object.prototype.hasOwnProperty.call(patch, 'beneficio')) {
+        const b = patch.beneficio == null ? null : String(patch.beneficio).slice(0, 60);
+        datosTexto.beneficio = b && b.trim() ? b.trim() : null;
       }
 
-      // Si mandan un link nuevo, lo chequeamos contra Google Safe Browsing antes de aceptarlo.
-      if (datosPendientes.link_pendiente) {
-        const linkSeguro = await chequearLinkSeguro(datosPendientes.link_pendiente);
-        if (!linkSeguro) {
-          return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: 'Ese link fue marcado como inseguro y no se puede usar. Revisalo o probá con otro.' }) };
+      // ------------------------------------------------------------------
+      // MODERACION POR RIESGO (12/9/2026)
+      //
+      // Antes TODO medio esperaba aprobacion manual. Con volumen eso se vuelve el
+      // cuello de botella: el comercio cambia la foto un martes y hasta que Julian
+      // entra al panel no se ve. Ahora se separa por riesgo real:
+      //
+      //   · LINK -> se aprueba solo si el dominio esta en la lista blanca (la misma
+      //     que valida la app) Y pasa Google Safe Browsing. Un link de Instagram no
+      //     necesita que lo mire una persona. Cualquier otro dominio se rechaza —
+      //     no queda pendiente, se rechaza, porque no hay caso legitimo.
+      //   · FOTO -> se publica al toque y le queda a Julian el aviso "revisá esto"
+      //     (foto_sin_revisar, la misma marca 📷 que ya usaba el panel para las fotos
+      //     que edita el admin, con su boton "Marcar foto revisada"). Si esta mal, la
+      //     baja de un clic. Se invierte la logica: antes esperaban todos, ahora se
+      //     corrige el caso raro.
+      // ------------------------------------------------------------------
+      const DOMINIOS_LINK_OK = ['instagram.com', 'facebook.com', 'fb.com', 'tiktok.com',
+        'drive.google.com', 'docs.google.com', 'photos.google.com', 'photos.app.goo.gl',
+        'icloud.com', 'wa.me', 'whatsapp.com', 'linktr.ee',
+        'mercadolibre.com.ar', 'mercadolibre.com', 'mercadoshops.com.ar', 'mercadoshops.com',
+        'google.com', 'google.com.ar', 'maps.app.goo.gl', 'goo.gl', 'maps.google.com'];
+      function dominioPermitido(url) {
+        const u = String(url || '').trim();
+        if (!u) return false;
+        let host;
+        try { host = new URL(/^https?:\/\//i.test(u) ? u : 'https://' + u).hostname.toLowerCase().replace(/^www\./, ''); }
+        catch (e) { return false; }
+        return DOMINIOS_LINK_OK.some(d => host === d || host.endsWith('.' + d));
+      }
+
+      const datosDirectos = {};   // se publica ya
+      const datosPendientes = {}; // (queda por compatibilidad: hoy solo lo usa el link rechazado)
+
+      // El link: lista blanca del lado del servidor tambien. La validacion del
+      // navegador se puede saltear, asi que no alcanza con la de la app.
+      if (Object.prototype.hasOwnProperty.call(patch, 'link') && esPro) {
+        const linkNuevo = String(patch.link || '').trim();
+        if (linkNuevo) {
+          if (!dominioPermitido(linkNuevo)) {
+            return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: 'Ese link no es de una red o servicio permitido. Solo Instagram, Facebook, TikTok, Google Drive/Docs/Fotos/Maps, iCloud, WhatsApp, Linktree o Mercado Libre.' }) };
+          }
+          const linkSeguro = await chequearLinkSeguro(linkNuevo);
+          if (!linkSeguro) {
+            return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: 'Ese link fue marcado como inseguro y no se puede usar. Revisalo o probá con otro.' }) };
+          }
+          datosDirectos.link = linkNuevo;
+        } else {
+          datosDirectos.link = null; // sacarlo no necesita aprobacion
         }
       }
 
-      const datosFinal = Object.assign({}, datosTexto, datosPendientes);
-      if (Object.keys(datosPendientes).length) datosFinal.cambio_pendiente = true;
+      // Las fotos: foto la puede tocar cualquiera, foto2 solo Pro. Salen publicadas
+      // y dejan el aviso para revisar.
+      let hayFotoNueva = false;
+      const camposFoto = esPro ? ['foto', 'foto2'] : ['foto'];
+      for (const k of camposFoto) {
+        if (Object.prototype.hasOwnProperty.call(patch, k) && patch[k]) {
+          datosDirectos[k] = patch[k];
+          hayFotoNueva = true;
+        }
+      }
+
+      const datosFinal = Object.assign({}, datosTexto, datosDirectos, datosPendientes);
+      if (hayFotoNueva) datosFinal.foto_sin_revisar = true;
       if (!Object.keys(datosFinal).length) {
         return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: 'Nada para actualizar' }) };
       }
 
       const rPatch = await fetch(base + tabla + '?id=eq.' + encodeURIComponent(id), { method: 'PATCH', headers, body: JSON.stringify(datosFinal) });
       if (!rPatch.ok) return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: await rPatch.text() }) };
-      return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: true, pendiente: Object.keys(datosPendientes).length > 0 }) };
+      return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: true, pendiente: false, fotoNueva: hayFotoNueva }) };
     }
 
     if (accion === 'crearInvitacion') {

@@ -6481,7 +6481,17 @@ async function borrarConsulta(id){
 }
 
 async function pintarAdmPedidos(){
-  let l=[];try{l=(enLinea()?await sbAdmin('pedidos','GET','select=*&order=creado_en.desc&limit=200'):S.pedidos)||[];}catch(e){l=S.pedidos||[];}
+  /* Actividad cuenta las DOS formas de contacto, no solo los presupuestos.
+     Desde que el comercio tiene un solo boton ("Escribir por WhatsApp"), sus
+     toques van a `contactos` y no generan pedido: si esta pantalla mirara solo
+     `pedidos`, mostraria menos movimiento del que hay de verdad, y justo en los
+     rubros nuevos (carniceria, panaderia, rotiseria).
+     Se separan en el detalle porque no son lo mismo: un presupuesto es un
+     encargo con datos; un contacto es alguien que abrio el WhatsApp. */
+  let ped=[], cont=[];
+  try{ped=(enLinea()?await sbAdmin('pedidos','GET','select=*&order=creado_en.desc&limit=200'):S.pedidos)||[];}catch(e){ped=S.pedidos||[];}
+  try{cont=(enLinea()?await sbAdmin('contactos','GET','select=*&order=creado_en.desc&limit=200'):[])||[];}catch(e){cont=[];}
+  const l=[...ped,...cont];
   const el=document.getElementById('admPedidosStats');
   if(!el)return;
   if(!l.length){el.innerHTML='<div class="vacio">Sin actividad todavía.</div>';return;}
@@ -6494,7 +6504,11 @@ async function pintarAdmPedidos(){
   });
   const filas=(obj)=>Object.entries(obj).sort((a,b)=>b[1]-a[1])
     .map(([k,n])=>'<div class="mt" style="display:flex;justify-content:space-between"><span>'+esc(k)+'</span><b>'+n+'</b></div>').join('');
-  el.innerHTML='<div class="cuenta" style="margin-bottom:16px"><div class="cu"><b>'+l.length+'</b><span>Total solicitudes</span></div></div>'
+  el.innerHTML='<div class="cuenta" style="margin-bottom:6px">'
+      +'<div class="cu"><b>'+l.length+'</b><span>Total contactos</span></div>'
+      +'<div class="cu"><b>'+ped.length+'</b><span>Presupuestos</span></div>'
+      +'<div class="cu"><b>'+cont.length+'</b><span>Por WhatsApp</span></div></div>'
+    +'<p class="nota" style="margin:0 0 14px">Los presupuestos salen del formulario (servicios). Los de WhatsApp son los toques directos a un comercio.</p>'
     +'<p style="font-family:\'Space Mono\',monospace;font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted);margin:0 0 8px 2px">Por rubro</p>'
     +filas(porRubro)
     +'<p style="font-family:\'Space Mono\',monospace;font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted);margin:16px 0 8px 2px">Por barrio</p>'

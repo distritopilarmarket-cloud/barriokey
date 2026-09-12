@@ -1690,7 +1690,7 @@ async function cargarEdicionPropia(id,t){
       +'<div class="field"><label>Foto principal</label>'
         +'<div class="foto-box" id="epBox1" onclick="pedirFotoEdicion(1)">'+(rec.foto?'<img src="'+esc(rec.foto)+'" alt="">':'<span>📷 Tocá para subir una foto</span>')+'</div>'
         +'<input type="file" id="epFile1" accept="image/*" class="file-oculto" onchange="epTomarFoto(event,1)">'
-        +'<small style="opacity:.7">Los cambios de foto quedan esperando nuestra aprobación antes de publicarse.</small>'
+        +'<small style="opacity:.7">La foto nueva se publica al toque. Si hay algo fuera de lugar la damos de baja.</small>'
       +'</div>'
       +(pendiente
         ?'<div class="field" style="background:var(--card);border-radius:12px;padding:12px">'
@@ -1722,7 +1722,7 @@ async function cargarEdicionPropia(id,t){
   const novedadActiva=rec.novedad_texto&&rec.novedad_fecha&&(Date.now()-new Date(rec.novedad_fecha).getTime())<24*3600*1000;
   const novedadVenceTxt=novedadActiva?new Date(new Date(rec.novedad_fecha).getTime()+24*3600*1000).toLocaleString('es-AR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'';
   body.innerHTML=
-    '<p class="nota" style="margin:0 0 14px">Editás: <b>'+esc(nombreVisible)+'</b>. Los cambios de foto y link quedan esperando aprobación; la descripción se publica al toque.</p>'
+    '<p class="nota" style="margin:0 0 14px">Editás: <b>'+esc(nombreVisible)+'</b>. Se publica todo al toque: descripción, beneficio, foto y link.</p>'
     +avisoPendiente
     +(puedeRenovarYa&&!rec.pro_pendiente
       ?'<div class="field" style="background:var(--warn-bg);border-radius:12px;padding:12px;margin-bottom:16px">'
@@ -1865,7 +1865,7 @@ async function guardarSoloFotoGratis(){
   }catch(e){toast('No se pudo guardar: '+(e&&e.message?e.message:'error de conexión'));
     if(btn){btn.disabled=false;btn.textContent='💾 Guardar solo la foto';}
     return;}
-  toast('¡Listo! Tu foto queda esperando que la aprobemos.');
+  toast('¡Listo! Tu foto ya está publicada.');
   await refrescar();
   cargarEdicionPropia(id,t);
 }
@@ -1874,7 +1874,7 @@ async function guardarEdicionPropia(){
   if(!t||!id)return;
   const linkEl=document.getElementById('epLink');
   const textoEl=document.getElementById('epTexto');
-  if(linkEl&&!linkPermitido(linkEl.value.trim())){toast('El link solo puede ser de Instagram, Facebook, TikTok, Google Drive/Docs/Fotos, iCloud, WhatsApp o Linktree');return;}
+  if(linkEl&&!linkPermitido(linkEl.value.trim())){toast('El link solo puede ser de Instagram, Facebook, TikTok, Google Drive/Docs/Fotos/Maps, iCloud, WhatsApp, Linktree o Mercado Libre');return;}
   const benefEl=document.getElementById('epBeneficio');
   if(benefEl&&!pasaModeracion(benefEl.value))return;
   const patch={};
@@ -1910,7 +1910,7 @@ async function guardarEdicionPropia(){
     if(btn){btn.disabled=false;btn.textContent='Guardar cambios';}
     return;}
   if(btn){btn.disabled=false;btn.textContent='Guardar cambios';}
-  toast('¡Guardado! La descripción y el beneficio ya están publicados. La foto y el link quedan esperando aprobación.');
+  toast('¡Guardado! Ya está todo publicado.');
   await refrescar();
   volverDeEdicion();
 }
@@ -1950,7 +1950,7 @@ async function pedirPlanPro(){
   const linkEl=document.getElementById('epLink');
   if(linkEl)linkEl.value=normalizarLink(linkEl.value);
   const linkVal=linkEl?linkEl.value.trim():'';
-  if(linkVal&&!linkPermitido(linkVal)){toast('El link solo puede ser de Instagram, Facebook, TikTok, Google Drive/Docs/Fotos, iCloud, WhatsApp o Linktree');return;}
+  if(linkVal&&!linkPermitido(linkVal)){toast('El link solo puede ser de Instagram, Facebook, TikTok, Google Drive/Docs/Fotos/Maps, iCloud, WhatsApp, Linktree o Mercado Libre');return;}
   const patch={pro_pendiente:true};
   if(linkVal)patch.link=linkVal;
   const btn=document.querySelector('#editarPropio .btn-main');
@@ -4773,7 +4773,7 @@ async function enviarAlta(){
   if(!elegidos.length){toast('Elegí en qué barrios querés publicar');return;}
   if(!document.getElementById('sLegal').checked){toast('Tenés que aceptar los criterios de la plataforma');return;}
   document.getElementById('sLink').value=normalizarLink(document.getElementById('sLink').value);
-  if(!linkPermitido(document.getElementById('sLink').value)){toast('El link solo puede ser de Instagram, Facebook, TikTok, Google Drive/Docs/Fotos, iCloud, WhatsApp o Linktree');return;}
+  if(!linkPermitido(document.getElementById('sLink').value)){toast('El link solo puede ser de Instagram, Facebook, TikTok, Google Drive/Docs/Fotos/Maps, iCloud, WhatsApp, Linktree o Mercado Libre');return;}
   if(!pasaModeracion(nombre+' '+desc)){return;}
   if(await telBloqueado(tel)){toast('Este WhatsApp no puede publicar en BarrioKey. Escribinos desde Consultas si creés que es un error.');return;}
   const matchPrevio=(CACHE||[]).find(p=>norm(p.nombre)===norm(nombre)||telNorm(p.tel)===telNorm(tel));
@@ -4875,7 +4875,7 @@ async function publicarVecino(){
   if(!elegidos.length){toast('Elegí en qué barrios querés vender');return;}
   if(!document.getElementById('vLegal').checked){toast('Tenés que aceptar el aviso para publicar');return;}
   document.getElementById('vLink').value=normalizarLink(document.getElementById('vLink').value);
-  if(!linkPermitido(document.getElementById('vLink').value)){toast('El link solo puede ser de Instagram, Facebook, TikTok, Google Drive/Docs/Fotos, iCloud, WhatsApp o Linktree');return;}
+  if(!linkPermitido(document.getElementById('vLink').value)){toast('El link solo puede ser de Instagram, Facebook, TikTok, Google Drive/Docs/Fotos/Maps, iCloud, WhatsApp, Linktree o Mercado Libre');return;}
   if(!pasaModeracion(nombre+' '+que)){return;}
   const matchPrevio=(CACHEV||[]).find(v=>norm(v.nombre)===norm(nombre)||telNorm(v.tel)===telNorm(tel));
   const yaUsoCupo=matchPrevio&&(matchPrevio.barriosVenta||'').toLowerCase().includes('todos')===false&&(matchPrevio.barriosVenta||'').split(',').map(x=>x.trim()).filter(Boolean).length>=3;
@@ -5512,8 +5512,11 @@ function datosTablero(){
     /* Cuenta las altas nuevas Y los cambios que mandaron los ya aprobados.
        Los dos piden lo mismo: que Julian entre y mire. Si el cambio pendiente
        no suma aca, un prestador que cambio la foto espera para siempre. */
-    pendientes:of_.filter(p=>!p.verificado||p.cambio_pendiente).length
-               +ve.filter(v=>!v.aprobado||v.cambio_pendiente).length,
+    /* Se suma foto_sin_revisar: desde el 12/9 la foto que edita el comercio sale
+       publicada sola y lo unico que deja es esa marca. Si no entra aca, el aviso
+       "revisá esto" no existe en ningun lado y la foto queda sin mirar. */
+    pendientes:of_.filter(p=>!p.verificado||p.cambio_pendiente||p.foto_sin_revisar).length
+               +ve.filter(v=>!v.aprobado||v.cambio_pendiente||v.foto_sin_revisar).length,
     proActivos:activosTotales, cortesias,
     vencePronto, sinFacturar, pidieron,
     /* "Este mes" = lo que esta cobrado y vigente ahora. No es un historico:
@@ -5616,7 +5619,7 @@ function pintarAdmLista(){
     if(q&&!norm(p.nombre).includes(q)&&!norm(p.tel||'').includes(q))return false;
     if(barrioF&&!(p.barriosAprobados||'').split(',').map(x=>x.trim()).includes(barrioF)&&!((p.barriosAprobados||'').split(',').map(x=>x.trim()).length>3))return false;
     if(rubroF&&p.rubro!==rubroF)return false;
-    if(soloPend&&p.verificado&&!p.cambio_pendiente)return false;
+    if(soloPend&&p.verificado&&!p.cambio_pendiente&&!p.foto_sin_revisar)return false;
     if(soloPro&&!((p.barriosAprobados||'').split(',').map(x=>x.trim()).filter(Boolean).length>3))return false;
     return true;
   });
@@ -5822,7 +5825,7 @@ async function guardarEdicionOficio(id){
      cualquier arroba — se detecto el 9/9 con @aquamaster.ar */
   const edLinkEl=document.getElementById('ed_link_'+id);
   if(edLinkEl)edLinkEl.value=normalizarLink(edLinkEl.value);
-  if(!linkPermitido(edLinkEl?edLinkEl.value.trim():'')){toast('El link solo puede ser de Instagram, Facebook, TikTok, Google Drive/Docs/Fotos, iCloud, WhatsApp o Linktree');return;}
+  if(!linkPermitido(edLinkEl?edLinkEl.value.trim():'')){toast('El link solo puede ser de Instagram, Facebook, TikTok, Google Drive/Docs/Fotos/Maps, iCloud, WhatsApp, Linktree o Mercado Libre');return;}
   const patch={
     nombre:document.getElementById('ed_nombre_'+id).value.trim()||p.nombre,
     tel:document.getElementById('ed_tel_'+id).value.trim(),
@@ -6088,7 +6091,7 @@ function pintarAdmVecinos(){
     if(q&&!norm(v.nombre).includes(q)&&!norm(v.tel||'').includes(q)&&!norm(v.negocio||'').includes(q))return false;
     if(barrioF&&v.barrio!==barrioF&&!((v.barriosVenta||'').toLowerCase().includes('todos')))return false;
     if(rubroF&&v.rubro!==rubroF)return false;
-    if(soloPend&&v.aprobado&&!v.cambio_pendiente)return false;
+    if(soloPend&&v.aprobado&&!v.cambio_pendiente&&!v.foto_sin_revisar)return false;
     if(soloPro&&!(destActivo(v)||(!v.aprobado&&!!v.pro_pendiente)))return false;
     return true;
   });
@@ -6237,7 +6240,7 @@ async function guardarEdicionVecino(id){
   if(!v)return;
   const edvLinkEl=document.getElementById('edv_link_'+id);
   if(edvLinkEl)edvLinkEl.value=normalizarLink(edvLinkEl.value);
-  if(!linkPermitido(edvLinkEl?edvLinkEl.value.trim():'')){toast('El link solo puede ser de Instagram, Facebook, TikTok, Google Drive/Docs/Fotos, iCloud, WhatsApp o Linktree');return;}
+  if(!linkPermitido(edvLinkEl?edvLinkEl.value.trim():'')){toast('El link solo puede ser de Instagram, Facebook, TikTok, Google Drive/Docs/Fotos/Maps, iCloud, WhatsApp, Linktree o Mercado Libre');return;}
   const patch={
     nombre:document.getElementById('edv_nombre_'+id).value.trim()||v.nombre,
     negocio:document.getElementById('edv_negocio_'+id).value.trim(),

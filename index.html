@@ -187,6 +187,28 @@
   .acceso.no .flag{background:var(--line)}
   .acceso .resp{margin-left:auto;font-family:'Space Mono',monospace;font-size:11px;color:var(--muted)}
 
+  /* ===== JERARQUIA DE LA FICHA =====
+     Estaba al reves: la direccion y el horario —que se CONSULTAN— iban grandes
+     y en verde, y el link al Instagram del comercio —que es lo que te hace
+     comprar, porque ahi estan las fotos de los cortes— iba chiquito y gris.
+     Lo marco Julian mirando la ficha de La Ganchera. */
+  .link-negocio{display:flex;align-items:center;gap:10px;text-decoration:none;
+    background:#fff;border:1px solid var(--line);border-radius:12px;
+    padding:12px 13px;margin:0 0 12px}
+  .link-negocio .ico{font-size:16px;flex:none}
+  .link-negocio .tx{flex:1;min-width:0;font-size:14px;font-weight:700;color:var(--barrera2);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .link-negocio .fl{color:var(--barrera2);font-size:17px;flex:none}
+  /* Los datos de referencia, en chico y juntos: no compiten con los botones. */
+  .ficha-datos{margin:0 0 12px;padding:9px 0;border-top:1px dashed var(--line);
+    border-bottom:1px dashed var(--line)}
+  .ficha-datos .fd{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);
+    line-height:1.5}
+  .ficha-datos .fd + .fd{margin-top:3px}
+  .ficha-datos .fd b{color:var(--ink);font-weight:600}
+  .ficha-datos .comollegar{margin-left:auto;flex:none;font-size:12px;font-weight:700;
+    color:var(--pine);text-decoration:underline;cursor:pointer;white-space:nowrap}
+
   .card-acts{display:flex;gap:8px;padding:0 15px 14px}
   .bsm{flex:1;padding:11px 8px;border:none;border-radius:11px;font-weight:700;font-size:13px;cursor:pointer}
   .bsm.p{background:var(--pine);color:#fff}
@@ -267,6 +289,22 @@
   .rec-btn.on{background:var(--pine-soft);border-color:var(--moss);color:var(--pine)}
   .rec-btn[disabled]{opacity:.55;cursor:default}
   .rec-cont{font-size:12px;color:var(--pine);font-weight:600;margin:8px 0 8px 2px}
+  /* ===== EL BENEFICIO PARA VECINOS =====
+     La linea en la ficha y la pantalla que el vecino le muestra al comercio.
+     NO es un cupon: no hay canje, no hay codigo, no hay QR (el carnicero no
+     tiene nada para escanear). El comercio le hace el descuento al que se lo
+     pide — lo dijo Julian: "el descuento esta hecho igual". */
+  .benef{display:flex;align-items:center;gap:9px;background:#FDF6E3;border:1px solid #EFDCB6;
+    border-radius:12px;padding:10px 12px;margin-bottom:12px}
+  .benef .tx{flex:1;min-width:0;font-size:13px;font-weight:700;color:#8A6A1F;line-height:1.35}
+  /* La pantalla para mostrar: grande, legible de lejos y girada al comercio. */
+  .benef-show{text-align:center;padding:6px 0 2px}
+  .benef-show .neg{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:19px;
+    color:var(--ink);line-height:1.2;margin-bottom:14px}
+  .benef-show .gr{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:30px;
+    line-height:1.15;color:var(--pine);margin-bottom:16px}
+  .benef-show .quien{font-size:13.5px;color:var(--ink);font-weight:600}
+  .benef-show .cuando{font-size:12px;color:var(--muted);margin-top:4px}
 
   /* ===== PANEL: la fila se cierra =====
      Antes cada publicacion ocupaba mas de una pantalla de telefono: el nombre
@@ -739,6 +777,9 @@
       <div class="field"><label>Link de Google Maps <span style="font-weight:400;color:var(--muted);font-size:11px">(opcional)</span></label>
         <input id="sMapa" maxlength="300" placeholder="Pegá acá el link de tu ubicación">
         <small style="opacity:.7">Buscate en Google Maps, tocá <b>Compartir</b> y pegá el link. Así el vecino llega al punto exacto y no a una dirección escrita que el buscador puede confundir.</small></div>
+      <div class="field"><label>Beneficio para vecinos <span style="font-weight:400;color:var(--muted);font-size:11px">(opcional)</span></label>
+        <input id="sBeneficio" maxlength="60" placeholder="Ej: 10% de descuento para vecinos">
+        <small style="opacity:.7">Lo que le ofrecés a los vecinos de BarrioKey. Lo absorbe tu negocio, no la app — y es el motivo por el que te van a buscar acá antes de salir de casa.</small></div>
       <div class="field"><label>Cuándo atendés <span style="font-weight:400;color:var(--muted);font-size:11px">(opcional)</span></label>
         <select id="sDias"></select></div>
       <!-- El profesional que VIVE en el barrio (el kinesiologo del lote 40, la
@@ -817,6 +858,9 @@
         <div class="field"><label>Link de Google Maps <span style="font-weight:400;color:var(--muted);font-size:11px">(opcional)</span></label>
           <input id="vMapa" maxlength="300" placeholder="Pegá acá el link de tu ubicación">
           <small style="opacity:.7">Buscate en Google Maps, tocá <b>Compartir</b> y pegá el link. Así el vecino llega al punto exacto y no a una dirección escrita que el buscador puede confundir.</small></div>
+        <div class="field"><label>Beneficio para vecinos <span style="font-weight:400;color:var(--muted);font-size:11px">(opcional)</span></label>
+          <input id="vBeneficio" maxlength="60" placeholder="Ej: 10% de descuento para vecinos">
+          <small style="opacity:.7">Lo que le ofrecés a los vecinos de BarrioKey. Lo absorbe tu negocio, no la app — y es el motivo por el que te van a buscar acá antes de salir de casa.</small></div>
         <div class="field"><label>Contalo en dos líneas</label><textarea id="vQue" placeholder="Ej. Empanadas caseras por docena. Se encargan hasta el jueves."></textarea></div>
         <!-- Decia solo "Foto de lo que vendes" y la gente preguntaba si iba el
              logo o el producto. Como esta es la UNICA foto sin Plan Pro, tiene
@@ -1131,6 +1175,7 @@
 <!-- ===== hoja: detalle prestador ===== -->
 <div class="sheet-wrap" id="shDet"><div class="sheet"><div class="sheet-in" id="detIn"></div></div></div>
 <div class="sheet-wrap" id="shDetV"><div class="sheet"><div class="sheet-in" id="detInV"></div></div></div>
+<div class="sheet-wrap" id="shBenef"><div class="sheet"><div class="sheet-in" id="benefIn"></div></div></div>
 
 <!-- ===== hoja: clave del panel ===== -->
 <div class="sheet-wrap" id="shClave"><div class="sheet"><div class="sheet-in">
@@ -1508,6 +1553,51 @@ function novedadActivaTxt(rec){
 }
 /* La version para la ficha: arriba de todo, texto completo y hasta cuándo vale.
    Sin esto, el 🔥 del carrusel prometia algo que la ficha no mostraba. */
+/* ===================== EL BENEFICIO PARA VECINOS =====================
+   El comercio ofrece algo ("10% de descuento para vecinos") y lo absorbe el
+   comercio, no la app. Antes esto se escribia en la descripcion y quedaba
+   perdido en un parrafo: el vecino tenia que acordarse de que existia.
+
+   NO hay cupon, ni codigo, ni QR. El carnicero no tiene nada para escanear, y
+   no hace falta: el descuento se lo hace igual al que se lo pide. Lo unico que
+   se necesita es que el vecino pueda MOSTRARLO sin buscarlo. */
+function textoBeneficio(rec){
+  return ((rec&&rec.beneficio)||'').trim();
+}
+function lineaBeneficio(rec,tipo){
+  const b=textoBeneficio(rec);
+  if(!b)return '';
+  return '<div class="benef"><span style="font-size:17px">🎁</span>'
+    +'<span class="tx">'+esc(b)+'</span>'
+    +'<button class="mini" style="width:auto;flex:0 0 auto;margin:0;padding:6px 10px;font-size:12px" '
+    +'onclick="mostrarBeneficio(\''+tipo+'\',\''+rec.id+'\')">Mostrar</button></div>';
+}
+function mostrarBeneficio(tipo,id){
+  const arr=(tipo==='o')?(CACHE||[]):(CACHEV||[]);
+  const rec=arr.find(x=>String(x.id)===String(id));
+  if(!rec)return;
+  const b=textoBeneficio(rec);
+  if(!b)return;
+  const acc=cargarAcceso()||{};
+  /* Quien es y de donde: no es una medida de seguridad, es para que el comercio
+     sepa a quien le esta haciendo el descuento. Si no hay registro (un oficio
+     mirando la app), se muestra solo el beneficio. */
+  const quien=[soloNombre(acc.nombre||''),acc.lote?('Lote '+acc.lote):'',acc.barrio||'']
+    .filter(Boolean).join(' · ');
+  const ahora=new Date().toLocaleString('es-AR',
+    {weekday:'long',day:'2-digit',month:'long',hour:'2-digit',minute:'2-digit'});
+  document.getElementById('benefIn').innerHTML=
+    '<div class="benef-show">'
+    +'<div class="neg">'+esc(rec.negocio||rec.nombre||'')+'</div>'
+    +'<div class="gr">🎁 '+esc(b)+'</div>'
+    +(quien?'<div class="quien">'+esc(quien)+'</div>':'')
+    +'<div class="cuando">'+esc(ahora)+'</div>'
+    +'</div>'
+    +'<p class="nota" style="text-align:center;margin:16px 0 0">Mostrale esta pantalla en el local.</p>'
+    +'<button class="btn btn-soft" style="margin-top:14px" onclick="cerrar(\'shBenef\')">Cerrar</button>';
+  cerrar('shDet'); cerrar('shDetV');
+  setTimeout(()=>abrir('shBenef'),120);
+}
 function novedadFichaTxt(rec){
   const txt=novedadVigente(rec);
   if(!txt)return '';
@@ -1690,6 +1780,13 @@ async function cargarEdicionPropia(id,t){
       +'<small style="opacity:.7">Solo: Instagram, Facebook, TikTok, Google Drive/Docs/Fotos, iCloud, WhatsApp o Linktree.</small></div>'
     +'<div class="field"><label>'+((t==='o')?'Descripción de tu servicio':'Qué ofrecés')+'</label>'
       +'<textarea id="epTexto" style="min-height:80px">'+esc((t==='o')?(rec.descripcion||''):(rec.que||''))+'</textarea></div>'
+    /* El descuento lo cambia el comercio cuando quiere, sin pasar por la cola de
+       Julian: es texto de 60 caracteres, no puede traer una foto ni un link, y
+       pasa por el mismo filtro de palabras que la descripcion. La cola queda
+       para lo que de verdad no se puede filtrar solo: las fotos. */
+    +'<div class="field"><label>🎁 Beneficio para vecinos <span style="font-weight:400;color:var(--muted);font-size:11px">(opcional)</span></label>'
+      +'<input id="epBeneficio" maxlength="60" value="'+esc(rec.beneficio||'')+'" placeholder="Ej: 10% de descuento para vecinos">'
+      +'<small style="opacity:.7">Lo que le ofrecés a los vecinos de BarrioKey. Se publica al instante y lo podés cambiar cuando quieras.</small></div>'
     +'<button class="btn btn-main" onclick="guardarEdicionPropia()">Guardar cambios</button>'
     +'<button class="btn btn-soft" onclick="volverDeEdicion()">Cancelar</button>'
     +'<p class="nota" style="text-align:center;margin:14px 0 0"><span style="text-decoration:underline;color:var(--muted);cursor:pointer;font-size:11.5px" onclick="pedirEliminarPublicacion()">🗑️ ¿Querés eliminar tu publicación? Hacé clic acá</span></p>';
@@ -1778,12 +1875,15 @@ async function guardarEdicionPropia(){
   const linkEl=document.getElementById('epLink');
   const textoEl=document.getElementById('epTexto');
   if(linkEl&&!linkPermitido(linkEl.value.trim())){toast('El link solo puede ser de Instagram, Facebook, TikTok, Google Drive/Docs/Fotos, iCloud, WhatsApp o Linktree');return;}
+  const benefEl=document.getElementById('epBeneficio');
+  if(benefEl&&!pasaModeracion(benefEl.value))return;
   const patch={};
   if(linkEl)patch.link=linkEl.value.trim();
   if(textoEl){
     const texto=textoEl.value.trim();
     if(t==='o')patch.descripcion=texto; else patch.que=texto;
   }
+  if(benefEl)patch.beneficio=benefEl.value.trim()||null;
   const btn=document.querySelector('#editarPropio .btn-main');
   try{
     if(ED_PROPIO.foto!==undefined){
@@ -1810,7 +1910,7 @@ async function guardarEdicionPropia(){
     if(btn){btn.disabled=false;btn.textContent='Guardar cambios';}
     return;}
   if(btn){btn.disabled=false;btn.textContent='Guardar cambios';}
-  toast('¡Guardado! La descripción ya está publicada. La foto y el link quedan esperando aprobación.');
+  toast('¡Guardado! La descripción y el beneficio ya están publicados. La foto y el link quedan esperando aprobación.');
   await refrescar();
   volverDeEdicion();
 }
@@ -2242,11 +2342,22 @@ const FILTROS_VECINOS=[{id:'diario',lb:'Todos los días'},{id:'semana',lb:'Lunes
   {id:'finde',lb:'Fin de semana'},{id:'encargo',lb:'Por encargo'}];
 /* Renglon de "donde y cuando" para la ficha. Se dibuja solo si hay algo:
    el plomero que trabaja a domicilio no tiene local ni horario de local. */
-function lineaLugarHorario(r){
-  const partes=[];
-  if(r.direccion)partes.push('<div class="acceso"><span class="flag"></span><span class="txt">📍 '+esc(r.direccion)+'</span></div>');
-  if(r.dias)partes.push('<div class="acceso"><span class="flag"></span><span class="txt">🕒 '+esc(r.dias)+'</span></div>');
-  return partes.join('');
+/* Direccion y horario en un solo bloque chico, con "Cómo llegar" al lado de la
+   direccion en vez de un boton de ancho completo. Son datos de consulta: tienen
+   que estar, pero no compitiendo con los botones de contacto. */
+function lineaLugarHorario(r,destino){
+  const filas=[];
+  if(r.direccion){
+    filas.push('<div class="fd"><span>📍</span><b>'+esc(r.direccion)+'</b>'
+      +(destino?'<span class="comollegar" onclick="abrirMapa(\''+destino+'\')">Cómo llegar</span>':'')
+      +'</div>');
+  }else if(destino){
+    filas.push('<div class="fd"><span>📍</span><b>Ver ubicación</b>'
+      +'<span class="comollegar" onclick="abrirMapa(\''+destino+'\')">Cómo llegar</span></div>');
+  }
+  if(r.dias)filas.push('<div class="fd"><span>🕒</span>'+esc(r.dias)+'</div>');
+  if(!filas.length)return '';
+  return '<div class="ficha-datos">'+filas.join('')+'</div>';
 }
 /* "Cómo llegar" abre el mapa que ya tiene el telefono (Google Maps en Android,
    Mapas en iPhone) con la direccion ya escrita.
@@ -2275,15 +2386,17 @@ function linkMapaValido(txt){
    direccion escrita. Si no hay ninguna de las dos, el boton NO se dibuja: la
    mayoria de los oficios no tiene local (el plomero no tiene direccion que
    mostrar) y medio listado quedaria con un boton que no lleva a ningun lado. */
-function botonComoLlegar(r){
+/* Devuelve A DONDE lleva el mapa, no un boton: ahora "Cómo llegar" vive adentro
+   de la linea de la direccion. Gana el link que pego el comercio; si no hay,
+   se arma la busqueda con la direccion escrita; si no hay ninguna, no va nada. */
+function destinoMapa(r){
   if(!r)return '';
   const propio=linkMapaValido(r.mapa);
+  if(propio)return esc(propio).replace(/'/g,"\\'");
   const dir=(r.direccion||'').trim();
-  if(!propio&&!dir)return '';
-  const destino=propio||('https://www.google.com/maps/search/?api=1&query='
-    +encodeURIComponent(dir+(r.barrio?(' '+r.barrio):'')+', Pilar, Buenos Aires'));
-  return '<button class="btn btn-soft" style="margin-bottom:10px" onclick="abrirMapa(\''
-    +esc(destino).replace(/'/g,"\\'")+'\')">📍 Cómo llegar</button>';
+  if(!dir)return '';
+  return esc('https://www.google.com/maps/search/?api=1&query='
+    +encodeURIComponent(dir+(r.barrio?(' '+r.barrio):'')+', Pilar, Buenos Aires')).replace(/'/g,"\\'");
 }
 function abrirMapa(url){
   if(!url)return;
@@ -2318,7 +2431,14 @@ function etiquetaLink(url){
   try{const o=new URL(href);host=o.hostname.toLowerCase().replace(/^www\./,'');path=o.pathname.replace(/^\/+|\/+$/g,'');}
   catch(e){return u;}
   const usuario=(path.split('/')[0]||'').replace(/^@/,'');
-  if((host==='instagram.com'||host==='tiktok.com')&&usuario)return '@'+usuario;
+  /* Decia solo "@usuario". Se entiende de quien es, pero no que va a pasar al
+     tocarlo — y es el link que hace comprar, porque ahi estan las fotos. Con la
+     plataforma adelante, la accion queda clara. */
+  /* "Ver en IG" y no "Ver en Instagram": el "Ver en" dice que va a pasar al
+     tocarlo, pero la palabra entera se comia el renglon y le ganaba en peso a
+     la descripcion, que es lo que cuenta que hace el negocio. */
+  if(host==='instagram.com'&&usuario)return 'Ver en IG · @'+usuario;
+  if(host==='tiktok.com'&&usuario)return 'Ver en TikTok · @'+usuario;
   if(host==='facebook.com'||host==='fb.com')return usuario?('Facebook · '+usuario):'Facebook';
   if(host==='linktr.ee')return usuario?('Linktree · '+usuario):'Linktree';
   if(host==='wa.me'||host.endsWith('whatsapp.com'))return 'Escribir por WhatsApp';
@@ -2331,7 +2451,8 @@ function linkTocable(url){
   if(!url)return'';
   const u=String(url).trim();
   const href=/^https?:\/\//i.test(u)?u:'https://'+u;
-  return '<a href="'+esc(href)+'" target="_blank" rel="noopener" style="color:var(--barrera2);font-weight:600">🔗 '+esc(etiquetaLink(u))+'</a>';
+  return '<a class="link-negocio" href="'+esc(href)+'" target="_blank" rel="noopener">'
+    +'<span class="ico">🔗</span><span class="tx">'+esc(etiquetaLink(u))+'</span><span class="fl">›</span></a>';
 }
 const DOMINIOS_LINK_PERMITIDOS=['instagram.com','facebook.com','fb.com','tiktok.com','drive.google.com','docs.google.com','photos.google.com','photos.app.goo.gl','icloud.com','wa.me','whatsapp.com','linktr.ee',
   'mercadolibre.com.ar','mercadolibre.com','mercadoshops.com.ar','mercadoshops.com',
@@ -3935,6 +4056,12 @@ function pintarBotonRecomendar(id){
     cont.style.display=t?'block':'none';
   }
 }
+function verTodasResenas(){
+  const d=document.getElementById('resMas'), b=document.getElementById('resMasBtn');
+  if(!d)return;
+  d.style.display='block';
+  if(b)b.remove();
+}
 function resenasDe(nombre){
   return (CACHER||[]).filter(r=>norm(r.prestador)===norm(nombre));
 }
@@ -3991,22 +4118,14 @@ function verDetalle(id){
     +'<div class="datos">'
     +'<div class="dato"><span>Cobertura</span><b>'+esc(barriosTxt)+'</b></div>'
     +'</div>'
+    +lineaBeneficio(p,'o')
     +(esPro&&p.link?'<p class="nota" style="margin:0 0 12px">'+linkTocable(p.link)+'</p>':'')
     +'<p class="nota" style="margin:0 0 16px">'+esc(p.descripcion||'')+'</p>'
-    +lineaLugarHorario(p)
-    +botonComoLlegar(p)
-    +(function(){
-       const l=resenasDe(p.nombre).slice(0,3);
-       if(!l.length)return '<p class="nota" style="margin:0 0 16px">Todavía no tiene reseñas de vecinos.</p>';
-       return '<p style="font-family:\'Space Mono\',monospace;font-size:10px;letter-spacing:1.6px;'
-         +'text-transform:uppercase;color:var(--muted);margin:0 0 8px 2px">Lo que dicen los vecinos</p>'
-         +l.map(r=>'<div class="resena"><div class="re-top"><span class="re-est">'
-           +'★'.repeat(Number(r.estrellas||0))+'</span><span>'+esc(soloNombre(r.vecino)||'Vecino')+'</span>'
-           +'<span class="re-fe">'+new Date(r.creado_en).toLocaleDateString('es-AR')+'</span></div>'
-           +(r.texto?'<div class="re-txt">'+esc(r.texto)+'</div>':'')
-           +'<div class="reportar-wrap"><button class="reportar" onclick="reportar(\'resenas\',\''+r.id+'\')">🚩 Reportar</button></div>'
-           +'</div>').join('');
-     })()
+    +lineaLugarHorario(p,destinoMapa(p))
+    /* Las reseñas van DESPUES del boton de contacto. Estan limitadas a 3, pero
+       aun asi empujaban el WhatsApp abajo de todo: para escribirle habia que
+       pasar por las tres. El que ya se decidio toca arriba; el que quiere leer,
+       baja. Y el promedio (★ 5.0) ya esta en los chips, al principio. */
     /* UN SOLO BOTON POR FICHA, NUNCA DOS.
        Estuvieron los dos un rato y Julian lo marco enseguida: "Escribir por
        WhatsApp" y "Hacer un pedido" terminan los dos en WhatsApp, asi que el
@@ -4025,6 +4144,30 @@ function verDetalle(id){
     +(esComercio(p)&&soloNum(p.tel)
         ? '<button class="btn btn-main" onclick="waDe(\''+p.id+'\')">Escribir por WhatsApp</button>'
         : '<button class="btn btn-main" onclick="abrirPedir()">Pedir presupuesto</button>')
+    /* LAS RESENAS: SE VEN 3 Y EL RESTO ESTA A UN TOQUE.
+       No se esconde ninguna. Lo que se evita es que una ficha con 20 resenas
+       se vuelva un scroll infinito donde el boton de contacto y el beneficio
+       quedan a media pantalla de distancia. Las 3 mas nuevas alcanzan para
+       decidir; el que quiere leer todas toca y las tiene. */
+    +(function(){
+       const todas=resenasDe(p.nombre);
+       if(!todas.length)return '<p class="nota" style="margin:0 0 16px">Todavía no tiene reseñas de vecinos.</p>';
+       const fila=r=>'<div class="resena"><div class="re-top"><span class="re-est">'
+           +'★'.repeat(Number(r.estrellas||0))+'</span><span>'+esc(soloNombre(r.vecino)||'Vecino')+'</span>'
+           +'<span class="re-fe">'+new Date(r.creado_en).toLocaleDateString('es-AR')+'</span></div>'
+           +(r.texto?'<div class="re-txt">'+esc(r.texto)+'</div>':'')
+           +'<div class="reportar-wrap"><button class="reportar" onclick="reportar(\'resenas\',\''+r.id+'\')">🚩 Reportar</button></div>'
+           +'</div>';
+       const resto=todas.slice(3);
+       return '<p style="font-family:\'Space Mono\',monospace;font-size:10px;letter-spacing:1.6px;'
+         +'text-transform:uppercase;color:var(--muted);margin:0 0 8px 2px">Lo que dicen los vecinos</p>'
+         +todas.slice(0,3).map(fila).join('')
+         +(resto.length
+            ? '<div id="resMas" style="display:none">'+resto.map(fila).join('')+'</div>'
+              +'<button class="btn btn-soft" id="resMasBtn" style="margin:0 0 16px" '
+              +'onclick="verTodasResenas()">Ver las otras '+resto.length+' reseñas</button>'
+            : '');
+     })()
     +'<button class="btn btn-soft" onclick="cerrar(\'shDet\')">Cerrar</button>'
     /* RECLAMAR LA FICHA. Hasta ahora el duenio, para poder editarse, tenia que
        encontrar en "Mis avisos" un texto subrayado que no encuentra nadie solo.
@@ -4046,10 +4189,10 @@ function verDetalleVecino(id){
     +'<h3>'+esc(v.negocio||soloNombre(v.nombre))+'</h3>'
     +'<p class="sub">'+esc(rubroLbCompleto(v))+' · '+esc(v.barrio||('Todos los '+etiquetaBarrios()))+'</p>'
     +'<div class="chips">'+(pro?'<span class="chip">PLAN DESTACADO</span>':'')+'</div>'
+    +lineaBeneficio(v,'v')
     +(pro&&v.link?'<p class="nota" style="margin:0 0 12px">'+linkTocable(v.link)+'</p>':'')
     +'<p class="nota" style="margin:0 0 16px">'+esc(v.que||'')+'</p>'
-    +lineaLugarHorario(v)
-    +botonComoLlegar(v)
+    +lineaLugarHorario(v,destinoMapa(v))
     +(soloNum(v.tel)?'<button class="btn btn-main" onclick="waVecino(\''+v.id+'\')">Escribir por WhatsApp</button>':'')
     /* Recomendar, no calificar. Sin estrellas, sin nombres y sin lado negativo:
        el que no recomienda simplemente no toca el boton y nadie se entera.
@@ -4659,6 +4802,7 @@ async function enviarAlta(){
     localidad:document.getElementById('sLocalidad').value.trim()||null,
     direccion:document.getElementById('sDireccion').value.trim()||null,
     mapa:linkMapaValido(document.getElementById('sMapa').value),
+    beneficio:document.getElementById('sBeneficio').value.trim()||null,
     vive_en_barrio:(document.getElementById('sViveBarrio')||{}).checked?(cargarAcceso()||{}).barrio||null:null,
     dias:document.getElementById('sDias').value.trim()||null,
     rubro_otro:document.getElementById('sRubro').value==='otros_of'?(document.getElementById('sRubroOtro').value.trim()||null):null,
@@ -4760,6 +4904,7 @@ async function publicarVecino(){
     dias:document.getElementById('vDias').value.trim(),
     direccion:document.getElementById('vDireccion').value.trim()||null,
     mapa:linkMapaValido(document.getElementById('vMapa').value),
+    beneficio:document.getElementById('vBeneficio').value.trim()||null,
     que,foto:fotoUrl||null,foto2:foto2Url||null,link:document.getElementById('vLink').value.trim(),
     barrio:barrioV,barriosVenta:elegidos.join(', '),aprobado:false,destacado_hasta:null,pro_pendiente:quiereTodos,creado_en:new Date().toISOString(),
     plataforma:plataformaApp(),
@@ -5576,6 +5721,7 @@ function pintarAdmLista(){
              ? '<small style="opacity:.7">Sin link: “Cómo llegar” busca por la dirección escrita.</small>'
              : '<small style="opacity:.7">Sin link ni dirección: el botón “Cómo llegar” no se muestra.</small>'))
       +'</div>'
+      +'<div class="field"><label>Beneficio para vecinos <span style="font-weight:400;color:var(--muted);font-size:11px">(opcional)</span></label><input id="ed_beneficio_'+p.id+'" maxlength="60" value="'+esc(p.beneficio||'')+'" placeholder="Ej: 10% de descuento para vecinos"><small style="opacity:.7">Lo que el comercio le ofrece a los vecinos. Si está vacío no aparece nada.</small></div>'
       +'<div class="field"><label>Cuándo atiende</label><select id="ed_dias_'+p.id+'">'+DIAS_OF.map(x=>'<option value="'+esc(x)+'"'+((p.dias||'')===x?' selected':'')+'>'+(x||'— sin horario fijo —')+'</option>').join('')+'</select></div>'
       +'<div class="field"><label>CUIT (para la factura)</label><input id="ed_cuit_'+p.id+'" value="'+esc(p.cuit||'')+'" placeholder="20-12345678-9"><small style="opacity:.7">Si lo dejás vacío, la factura sale a consumidor final.</small></div>'
       +'<button class="mini dash" onclick="guardarEdicionOficio(\''+p.id+'\')">Guardar cambios</button>'
@@ -5687,6 +5833,7 @@ async function guardarEdicionOficio(id){
     cuit:document.getElementById('ed_cuit_'+id).value.trim()||null,
     direccion:document.getElementById('ed_dir_'+id).value.trim()||null,
     mapa:linkMapaValido(document.getElementById('ed_mapa_'+id).value),
+    beneficio:document.getElementById('ed_beneficio_'+id).value.trim()||null,
     dias:document.getElementById('ed_dias_'+id).value.trim()||null
   };
   patchRubroEdit(patch,'o_',id,'otros_of');
@@ -6039,6 +6186,7 @@ function pintarAdmVecinos(){
              ? '<small style="opacity:.7">Sin link: “Cómo llegar” busca por la dirección escrita.</small>'
              : '<small style="opacity:.7">Sin link ni dirección: el botón “Cómo llegar” no se muestra.</small>'))
       +'</div>'
+      +'<div class="field"><label>Beneficio para vecinos <span style="font-weight:400;color:var(--muted);font-size:11px">(opcional)</span></label><input id="edv_beneficio_'+v.id+'" maxlength="60" value="'+esc(v.beneficio||'')+'" placeholder="Ej: 10% de descuento para vecinos"><small style="opacity:.7">Lo que el comercio le ofrece a los vecinos. Si está vacío no aparece nada.</small></div>'
       +'<div class="field"><label>CUIT (para la factura)</label><input id="edv_cuit_'+v.id+'" value="'+esc(v.cuit||'')+'" placeholder="20-12345678-9"><small style="opacity:.7">Si lo dejás vacío, la factura sale a consumidor final.</small></div>'
       +campoNovedadPanel(v,'edv_nov_'+v.id)
       +'<button class="mini dash" onclick="guardarEdicionVecino(\''+v.id+'\')">Guardar cambios</button>'
@@ -6098,7 +6246,8 @@ async function guardarEdicionVecino(id){
     link:document.getElementById('edv_link_'+id).value.trim(),
     cuit:document.getElementById('edv_cuit_'+id).value.trim()||null,
     direccion:document.getElementById('edv_dir_'+id).value.trim()||null,
-    mapa:linkMapaValido(document.getElementById('edv_mapa_'+id).value)
+    mapa:linkMapaValido(document.getElementById('edv_mapa_'+id).value),
+    beneficio:document.getElementById('edv_beneficio_'+id).value.trim()||null
   };
   patchRubroEdit(patch,'v_',id,'otros');
   patchNovedadPanel(v,'edv_nov_'+id,patch);

@@ -497,6 +497,18 @@
         <p class="nota" style="margin:-10px 0 14px">¿No tenés un código todavía? Alguien de tu barrio te tiene que invitar desde la app (botón "Invitar a un vecino"). Si nadie te invitó aún, <span style="text-decoration:underline;color:var(--pine);font-weight:600;cursor:pointer" onclick="abrirConsultaAcceso()">contactá al administrador</span>.</p>
         <button class="btn btn-main" onclick="validarCodigoFamiliaAcceso()">Ingresar</button>
         <p class="link-back" id="lnkNoTengoCodigo" onclick="abrirConsultaAcceso()" style="display:none;text-decoration:underline;color:var(--pine);font-weight:600">¿Problemas para entrar? Contactá al administrador</p>
+
+        <div style="display:flex;align-items:center;gap:10px;margin:22px 0 16px">
+          <div style="flex:1;height:1px;background:var(--line)"></div>
+          <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1.6px;color:var(--muted)">O BIEN</span>
+          <div style="flex:1;height:1px;background:var(--line)"></div>
+        </div>
+        <h2 class="h" style="text-align:center;margin-bottom:8px;font-size:17px">¿Te mandaron un link de invitación?</h2>
+        <p class="nota" style="margin:0 0 14px">Si el link se te abrió en el navegador en vez de acá, no pasa nada: copialo y pegalo abajo. Te registrás sin salir de la app.</p>
+        <div class="field"><label>Link o código de invitación</label>
+          <input id="accLinkInvitacion" placeholder="Pegá acá el link que te mandaron" autocapitalize="off" autocorrect="off" spellcheck="false"></div>
+        <button class="btn btn-soft" onclick="usarLinkInvitacionAcceso()">Continuar con la invitación</button>
+
         <p class="link-back" onclick="volverPasoRol()">‹ Volver</p>
       </div>
       <div id="accPasoInvitado" style="display:none">
@@ -699,7 +711,11 @@
           <small style="opacity:.7">Es dónde vivís — se usa para identificarte, no es lo mismo que "dónde querés vender" (eso lo elegís abajo).</small>
         </div>
         <div class="field"><label>¿En qué barrios querés vender?</label>
-          <small style="opacity:.7;display:block;margin-bottom:6px">Podés elegir uno, varios o todos.</small>
+          <!-- Aca habia un "Podes elegir uno, varios o todos" que era falso: el tope
+               siempre fue 3. Y encima chocaba con la linea que dibuja el JS justo
+               abajo ("Elegi hasta 3 barrios"), que ademas cambia segun la
+               plataforma (en iPhone no puede decir "gratis"). Se saca: el texto
+               bueno lo pone pintarBarriosVenta(). -->
           <div id="vBarriosVenta" style="display:flex;flex-direction:column;gap:4px"></div>
         </div>
         <div class="row2">
@@ -2667,7 +2683,39 @@ function arrancarSegunAcceso(){
   }
 }
 let TOKEN_INVITACION=null;
-function mostrarPasoInvitado(token){
+/* ===== Pegar el link de invitacion adentro de la app =====
+   En iPhone un link https NO abre la app: para eso harian falta Universal
+   Links, que obligan a tocar la firma y a habilitar una capacidad en el portal
+   de Apple. Mientras tanto, al que le llego el link por WhatsApp se le abria en
+   Safari y quedaba registrado en el navegador en vez de en la app (le paso a la
+   hija de Julian el 11/9).
+   Con esto lo pega adentro de la app y se registra ahi mismo. Acepta el link
+   entero (que es lo que la gente copia) o solo el token suelto. */
+function tokenDeInvitacion(txt){
+  const t=(txt||'').trim();
+  if(!t)return '';
+  const m=t.match(/[?&]inv=([^&\s]+)/i);
+  if(m)return decodeURIComponent(m[1]).trim();
+  // pegaron solo el codigo, sin el link
+  if(/^[A-Za-z0-9_-]{4,40}$/.test(t))return t;
+  return '';
+}
+function barrioDeInvitacion(txt){
+  const m=(txt||'').match(/[?&]b=([^&\s]+)/i);
+  if(!m)return '';
+  try{return decodeURIComponent(m[1].replace(/\+/g,' ')).trim();}catch(e){return '';}
+}
+function usarLinkInvitacionAcceso(){
+  const el=document.getElementById('accLinkInvitacion');
+  const crudo=el?el.value:'';
+  const token=tokenDeInvitacion(crudo);
+  if(!token){
+    toast('Pegá el link completo que te mandaron (el que empieza con https)');
+    return;
+  }
+  mostrarPasoInvitado(token,barrioDeInvitacion(crudo));
+}
+function mostrarPasoInvitado(token,barrioPegado){
   TOKEN_INVITACION=token;
   document.getElementById('accPasoRol').style.display='none';
   document.getElementById('accPasoVecino').style.display='none';
@@ -2676,8 +2724,8 @@ function mostrarPasoInvitado(token){
      lo define el servidor con el barrio guardado en la invitacion. */
   const aviso=document.getElementById('invBarrioAviso');
   if(aviso){
-    let bq='';
-    try{bq=(new URLSearchParams(location.search).get('b')||'').trim();}catch(e){}
+    let bq=(barrioPegado||'').trim();
+    try{if(!bq)bq=(new URLSearchParams(location.search).get('b')||'').trim();}catch(e){}
     aviso.innerHTML = bq
       ? '🏡 Quedás registrado en <b>'+esc(bq)+'</b>. Si no es tu barrio, pedile el link correcto a quien te invitó.'
       : '🏡 Quedás registrado en el barrio de tu invitación. Si no es el tuyo, pedile el link correcto a quien te invitó.';

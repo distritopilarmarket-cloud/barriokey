@@ -3111,7 +3111,10 @@ async function validarCodigoFamiliaAcceso(){
       if(btn){btn.disabled=false;btn.textContent='Ingresar';}
       return;
     }
-    guardarAcceso({rol:'vecino',barrio:j.barrio,lote:j.lote,codigo,ts:Date.now()});
+    /* j.nombre es el de la familia: sin esto, el que entra con el codigo de 6
+       digitos queda sin nombre y la pantalla del beneficio le muestra solo el
+       lote y el barrio. */
+    guardarAcceso({rol:'vecino',barrio:j.barrio,lote:j.lote,codigo,nombre:j.nombre||'',ts:Date.now()});
     ROL_ACTUAL='vecino';aplicarRestriccionNav();
     S.cfg.barrio=j.barrio;guardar();pintarBarrios();
     ir('inicio');

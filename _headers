@@ -1,0 +1,6 @@
+# Netlify sirve los archivos sin extension como texto plano, y Apple exige que el
+# apple-app-site-association venga como application/json. Sin esto, iOS lo baja y
+# lo descarta sin dar ningun error visible: el link sigue abriendo Safari y no hay
+# forma de darse cuenta de por que.
+/.well-known/apple-app-site-association
+  Content-Type: application/json

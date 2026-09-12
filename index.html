@@ -3574,7 +3574,12 @@ function pintarLista(){
       +'</div>'
       +'<div class="card-acts">'
       +'<button class="bsm ghost" onclick="event.stopPropagation();verDetalle(\''+p.id+'\')">Ver perfil</button>'
-      +'<button class="bsm p" onclick="event.stopPropagation();pedirDesde(\''+p.id+'\')">Pedir presupuesto</button>'
+      /* La tarjeta del listado tiene que decir lo MISMO que la ficha. Si aca
+         dice "Pedir presupuesto" y adentro dice "Escribir por WhatsApp", el
+         vecino toca una cosa y le aparece otra. */
+      +(esComercio(p)&&soloNum(p.tel)
+        ? '<button class="bsm w" onclick="event.stopPropagation();waDe(\''+p.id+'\')">Escribir por WhatsApp</button>'
+        : '<button class="bsm p" onclick="event.stopPropagation();pedirDesde(\''+p.id+'\')">Pedir presupuesto</button>')
       +'</div></div>';
   }).join('')
   +'<button class="mini dash" onclick="compartirApp(\'oficio\')" style="margin-top:12px">📲 Invitar más proveedores por WhatsApp</button>';
@@ -3992,14 +3997,23 @@ function verDetalle(id){
            +'<div class="reportar-wrap"><button class="reportar" onclick="reportar(\'resenas\',\''+r.id+'\')">🚩 Reportar</button></div>'
            +'</div>').join('');
      })()
-    /* A un comercio se le escribe derecho — y ese toque queda registrado, que es
-       lo que despues le habilita la estrella. Pero el formulario NO se saca: a
-       una rotiseria le encargás tres docenas de empanadas para el sábado, y eso
-       es un pedido igual que el del plomero. Lo que cambia es cual va primero y
-       como se llama: "Hacer un pedido", no "Pedir presupuesto". */
+    /* UN SOLO BOTON POR FICHA, NUNCA DOS.
+       Estuvieron los dos un rato y Julian lo marco enseguida: "Escribir por
+       WhatsApp" y "Hacer un pedido" terminan los dos en WhatsApp, asi que el
+       vecino no sabe cual tocar. Dos caminos al mismo lugar es peor que
+       cualquiera de los dos solo.
+
+       Se reparte por rubro, que es donde cada uno se gana el lugar:
+       · SERVICIOS (plomero, gasista, electricista) -> Pedir presupuesto.
+         Ahi los datos valen: sin el lote, que se rompio y si es urgente, el
+         plomero arranca con cuatro mensajes de ida y vuelta. Y es lo que llena
+         la pestaña Actividad, el unico termometro de si la app se usa.
+       · COMERCIOS (carniceria, panaderia, rotiseria) -> Escribir por WhatsApp.
+         A una carniceria le escribis "¿tenes vacio para el sabado?" y listo; el
+         "¿cuando? es urgente / sin apuro" no significa nada ahi. El toque queda
+         registrado en `contactos`, que es lo que le habilita la estrella. */
     +(esComercio(p)&&soloNum(p.tel)
         ? '<button class="btn btn-main" onclick="waDe(\''+p.id+'\')">Escribir por WhatsApp</button>'
-          +'<button class="btn btn-soft" onclick="abrirPedir()">📝 Hacer un pedido</button>'
         : '<button class="btn btn-main" onclick="abrirPedir()">Pedir presupuesto</button>')
     +'<button class="btn btn-soft" onclick="cerrar(\'shDet\')">Cerrar</button>'
     /* RECLAMAR LA FICHA. Hasta ahora el duenio, para poder editarse, tenia que

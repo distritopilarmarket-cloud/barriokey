@@ -1,0 +1,13 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["2244RLPN23.com.barriokey.app"],
+        "components": [
+          { "/": "/", "comment": "la raiz, que es donde caen los links de invitacion" },
+          { "/": "/?*", "comment": "con parametros: ?inv=... &b=..." }
+        ]
+      }
+    ]
+  }
+}

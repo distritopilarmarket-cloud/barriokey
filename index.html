@@ -152,6 +152,16 @@
     cursor:pointer;transition:transform .12s,box-shadow .15s;animation:entrar .3s ease-out backwards}
   .card:active{transform:scale(.985)}
   .novedad-strip{background:linear-gradient(90deg,#173D34,#2E5C4F);color:#D4F2A0;font-size:11.5px;font-weight:700;padding:7px 14px}
+  /* La MISMA novedad, pero adentro de la ficha. Va arriba de todo y con el
+     texto entero: el 🔥 del carrusel y la tirita del listado son el anzuelo,
+     pero hasta hoy el que tocaba caia en una ficha que no la mostraba en
+     ningun lado. Acá se lee completa, y con la hora hasta la que vale. */
+  .novedad-ficha{background:linear-gradient(90deg,#173D34,#2E5C4F);color:#D4F2A0;
+    border-radius:12px;padding:11px 13px;margin-bottom:13px}
+  .novedad-ficha .tit{font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:1.4px;
+    text-transform:uppercase;opacity:.75;margin-bottom:4px}
+  .novedad-ficha .txt{font-size:13.5px;font-weight:700;line-height:1.4;white-space:pre-wrap}
+  .novedad-ficha .pie{font-size:10.5px;opacity:.7;margin-top:5px}
   .card:hover{box-shadow:0 8px 20px -12px rgba(15,46,39,.28)}
   .card:nth-child(1){animation-delay:.02s} .card:nth-child(2){animation-delay:.06s}
   .card:nth-child(3){animation-delay:.1s} .card:nth-child(4){animation-delay:.14s}
@@ -258,6 +268,58 @@
   .rec-btn[disabled]{opacity:.55;cursor:default}
   .rec-cont{font-size:12px;color:var(--pine);font-weight:600;margin:8px 0 8px 2px}
 
+  /* ===== PANEL: la fila se cierra =====
+     Antes cada publicacion ocupaba mas de una pantalla de telefono: el nombre
+     en 3 renglones, la etiqueta verde cortada al medio, los datos en
+     monoespaciada en 4 lineas y tres botones gigantes. Con 20 registros eran
+     20 pantallas. Ahora la fila cerrada entra en dos renglones y el resto se
+     abre al tocarla. */
+  .adm-cab{display:flex;align-items:center;gap:10px;width:100%;cursor:pointer;
+    padding:2px 0;-webkit-tap-highlight-color:transparent}
+  .adm-cab .ava{flex:0 0 auto;width:42px;height:42px}
+  .adm-cab-txt{flex:1;min-width:0}
+  .adm-cab-nm{font-weight:700;font-size:14px;color:var(--ink);line-height:1.25;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  /* Hasta dos renglones: los avisos ("falta facturar", "pidió Pro") son los que
+     hacen util la fila cerrada, y con una sola linea se cortaban con puntitos. */
+  .adm-cab-sub{font-size:11.5px;color:var(--muted);line-height:1.35;margin-top:3px;
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .adm-chev{flex:0 0 auto;color:var(--muted);font-size:17px;transition:transform .18s}
+  .adm-chev.abierto{transform:rotate(90deg)}
+  /* La etiqueta de estado NUNCA se parte en dos lineas: era lo que dejaba el
+     fondo verde cortado a la mitad de la palabra. */
+  .adm-badge{display:inline-block;white-space:nowrap;font-size:10.5px;font-weight:700;
+    padding:1px 7px;border-radius:8px;vertical-align:middle}
+  .adm-det{width:100%;margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
+
+  /* ===== PANEL: el tablero de control =====
+     Los numeros que dicen que hacer hoy. Cada uno filtra al tocarlo: sin eso es
+     un adorno, con eso es la forma mas rapida de llegar al registro. */
+  .tablero{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:14px}
+  @media(min-width:520px){.tablero{grid-template-columns:repeat(4,1fr)}}
+  .tb-item{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 11px;
+    cursor:pointer;text-align:left;font-family:inherit;transition:border-color .15s,background .15s}
+  .tb-item:active{background:var(--line2)}
+  .tb-item.on{border-color:var(--moss);background:var(--pine-soft)}
+  .tb-num{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:22px;
+    line-height:1;color:var(--pine)}
+  .tb-num.alerta{color:#C4453F}
+  .tb-num.cero{color:var(--muted);opacity:.5}
+  .tb-lb{font-size:10.5px;color:var(--muted);margin-top:4px;line-height:1.25}
+  .tb-plata{background:var(--pine);border-radius:14px;padding:12px 14px;margin-bottom:14px;color:#fff}
+  .tb-plata .grande{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:26px;line-height:1}
+  .tb-plata .chico{font-size:11px;opacity:.85;margin-top:3px}
+  .tb-lista{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin-bottom:14px}
+  .tb-lista h4{margin:0 0 8px;font-size:12px;font-weight:700;color:var(--ink)}
+  .tb-fila{display:flex;align-items:center;gap:8px;padding:6px 0;border-top:1px solid var(--line2);font-size:12.5px}
+  .tb-fila:first-of-type{border-top:none}
+  .tb-fila .nom{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600}
+  .tb-fila .dato{font-size:11px;color:var(--muted);white-space:nowrap}
+  /* `.mini` es width:100%: adentro de una fila se comia el nombre entero y solo
+     se veia el importe y el boton. Es la MISMA trampa que rompio la tarjeta de
+     aprobacion el 11/9 — conviene acordarse. */
+  .tb-fila .mini{width:auto;flex:0 0 auto;margin:0;padding:3px 9px;font-size:12px}
+
   .cupos-box{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:16px}
   .cupos-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px;font-size:13.5px}
   .cupos-head b{font-weight:700}
@@ -351,6 +413,8 @@
   .tabs button{flex:1;padding:10px 4px;border:none;border-radius:10px;background:none;font-weight:600;font-size:12.5px;
     color:var(--muted);cursor:pointer}
   .tabs button.on{background:var(--pine);color:#fff}
+  .tabs-panel{flex-wrap:wrap}
+  .tabs-panel button{flex:0 0 auto;padding:9px 11px;font-size:12px}
   .pane{display:none}
   .pane.on{display:block}
   .mini{width:100%;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff;
@@ -375,6 +439,13 @@
     .adm-row .ava{order:1}
     .adm-row .adm-info{flex:1 1 100%;min-width:0;order:2}
     .adm-row .tg{margin-left:0;order:3}
+    /* La cabecera va PRIMERO y su foto a la izquierda. Sin estas tres lineas, la
+       regla `.adm-row .ava{order:1}` de arriba tambien agarraba a la foto de
+       adentro de la cabecera y la mandaba al final: el nombre quedaba a la
+       izquierda, la flechita en el medio y la foto colgada a la derecha. */
+    .adm-row .adm-cab{order:0;flex:1 1 100%}
+    .adm-row .adm-cab .ava{order:0}
+    .adm-row .adm-det{order:5;flex:1 1 100%}
   }
   .tg.si{background:var(--ok-bg);color:var(--ok)}
   .tg.no{background:var(--line2);color:var(--muted)}
@@ -665,6 +736,9 @@
       <div class="field"><label>Dirección del local <span style="font-weight:400;color:var(--muted);font-size:11px">(opcional — solo si atendés en un local)</span></label>
         <input id="sDireccion" maxlength="90" placeholder="Ej: Av. Perón 1234, Pilar">
         <small style="opacity:.7">Si trabajás a domicilio, dejalo vacío.</small></div>
+      <div class="field"><label>Link de Google Maps <span style="font-weight:400;color:var(--muted);font-size:11px">(opcional)</span></label>
+        <input id="sMapa" maxlength="300" placeholder="Pegá acá el link de tu ubicación">
+        <small style="opacity:.7">Buscate en Google Maps, tocá <b>Compartir</b> y pegá el link. Así el vecino llega al punto exacto y no a una dirección escrita que el buscador puede confundir.</small></div>
       <div class="field"><label>Cuándo atendés <span style="font-weight:400;color:var(--muted);font-size:11px">(opcional)</span></label>
         <select id="sDias"></select></div>
       <!-- El profesional que VIVE en el barrio (el kinesiologo del lote 40, la
@@ -740,6 +814,9 @@
         <div class="field"><label>Dirección del local <span style="font-weight:400;color:var(--muted);font-size:11px">(opcional — solo si tenés local)</span></label>
           <input id="vDireccion" maxlength="90" placeholder="Ej: Av. Perón 1234, Pilar">
           <small style="opacity:.7">Si vendés desde tu casa o a domicilio, dejalo vacío.</small></div>
+        <div class="field"><label>Link de Google Maps <span style="font-weight:400;color:var(--muted);font-size:11px">(opcional)</span></label>
+          <input id="vMapa" maxlength="300" placeholder="Pegá acá el link de tu ubicación">
+          <small style="opacity:.7">Buscate en Google Maps, tocá <b>Compartir</b> y pegá el link. Así el vecino llega al punto exacto y no a una dirección escrita que el buscador puede confundir.</small></div>
         <div class="field"><label>Contalo en dos líneas</label><textarea id="vQue" placeholder="Ej. Empanadas caseras por docena. Se encargan hasta el jueves."></textarea></div>
         <!-- Decia solo "Foto de lo que vendes" y la gente preguntaba si iba el
              logo o el producto. Como esta es la UNICA foto sin Plan Pro, tiene
@@ -790,7 +867,10 @@
     </div>
     <div class="barrera"></div>
     <div class="body">
-      <div class="tabs" style="overflow-x:auto;flex-wrap:nowrap">
+      <!-- Antes era overflow-x:auto y con 9 pestañas entraban 3 y media, cortadas
+           de los dos lados: para llegar a "Novedades" habia que arrastrar a ciegas
+           sin saber cuantas faltaban. Bajando de renglon se ven las 9 de una. -->
+      <div class="tabs tabs-panel">
         <button id="tbOficios" class="on" onclick="tab('oficios')" style="flex:none">Prestadores</button>
         <button id="tbVencimientos" onclick="tab('vencimientos')" style="flex:none">⏳ Vencimientos</button>
         <button id="tbTrabajos" onclick="tab('trabajos')" style="flex:none">Actividad</button>
@@ -835,8 +915,11 @@
         <p class="nota" style="margin:0 0 12px">Publicá un aviso destacado (obra, corte de servicio, promoción, novedad de la app). Se muestra arriba de todo hasta la fecha que elijas. Podés hacerlo para un barrio o para <b>todos</b> a la vez. Hay una novedad activa por barrio, más la general.</p>
         <div class="field"><label>Barrio</label><select id="admNovBarrio" onchange="admCargarNovedadActual()"></select></div>
         <div class="field"><label>Texto</label><textarea id="admNovTexto" rows="3" placeholder="Ej: Corte de agua el sábado de 8 a 14hs por mantenimiento."></textarea></div>
-        <div class="field"><label>Foto 1 (opcional)</label><input type="file" accept="image/*" id="admNovFoto1" onchange="admPrevisualizarNovedadFoto(this,1)"></div>
-        <div class="field"><label>Foto 2 (opcional)</label><input type="file" accept="image/*" id="admNovFoto2" onchange="admPrevisualizarNovedadFoto(this,2)"></div>
+        <div class="field"><label>Fotos (opcionales)</label>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <label class="mini" style="cursor:pointer;width:auto;flex:1;min-width:120px">📷 Foto 1<input type="file" accept="image/*" id="admNovFoto1" class="file-oculto" onchange="admPrevisualizarNovedadFoto(this,1)"></label>
+            <label class="mini" style="cursor:pointer;width:auto;flex:1;min-width:120px">📷 Foto 2<input type="file" accept="image/*" id="admNovFoto2" class="file-oculto" onchange="admPrevisualizarNovedadFoto(this,2)"></label>
+          </div></div>
         <div id="admNovPreview" style="display:flex;gap:8px;margin:4px 0 10px"></div>
         <div class="field"><label>Válido hasta</label><input type="date" id="admNovVence"></div>
         <label style="display:flex;align-items:center;gap:8px;margin:2px 0 12px;font-size:13px">
@@ -870,6 +953,7 @@
 
       <div id="paneOficios" class="pane on">
         <div id="lanzBanner" style="border-radius:12px;padding:10px 12px;margin-bottom:12px;font-size:12.5px"></div>
+        <div id="tableroAdm"></div>
         <div class="cuenta">
           <div class="cu"><b id="cTot">0</b><span>Total</span></div>
           <div class="cu"><b id="cVer" style="color:var(--ok)">0</b><span>Verificados</span></div>
@@ -1296,6 +1380,14 @@ function abrirRecuperarPub(){
   document.getElementById('recTel').value='';
   abrir('shRecuperar');
 }
+/* Desde la ficha: se cierran las dos hojas de detalle antes de abrir la de
+   recuperacion, porque si no quedan apiladas y al cerrar la de arriba el
+   usuario vuelve a la ficha sin entender que paso. */
+function reclamarFicha(){
+  try{cerrar('shDet');}catch(e){}
+  try{cerrar('shDetV');}catch(e){}
+  setTimeout(abrirRecuperarPub,120);
+}
 async function chequearRecuperacionesAprobadas(){
   try{
     const j=await accionPublicaJ({accion:'chequearRecuperacion',dispositivo:obtenerDispositivoId()});
@@ -1413,6 +1505,26 @@ function patchNovedadPanel(rec,idCampo,patch){
 function novedadActivaTxt(rec){
   if(!novedadVigente(rec))return'';
   return '<div class="novedad-strip">🔥 '+esc(rec.novedad_texto)+'</div>';
+}
+/* La version para la ficha: arriba de todo, texto completo y hasta cuándo vale.
+   Sin esto, el 🔥 del carrusel prometia algo que la ficha no mostraba. */
+function novedadFichaTxt(rec){
+  const txt=novedadVigente(rec);
+  if(!txt)return '';
+  /* NO se muestra hasta que hora vale.
+     La novedad dura 24hs desde que se publico, asi que la hora de vencimiento
+     no la eligio nadie: publicar a las 13:42 daba "vale hasta mañana 13:42", y
+     publicar de madrugada daba "hasta las 3:30 de la mañana". Es un dato
+     interno del limite de publicacion, no algo que al vecino le sirva.
+     El plazo de verdad lo escribe el comercio adentro del texto
+     ("hasta las 18hs"), que es el unico que sabe hasta cuando le dura la oferta.
+
+     Lo que si se corrige: si se publico ayer a la noche, hoy a la mañana sigue
+     vigente pero ya NO es "de hoy". Ahi el titulo dice solo "Novedad". */
+  const mismoDia=new Date(rec.novedad_fecha).toDateString()===new Date().toDateString();
+  return '<div class="novedad-ficha">'
+    +'<div class="tit">🔥 '+(mismoDia?'Novedad de hoy':'Novedad')+'</div>'
+    +'<div class="txt">'+esc(txt)+'</div></div>';
 }
 function pintarMisPubs(){
   const pubs=cargarMisPubs();
@@ -1811,7 +1923,6 @@ const RUBROS=[
   {id:'seguridad',ic:'🛡️',lb:'Seguridad y vigilancia privada'},
   {id:'riego',ic:'💧',lb:'Riego automático'},
   {id:'mudanzas',ic:'🚚',lb:'Mudanzas'},
-  {id:'piletero',ic:'🏊',lb:'Piletero del barrio (mantenimiento)'},
   {id:'mecanica',ic:'🚗',lb:'Mecánica y electricidad del automotor'},
   {id:'ferreteria',ic:'🔩',lb:'Ferretería'},
   {id:'lavanderia',ic:'🧺',lb:'Lavandería'},
@@ -1894,7 +2005,7 @@ const RUBROSV=[
   {id:'mascotas',ic:'🐶',lb:'Mascotas'},
   {id:'bienestar',ic:'🔮',lb:'Bienestar / Terapias holísticas / Salud mental'},
   {id:'delivery',ic:'🛵',lb:'Delivery'},
-  {id:'plantas',ic:'🪴',lb:'Plantas'},
+  {id:'plantines',ic:'🪴',lb:'Plantines y plantas'},
   {id:'artesanias',ic:'🧶',lb:'Artesanías'},
   {id:'belleza',ic:'💅',lb:'Belleza'},
   {id:'ninera',ic:'👶',lb:'Niñera / cuidado de chicos'},
@@ -1903,8 +2014,8 @@ const RUBROSV=[
   {id:'entrenador',ic:'🏋️',lb:'Entrenador personal / fitness'},
   {id:'fotografia',ic:'📸',lb:'Animación y fotografía de eventos'},
   {id:'paseador',ic:'🦮',lb:'Paseador/a de perros'},
-  {id:'carniceria',ic:'🥩',lb:'Carnicería'},
-  {id:'frutasyverduras',ic:'🥬',lb:'Frutas y verduras'},
+  {id:'venta_carnes',ic:'🥩',lb:'Venta de carnes'},
+  {id:'huerta',ic:'🥬',lb:'Huerta / orgánicos'},
   {id:'inmobiliaria',ic:'🏘️',lb:'Desarrollo inmobiliario'},
   {id:'estetica',ic:'✨',lb:'Estética / cuidado de la piel'},
   {id:'carbon',ic:'🪵',lb:'Carbón y leña'},
@@ -1912,19 +2023,17 @@ const RUBROSV=[
   {id:'almacen',ic:'🫒',lb:'Almacén / Dietética'},
   {id:'blanqueria',ic:'🧺',lb:'Toallones / blanquería'},
   {id:'telefonia',ic:'📱',lb:'Accesorios de telefonía'},
-  {id:'vinoteca',ic:'🍷',lb:'Vinoteca / bebidas artesanales'},
+  {id:'venta_vinos',ic:'🍷',lb:'Venta de vinos y cerveza casera'},
   {id:'bebes',ic:'🍼',lb:'Artículos de bebé / Puericultura'},
-  {id:'profesionales',ic:'💼',lb:'Profesionales / Oficios del barrio'},
   {id:'cerrajeria',ic:'🔑',lb:'Cerrajería'},
   {id:'rotiseria',ic:'🍕',lb:'Rotisería (pizza, empanadas, comida al paso)'},
   {id:'sushi',ic:'🍣',lb:'Sushi'},
   {id:'supermercado',ic:'🛒',lb:'Supermercado / Envío a domicilio'},
   {id:'libreria',ic:'📖',lb:'Librería / Papelería'},
   {id:'regaleria',ic:'🎁',lb:'Regalería / Cotillón'},
-  {id:'indumentaria',ic:'👗',lb:'Indumentaria'},
+  {id:'venta_ropa',ic:'👗',lb:'Venta de ropa'},
   {id:'floristeria',ic:'💐',lb:'Floristería'},
-  {id:'perfumeria',ic:'🧴',lb:'Perfumería / Cosmética'},
-  {id:'alquiler_eventos',ic:'🪑',lb:'Alquiler de vajilla / mobiliario para eventos'},
+  {id:'venta_cosmetica',ic:'🧴',lb:'Venta de cosmética'},
   {id:'conservas',ic:'🍯',lb:'Conservas y dulces caseros'},
   {id:'granja',ic:'🥚',lb:'Huevos / productos de granja'},
   {id:'bijouterie',ic:'💍',lb:'Bijouterie'},
@@ -2032,6 +2141,10 @@ const COLORES_RUBRO = {
   rotiseria:'#B5943A', sushi:'#9C7E30', supermercado:'#9C7E30', libreria:'#4A82A0',
   regaleria:'#9C5F7A', indumentaria:'#B5713A', floristeria:'#4F7A4A', perfumeria:'#9C5F7A',
   alquiler_eventos:'#B5943A', conservas:'#9C7E30', granja:'#4F7A4A', bijouterie:'#9C5F7A',
+  /* Los rubros de Vecinos que se renombraron el 12/9 para no llamarse igual que
+     los de Oficios. Sin su color propio caian en el gris generico. */
+  venta_carnes:'#B5943A', huerta:'#4F7A4A', venta_vinos:'#8B4A63',
+  venta_ropa:'#6A4A8C', venta_cosmetica:'#9C5F7A', plantines:'#4F7A4A',
   jabones:'#8A5470', deportivos:'#3E6E8C', parrillas:'#8A5228', manicura:'#9C5F7A',
   otros_of:'#3D6A5C', otros:'#3D6A5C'
 };
@@ -2145,16 +2258,36 @@ function lineaLugarHorario(r){
    El boton NO se dibuja si no hay direccion — la mayoria de los oficios no
    tiene local (el plomero no tiene direccion que mostrar) y medio listado
    quedaria con un boton que no lleva a ningun lado. */
-function botonComoLlegar(r){
-  const dir=(r&&r.direccion||'').trim();
-  if(!dir)return '';
-  const consulta=dir+(r.barrio?(' '+r.barrio):'')+', Pilar, Buenos Aires';
-  return '<button class="btn btn-soft" style="margin-bottom:10px" onclick="abrirMapa(\''
-    +esc(consulta).replace(/'/g,"\\'")+'\')">📍 Cómo llegar</button>';
+/* El link de Maps que pego el propio comercio. Se acepta solo si es de Google:
+   el campo es de ubicacion, no un segundo campo de links libres. */
+function linkMapaValido(txt){
+  const t=(txt||'').trim();
+  if(!t)return null;
+  try{
+    const u=new URL(t.startsWith('http')?t:('https://'+t));
+    const host=u.hostname.replace(/^www\./,'');
+    const ok=['google.com','google.com.ar','maps.google.com','maps.app.goo.gl','goo.gl']
+      .some(d=>host===d||host.endsWith('.'+d));
+    return ok?u.href:null;
+  }catch(e){return null;}
 }
-function abrirMapa(consulta){
-  if(!consulta)return;
-  window.open('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(consulta),'_blank');
+/* Gana el link que pego el comercio; si no hay, se arma la busqueda con la
+   direccion escrita. Si no hay ninguna de las dos, el boton NO se dibuja: la
+   mayoria de los oficios no tiene local (el plomero no tiene direccion que
+   mostrar) y medio listado quedaria con un boton que no lleva a ningun lado. */
+function botonComoLlegar(r){
+  if(!r)return '';
+  const propio=linkMapaValido(r.mapa);
+  const dir=(r.direccion||'').trim();
+  if(!propio&&!dir)return '';
+  const destino=propio||('https://www.google.com/maps/search/?api=1&query='
+    +encodeURIComponent(dir+(r.barrio?(' '+r.barrio):'')+', Pilar, Buenos Aires'));
+  return '<button class="btn btn-soft" style="margin-bottom:10px" onclick="abrirMapa(\''
+    +esc(destino).replace(/'/g,"\\'")+'\')">📍 Cómo llegar</button>';
+}
+function abrirMapa(url){
+  if(!url)return;
+  window.open(url,'_blank');
 }
 function coincideDia(dias,f){
   const d=norm(dias);
@@ -2201,7 +2334,11 @@ function linkTocable(url){
   return '<a href="'+esc(href)+'" target="_blank" rel="noopener" style="color:var(--barrera2);font-weight:600">🔗 '+esc(etiquetaLink(u))+'</a>';
 }
 const DOMINIOS_LINK_PERMITIDOS=['instagram.com','facebook.com','fb.com','tiktok.com','drive.google.com','docs.google.com','photos.google.com','photos.app.goo.gl','icloud.com','wa.me','whatsapp.com','linktr.ee',
-  'mercadolibre.com.ar','mercadolibre.com','mercadoshops.com.ar','mercadoshops.com'];
+  'mercadolibre.com.ar','mercadolibre.com','mercadoshops.com.ar','mercadoshops.com',
+  /* Para el boton "Cómo llegar". goo.gl/maps y maps.app.goo.gl son los links
+     cortos que devuelve el boton Compartir de Google Maps — que es lo que la
+     gente copia — asi que sin ellos el campo rechazaria el caso normal. */
+  'google.com','google.com.ar','maps.app.goo.gl','goo.gl','maps.google.com'];
 /* La gente escribe el Instagram como "@usuario" o "usuario", no como URL.
    Esto lo convierte en un link real antes de validarlo y guardarlo. */
 function normalizarLink(v){
@@ -3078,7 +3215,11 @@ const RUBRO_CORTO={
   carniceria:'Carnicería', verduleria:'Verdulería',
   regaleria:'Regalería', perfumeria:'Perfumería', alquiler_eventos:'Alquiler eventos',
   conservas:'Conservas', granja:'Granja', jabones:'Jabones y velas',
-  deportivos:'Deportivos', parrillas:'Parrillas', manicura:'Manicura'
+  deportivos:'Deportivos', parrillas:'Parrillas', manicura:'Manicura',
+  venta_carnes:'Venta de carnes', huerta:'Huerta', venta_vinos:'Venta de vinos',
+  venta_ropa:'Venta de ropa', venta_cosmetica:'Cosmética', plantines:'Plantines',
+  /* Estos dos se partian con guion en la grilla ("Eventos y fo-tos"). */
+  fotografia:'Eventos', adiestramiento:'Adiestramiento'
 };
 const rubroCorto=r=>RUBRO_CORTO[r.id]||r.lb;
 let RUBROS_EXPANDIDO=false;
@@ -3818,6 +3959,7 @@ function verDetalle(id){
   const esPro=nAprob>3;
   const barriosTxt=esPro?'Todos los barrios':(p.barriosAprobados||'—');
   document.getElementById('detIn').innerHTML=
+    novedadFichaTxt(p)+
     (p.foto?'<img src="'+esc(p.foto)+'" alt="" onclick="verFotoGrande(\''+esc(p.foto)+'\')" style="width:100%;max-height:340px;object-fit:contain;border-radius:14px;cursor:zoom-in;margin-bottom:'+(esPro&&p.foto2?'8px':'14px')+';background:var(--line2)">':'')
     +(esPro&&p.foto2?'<img src="'+esc(p.foto2)+'" alt="" onclick="verFotoGrande(\''+esc(p.foto2)+'\')" style="width:100%;max-height:340px;object-fit:contain;border-radius:14px;cursor:zoom-in;margin-bottom:14px;background:var(--line2)">':'')
     +'<h3>'+esc(p.nombre)+'</h3>'
@@ -3859,13 +4001,22 @@ function verDetalle(id){
         ? '<button class="btn btn-main" onclick="waDe(\''+p.id+'\')">Escribir por WhatsApp</button>'
           +'<button class="btn btn-soft" onclick="abrirPedir()">📝 Hacer un pedido</button>'
         : '<button class="btn btn-main" onclick="abrirPedir()">Pedir presupuesto</button>')
-    +'<button class="btn btn-soft" onclick="cerrar(\'shDet\')">Cerrar</button>';
+    +'<button class="btn btn-soft" onclick="cerrar(\'shDet\')">Cerrar</button>'
+    /* RECLAMAR LA FICHA. Hasta ahora el duenio, para poder editarse, tenia que
+       encontrar en "Mis avisos" un texto subrayado que no encuentra nadie solo.
+       Aca esta en la pantalla donde el se ve a si mismo, que es el momento en
+       que quiere tomar el control. El circuito de atras (match por telefono y
+       aprobacion desde el panel) ya existia y no se toca. */
+    +'<p class="nota" style="text-align:center;margin:14px 0 0">'
+      +'<span style="text-decoration:underline;color:var(--pine);font-weight:600;cursor:pointer" '
+      +'onclick="reclamarFicha()">¿Esta publicación es tuya? Reclamala</span></p>';
   abrir('shDet');
 }
 function verDetalleVecino(id){
   const v=(CACHEV||[]).find(x=>String(x.id)===String(id));if(!v)return;
   const pro=destActivo(v);
   document.getElementById('detInV').innerHTML=
+    novedadFichaTxt(v)+
     (v.foto?'<img src="'+esc(v.foto)+'" alt="" onclick="verFotoGrande(\''+esc(v.foto)+'\')" style="width:100%;max-height:340px;object-fit:contain;border-radius:14px;cursor:zoom-in;margin-bottom:'+(pro&&v.foto2?'8px':'14px')+';background:var(--line2)">':'')
     +(pro&&v.foto2?'<img src="'+esc(v.foto2)+'" alt="" onclick="verFotoGrande(\''+esc(v.foto2)+'\')" style="width:100%;max-height:340px;object-fit:contain;border-radius:14px;cursor:zoom-in;margin-bottom:14px;background:var(--line2)">':'')
     +'<h3>'+esc(v.negocio||soloNombre(v.nombre))+'</h3>'
@@ -3883,6 +4034,9 @@ function verDetalleVecino(id){
     +'<p class="rec-cont" id="recCont_'+v.id+'"></p>'
     +'<button class="rec-btn" id="recBtn_'+v.id+'" onclick="toggleRecomendar(\''+v.id+'\')">👍 Recomendar</button>'
     +'<button class="btn btn-soft" onclick="cerrar(\'shDetV\')">Cerrar</button>'
+    +'<p class="nota" style="text-align:center;margin:14px 0 0">'
+      +'<span style="text-decoration:underline;color:var(--pine);font-weight:600;cursor:pointer" '
+      +'onclick="reclamarFicha()">¿Esta publicación es tuya? Reclamala</span></p>'
     /* Reportar vive ACA adentro, no en la tarjeta del listado: para reportar
        algo primero hay que mirarlo, y una banderita en cada tarjeta es ruido
        que ademas planta la idea. Sigue estando a un toque. */
@@ -4335,9 +4489,13 @@ function pintarAdmTodasResenas(){
       +(r.texto?'<div class="mt">"'+esc(r.texto)+'"</div>':'')
       +(r.reportado?'<div class="mt" style="color:var(--warn)">🚩 Reportada</div>':'')
     +'</div>'
-    +'<div style="display:flex;flex-direction:column;gap:6px">'
-    +'<button class="mini" style="color:#B3261E" onclick="admBorrarResena(\''+r.id+'\')">Borrar</button>'
-    +'<button class="mini" onclick="admBloquearDesdeResena(\''+r.id+'\')">Bloquear</button>'
+    /* Los dos botones iban en columna a la derecha y, como `.mini` es
+       width:100%, cada uno se estiraba y la reseña quedaba apretada en media
+       tarjeta. Van en fila abajo, que es donde no le sacan lugar al texto — y
+       ademas asi se lee la reseña ANTES de decidir si se borra. */
+    +'<div style="display:flex;gap:8px;width:100%;margin-top:8px">'
+    +'<button class="mini" style="width:auto;flex:1;margin:0" onclick="admBloquearDesdeResena(\''+r.id+'\')">🚫 Bloquear al vecino</button>'
+    +'<button class="mini" style="width:auto;flex:0 0 auto;margin:0;color:#B3261E" onclick="admBorrarResena(\''+r.id+'\')">Borrar</button>'
     +'</div>'
     +'</div>').join('');
 }
@@ -4476,6 +4634,7 @@ async function enviarAlta(){
     anios,
     localidad:document.getElementById('sLocalidad').value.trim()||null,
     direccion:document.getElementById('sDireccion').value.trim()||null,
+    mapa:linkMapaValido(document.getElementById('sMapa').value),
     vive_en_barrio:(document.getElementById('sViveBarrio')||{}).checked?(cargarAcceso()||{}).barrio||null:null,
     dias:document.getElementById('sDias').value.trim()||null,
     rubro_otro:document.getElementById('sRubro').value==='otros_of'?(document.getElementById('sRubroOtro').value.trim()||null):null,
@@ -4576,6 +4735,7 @@ async function publicarVecino(){
     tel,
     dias:document.getElementById('vDias').value.trim(),
     direccion:document.getElementById('vDireccion').value.trim()||null,
+    mapa:linkMapaValido(document.getElementById('vMapa').value),
     que,foto:fotoUrl||null,foto2:foto2Url||null,link:document.getElementById('vLink').value.trim(),
     barrio:barrioV,barriosVenta:elegidos.join(', '),aprobado:false,destacado_hasta:null,pro_pendiente:quiereTodos,creado_en:new Date().toISOString(),
     plataforma:plataformaApp(),
@@ -4774,8 +4934,19 @@ function admPrevisualizarNovedadFoto(input,n){
   };
   reader.readAsDataURL(f);
 }
+/* La fecha venia vacia y habia que elegirla del calendario cada vez — un aviso
+   de barrio dura una semana en el 90% de los casos. Se propone +7 dias y se
+   cambia si hace falta; solo se toca si esta vacia, para no pisar lo que el
+   admin ya eligio. */
+function admFechaPorDefecto(){
+  const el=document.getElementById('admNovVence');
+  if(!el||el.value)return;
+  const d=new Date(); d.setDate(d.getDate()+7);
+  el.value=d.toISOString().slice(0,10);
+}
 async function admCargarNovedadActual(){
   try{admCargarPush();}catch(e){}
+  try{admFechaPorDefecto();}catch(e){}
   const barrio=document.getElementById('admNovBarrio').value;
   const info=document.getElementById('admNovActualInfo');
   if(!barrio||!info)return;
@@ -4842,7 +5013,7 @@ function admLimpiarFormNovedad(){
   ['admNovTexto','admNovVence','admNovFoto1','admNovFoto2'].forEach(i=>{const e=document.getElementById(i);if(e)e.value='';});
   NOV_FOTO1=null;NOV_FOTO2=null;
   const prev=document.getElementById('admNovPreview'); if(prev)prev.innerHTML='';
-  admCargarNovedadActual();
+  admCargarNovedadActual();   // vuelve a proponer la fecha a +7 días
 }
 async function admQuitarNovedadActual(){
   const barrio=document.getElementById('admNovBarrio').value;
@@ -5101,10 +5272,141 @@ function recordarVencimiento(tipo,id){
   const msg='Hola '+item.nombre+'! Te escribo de '+S.cfg.name+' para avisarte que tu Plan Pro '+fraseVence+'. Si querés seguir apareciendo en todos los barrios, podés renovarlo entrando acá: '+linkDirecto+' ¡Cualquier cosa avisame! 🙂';
   window.open('https://wa.me/'+t+'?text='+encodeURIComponent(msg),'_blank');
 }
+/* ===================== EL TABLERO DE CONTROL =====================
+   Antes el panel abria con "Total / Verificados / A revisar": tres numeros que
+   describen la base pero no dicen que hacer. Esto muestra lo que pide una
+   accion tuya HOY, y cada recuadro filtra la lista al tocarlo — sin eso seria
+   un adorno; con eso es la forma mas rapida de llegar al registro.
+
+   Los importes salen de PRECIO_PRO/PRECIO_DEST, que son los mismos que la app
+   le muestra al usuario. Si algun dia cambia el precio, cambia en un solo lugar.
+
+   OJO: esto es el panel, no la app. No lo ve ningun usuario y Apple no lo mira
+   (el revisor entra con el codigo de vecino, no con la clave de admin), asi que
+   mostrar plata aca no toca la regla 3.1.1. */
+const PRECIO_PRO=30000, PRECIO_DEST=15000;
+let TABLERO_FILTRO='';
+let CACHECOB=[], COBROS_PEDIDOS=false;
+/* Se traen una sola vez por sesion y se repinta el bloque de plata cuando
+   llegan: asi el tablero aparece al instante y no espera a la red. */
+async function cargarCobros(){
+  if(COBROS_PEDIDOS)return;
+  COBROS_PEDIDOS=true;
+  try{CACHECOB=await traerCobros();}catch(e){CACHECOB=[];}
+  try{pintarTablero();}catch(e){}
+}
+function cobrosPorMes(){
+  const m={};
+  (CACHECOB||[]).forEach(c=>{
+    const f=new Date(c.creado_en);
+    if(isNaN(f))return;
+    const k=f.getFullYear()+'-'+String(f.getMonth()+1).padStart(2,'0');
+    m[k]=(m[k]||0)+Number(c.monto||0);
+  });
+  return Object.keys(m).sort().reverse().slice(0,6).map(k=>{
+    const [a,mes]=k.split('-');
+    const nombre=new Date(Number(a),Number(mes)-1,1)
+      .toLocaleDateString('es-AR',{month:'long',year:'2-digit'});
+    return {k,nombre,total:m[k]};
+  });
+}
+function diasParaVencer(fecha){
+  if(!fecha)return null;
+  return Math.ceil((new Date(fecha)-new Date())/86400000);
+}
+function datosTablero(){
+  const of_=CACHE||[], ve=CACHEV||[];
+  const proOf=of_.filter(p=>esProPrestador(p));
+  const proVe=ve.filter(v=>destActivo(v));
+  const vencePronto=[
+    ...proOf.map(p=>({t:'o',nombre:p.nombre,tel:p.tel,d:diasParaVencer(p.proHasta),monto:PRECIO_PRO})),
+    ...proVe.map(v=>({t:'v',nombre:v.negocio||v.nombre,tel:v.tel,d:diasParaVencer(v.destacado_hasta),monto:PRECIO_DEST}))
+  ].filter(x=>x.d!=null&&x.d<=7).sort((a,b)=>a.d-b.d);
+  const sinFacturar=[
+    ...proOf.filter(p=>!p.facturado).map(p=>({t:'o',nombre:p.nombre,cuit:p.cuit,id:p.id,monto:PRECIO_PRO})),
+    ...proVe.filter(v=>!v.facturado).map(v=>({t:'v',nombre:v.negocio||v.nombre,cuit:v.cuit,id:v.id,monto:PRECIO_DEST}))
+  ];
+  const pidieron=[
+    ...of_.filter(p=>p.pro_pendiente&&!esProPrestador(p)).map(p=>({t:'o',nombre:p.nombre,tel:p.tel,monto:PRECIO_PRO})),
+    ...ve.filter(v=>v.pro_pendiente&&!destActivo(v)).map(v=>({t:'v',nombre:v.negocio||v.nombre,tel:v.tel,monto:PRECIO_DEST}))
+  ];
+  return {
+    pendientes:of_.filter(p=>!p.verificado).length+ve.filter(v=>!v.aprobado).length,
+    proActivos:proOf.length+proVe.length,
+    vencePronto, sinFacturar, pidieron,
+    /* "Este mes" = lo que esta cobrado y vigente ahora. No es un historico:
+       no guardamos los pagos viejos en ningun lado, asi que prometer un
+       historico seria mentir. Es el ingreso corriente del mes. */
+    delMes:proOf.length*PRECIO_PRO+proVe.length*PRECIO_DEST
+  };
+}
+const pesos=n=>'$'+Number(n||0).toLocaleString('es-AR');
+function filtrarTablero(cual){
+  TABLERO_FILTRO=(TABLERO_FILTRO===cual)?'':cual;
+  /* Los recuadros que se cruzan con los filtros que ya existian los manejan
+     ellos, para no tener dos verdades sobre la misma casilla. */
+  const cbP=document.getElementById('admSoloPendientesOficios');
+  const cbPv=document.getElementById('admSoloPendientesVecinos');
+  const cbPro=document.getElementById('admSoloProOficios');
+  const cbProv=document.getElementById('admSoloProVecinos');
+  if(cbP)cbP.checked=(TABLERO_FILTRO==='pendientes');
+  if(cbPv)cbPv.checked=(TABLERO_FILTRO==='pendientes');
+  if(cbPro)cbPro.checked=(TABLERO_FILTRO==='pro'||TABLERO_FILTRO==='vencen'||TABLERO_FILTRO==='facturar');
+  if(cbProv)cbProv.checked=(TABLERO_FILTRO==='pro'||TABLERO_FILTRO==='vencen'||TABLERO_FILTRO==='facturar');
+  pintarAdmLista();
+  try{pintarAdmVecinos();}catch(e){}
+}
+function pintarTablero(){
+  const el=document.getElementById('tableroAdm');
+  if(!el)return;
+  const d=datosTablero();
+  const item=(clave,num,lb,alerta)=>
+    '<button class="tb-item'+(TABLERO_FILTRO===clave?' on':'')+'" onclick="filtrarTablero(\''+clave+'\')">'
+    +'<div class="tb-num'+(num===0?' cero':(alerta&&num?' alerta':''))+'">'+num+'</div>'
+    +'<div class="tb-lb">'+lb+'</div></button>';
+  const fila=(nombre,dato,extra)=>
+    '<div class="tb-fila"><span class="nom">'+esc(nombre||'—')+'</span>'
+    +'<span class="dato">'+esc(dato)+'</span>'+(extra||'')+'</div>';
+
+  let html='<div class="tablero">'
+    +item('pendientes',d.pendientes,'⏳ Esperando<br>tu aprobación',true)
+    +item('pro',d.proActivos,'⭐ Con plan<br>activo',false)
+    +item('vencen',d.vencePronto.length,'⚠️ Vencen en<br>7 días',true)
+    +item('facturar',d.sinFacturar.length,'🧾 Sin<br>facturar',true)
+    +'</div>';
+
+  html+='<div class="tb-plata"><div class="grande">'+pesos(d.delMes)+'</div>'
+    +'<div class="chico">Ingreso corriente · '+d.proActivos+' plan'+(d.proActivos===1?'':'es')+' activo'+(d.proActivos===1?'':'s')+'. '
+    +'No es un histórico: es lo que está cobrado y vigente hoy.</div></div>';
+
+  if(d.pidieron.length){
+    html+='<div class="tb-lista"><h4>💳 Pidieron plan y falta el pago ('+d.pidieron.length+')</h4>'
+      +d.pidieron.map(x=>fila(x.nombre,pesos(x.monto),
+        x.tel?'<button class="mini" style="margin:0" onclick="window.open(\'https://wa.me/'+soloNum(x.tel)+'\',\'_blank\')">📲</button>':''
+      )).join('')+'</div>';
+  }
+  if(d.vencePronto.length){
+    html+='<div class="tb-lista"><h4>⚠️ Vencen esta semana ('+d.vencePronto.length+')</h4>'
+      +d.vencePronto.map(x=>fila(x.nombre,(x.d<0?'venció hace '+Math.abs(x.d)+'d':(x.d===0?'vence hoy':'en '+x.d+'d')),
+        x.tel?'<button class="mini" style="margin:0" onclick="window.open(\'https://wa.me/'+soloNum(x.tel)+'\',\'_blank\')">📲</button>':''
+      )).join('')+'</div>';
+  }
+  if(d.sinFacturar.length){
+    const total=d.sinFacturar.reduce((a,x)=>a+x.monto,0);
+    html+='<div class="tb-lista"><h4>🧾 Falta facturar ('+d.sinFacturar.length+' · '+pesos(total)+')</h4>'
+      +d.sinFacturar.map(x=>fila(x.nombre,(x.cuit?x.cuit:'consumidor final'),
+        '<button class="mini" style="margin:0" onclick="toggleFacturado(\''+x.t+'\',\''+x.id+'\')">✓</button>'
+      )).join('')
+      +'<p class="nota" style="margin:8px 0 0;font-size:10.5px">El que no tiene CUIT va a consumidor final. Se carga en Editar.</p></div>';
+  }
+  el.innerHTML=html;
+}
 function pintarAdmLista(){
   const l0=CACHE||[];
   pintarCupos();
   pintarLanzBanner();
+  try{pintarTablero();}catch(e){}
+  try{cargarCobros();}catch(e){}
   document.getElementById('cTot').textContent=l0.length;
   document.getElementById('cVer').textContent=l0.filter(p=>p.verificado).length;
   document.getElementById('cPen').textContent=l0.filter(p=>!p.verificado).length;
@@ -5140,11 +5442,34 @@ function pintarAdmLista(){
     const badgeBg=porVencer?'#FBE4E2;color:#C4453F':(porVencerPronto?'#FCF3E3;color:#B7791F':(pago?'#E8F5E9;color:#1B5E20':'#F1F1F1;color:#666'));
     const aprobadosTxt=pago?'Todos los barrios':esc(p.barriosAprobados||'—');
     const posibleDup=l.filter(x=>norm(x.nombre)===norm(p.nombre)||(telNorm(x.tel)&&telNorm(x.tel)===telNorm(p.tel))).length>1;
-    return '<div class="adm-row" style="flex-wrap:wrap"><div class="ava" style="background:'+col(p.nombre)+(p.foto?';cursor:pointer':'')+'" '+(p.foto?'onclick="verFotoGrande(\''+esc(p.foto)+'\')"':'')+'>'+(p.foto?'<img src="'+esc(p.foto)+'" alt="">':esc(ini(p.nombre)))+'</div>'
+    /* Los avisos que tienen que verse CON LA FICHA CERRADA: son los que piden
+       una accion tuya. El resto del detalle espera a que la abras. */
+    const alertas=[
+      (!p.verificado?'⏳ a revisar':''),
+      (pidioUpgradeO?'💳 pidió Pro':''),
+      (porVencer?'🔴 vence ya':''),
+      (pago&&!p.facturado?'🧾 falta facturar':''),
+      (p.foto_sin_revisar?'📷 foto sin revisar':''),
+      (posibleDup?'⚠️ repetido':'')
+    ].filter(Boolean);
+    return '<div class="adm-row" style="flex-wrap:wrap">'
+    /* LA FILA CERRADA: dos renglones y nada mas. */
+    +'<div class="adm-cab" onclick="toggleFichaAdm(\''+p.id+'\')">'
+      +'<div class="ava" style="background:'+col(p.nombre)+'">'+(p.foto?'<img src="'+esc(p.foto)+'" alt="">':esc(ini(p.nombre)))+'</div>'
+      +'<div class="adm-cab-txt">'
+        +'<div class="adm-cab-nm">'+esc(p.nombre)+'</div>'
+        +'<div class="adm-cab-sub">'+esc(rubroLbCompleto(p))+' · '
+          +'<span class="adm-badge" style="background:'+badgeBg+'">'+(semaforo?semaforo+' ':'')+nAprob+'b'+(pago?(diasRest!=null?' · Pro '+diasRest+'d':' · Pro'):' · gratis')+'</span>'
+          +(alertas.length?' · '+esc(alertas.join(' · ')):'')
+        +'</div>'
+      +'</div>'
+      +'<span class="adm-chev" id="chev_'+p.id+'">›</span>'
+    +'</div>'
+    +'<div class="adm-det" id="det_'+p.id+'" style="display:none">'
     +'<div class="adm-info" style="min-width:0;flex:1"><div class="nm">'+esc(p.nombre)
     +(posibleDup?' <span style="font-size:10px;font-weight:700;padding:1px 6px;border-radius:8px;background:var(--warn-bg);color:var(--warn)">⚠️ NOMBRE REPETIDO</span>':'')
     +(pagoPendiente?' <span style="font-size:10px;font-weight:700;padding:1px 6px;border-radius:8px;background:var(--warn-bg);color:var(--warn)">⏳ '+(pidioUpgradeO?'Pidió pasar a Plan Pro · revisar pago de $30.000':'PRO · revisar pago de $30.000 antes de aprobar')+'</span>':'')
-    +' <span style="font-size:10.5px;font-weight:700;padding:1px 6px;border-radius:8px;background:'+badgeBg+'">'+(semaforo?semaforo+' ':'')+nAprob+' barrio'+(nAprob===1?'':'s')+proTxt+'</span></div>'
+    +' <span class="adm-badge" style="background:'+badgeBg+'">'+(semaforo?semaforo+' ':'')+nAprob+' barrio'+(nAprob===1?'':'s')+proTxt+'</span></div>'
     +badgePlataforma(p.plataforma)
     +'<div class="mt">'+esc(rubroLbCompleto(p))+(p.tel?' · 📱 '+esc(p.tel):'')+'</div>'
     +(p.titular?'<div class="mt" style="margin-top:4px">👤 Responsable: '+esc(p.titular)+'</div>':'<div class="mt" style="margin-top:4px;color:var(--warn)">👤 Sin nombre del responsable</div>')
@@ -5185,11 +5510,22 @@ function pintarAdmLista(){
       +campoNovedadPanel(p,'ed_nov_'+p.id)
       +'<div class="field"><label>Cobertura — barrios (separados por coma)</label><input id="apr_'+p.id+'" value="'+esc(p.barriosAprobados||'')+'" placeholder="San Eduardo, San Ramón…"></div>'
       +'<div class="field"><label>Dirección del local <span style="font-weight:400;color:var(--muted);font-size:11px">(opcional)</span></label><input id="ed_dir_'+p.id+'" maxlength="90" value="'+esc(p.direccion||'')+'" placeholder="Ej: Av. Perón 1234, Pilar"></div>'
+      +'<div class="field"><label>Link de Google Maps <span style="font-weight:400;color:var(--muted);font-size:11px">(opcional)</span></label><input id="ed_mapa_'+p.id+'" value="'+esc(p.mapa||'')+'" placeholder="Pegá el link de Maps"><small style="opacity:.7">Buscalo en Google Maps, Compartir, y pegá el link.</small></div>'
       +'<div class="field"><label>Cuándo atiende</label><select id="ed_dias_'+p.id+'">'+DIAS_OF.map(x=>'<option value="'+esc(x)+'"'+((p.dias||'')===x?' selected':'')+'>'+(x||'— sin horario fijo —')+'</option>').join('')+'</select></div>'
       +'<div class="field"><label>CUIT (para la factura)</label><input id="ed_cuit_'+p.id+'" value="'+esc(p.cuit||'')+'" placeholder="20-12345678-9"><small style="opacity:.7">Si lo dejás vacío, la factura sale a consumidor final.</small></div>'
       +'<button class="mini dash" onclick="guardarEdicionOficio(\''+p.id+'\')">Guardar cambios</button>'
-    +'</div></div>';
+    +'</div></div></div>';
   }).join('');
+}
+/* Abre y cierra una ficha del panel. Sirve para Oficios y para Vecinos: los ids
+   de las dos tablas no se pisan porque cada fila usa el suyo. */
+function toggleFichaAdm(id){
+  const d=document.getElementById('det_'+id);
+  if(!d)return;
+  const abierto=d.style.display!=='none';
+  d.style.display=abierto?'none':'block';
+  const c=document.getElementById('chev_'+id);
+  if(c)c.classList.toggle('abierto',!abierto);
 }
 const FOTOS_EDIT_OFICIO={};
 function toggleEditarOficio(id){
@@ -5265,6 +5601,7 @@ async function guardarEdicionOficio(id){
     barriosAprobados:document.getElementById('apr_'+id).value.trim(),
     cuit:document.getElementById('ed_cuit_'+id).value.trim()||null,
     direccion:document.getElementById('ed_dir_'+id).value.trim()||null,
+    mapa:linkMapaValido(document.getElementById('ed_mapa_'+id).value),
     dias:document.getElementById('ed_dias_'+id).value.trim()||null
   };
   patchRubroEdit(patch,'o_',id,'otros_of');
@@ -5538,11 +5875,35 @@ function pintarAdmVecinos(){
     const semaforoV=porVencerV||yaVencioV?'🔴':(porVencerVPronto?'🟡':(pago?'🟢':''));
     const badgeBgV=porVencerV||yaVencioV?'#FBE4E2;color:#C4453F':(porVencerVPronto?'#FCF3E3;color:#B7791F':(pago?'#E8F5E9;color:#1B5E20':'#F1F1F1;color:#666'));
     const posibleDup=l.filter(x=>norm(x.nombre)===norm(v.nombre)||(telNorm(x.tel)&&telNorm(x.tel)===telNorm(v.tel))).length>1;
-    return '<div class="adm-row"><div class="ava" style="background:'+col(v.nombre)+(v.foto?';cursor:pointer':'')+'" '+(v.foto?'onclick="verFotoGrande(\''+esc(v.foto)+'\')"':'')+'>'+(v.foto?'<img src="'+esc(v.foto)+'" alt="">':esc(ini(v.nombre)))+'</div>'
-    +'<div class="adm-info" style="min-width:0;flex:1"><div class="nm">'+esc(v.nombre)+(v.negocio?' · '+esc(v.negocio):'')
+    const alertasV=[
+      (!v.aprobado?'⏳ a aprobar':''),
+      (pidioUpgradeV?'💳 pidió Pro':''),
+      (porVencerV||yaVencioV?'🔴 vence ya':''),
+      (destActivo(v)&&!v.facturado?'🧾 falta facturar':''),
+      (v.foto_sin_revisar?'📷 foto sin revisar':''),
+      (posibleDup?'⚠️ repetido':'')
+    ].filter(Boolean);
+    /* El nombre duplicado ("El Buen Corte · El Buen Corte") era `nombre ·
+       negocio` con los dos campos iguales. Si coinciden, se muestra uno solo. */
+    const titulo=(norm(v.negocio||'')===norm(v.nombre||'')||!v.negocio)
+      ? esc(v.nombre) : esc(v.nombre)+' · '+esc(v.negocio);
+    return '<div class="adm-row" style="flex-wrap:wrap">'
+    +'<div class="adm-cab" onclick="toggleFichaAdm(\''+v.id+'\')">'
+      +'<div class="ava" style="background:'+col(v.nombre)+'">'+(v.foto?'<img src="'+esc(v.foto)+'" alt="">':esc(ini(v.nombre)))+'</div>'
+      +'<div class="adm-cab-txt">'
+        +'<div class="adm-cab-nm">'+titulo+'</div>'
+        +'<div class="adm-cab-sub">'+esc(rubroLbCompleto(v))+' · '+esc(v.barrio||'—')+' · '
+          +'<span class="adm-badge" style="background:'+badgeBgV+'">'+(semaforoV?semaforoV+' ':'')+nVenta+'b'+(pago?(diasRestV!=null?' · Pro '+diasRestV+'d':' · Pro'):(yaVencioV?' · vencido':' · gratis'))+'</span>'
+          +(alertasV.length?' · '+esc(alertasV.join(' · ')):'')
+        +'</div>'
+      +'</div>'
+      +'<span class="adm-chev" id="chev_'+v.id+'">›</span>'
+    +'</div>'
+    +'<div class="adm-det" id="det_'+v.id+'" style="display:none">'
+    +'<div class="adm-info" style="min-width:0;flex:1"><div class="nm">'+titulo
     +(posibleDup?' <span style="font-size:10px;font-weight:700;padding:1px 6px;border-radius:8px;background:var(--warn-bg);color:var(--warn)">⚠️ NOMBRE REPETIDO</span>':'')
     +(pagoPendiente?' <span style="font-size:10px;font-weight:700;padding:1px 6px;border-radius:8px;background:var(--warn-bg);color:var(--warn)">⏳ '+(pidioUpgradeV?'Pidió pasar a Plan Pro · revisar pago de $15.000':'PRO · revisar pago de $15.000 antes de aprobar')+'</span>':'')
-    +' <span style="font-size:10.5px;font-weight:700;padding:1px 6px;border-radius:8px;background:'+badgeBgV+'">'+(semaforoV?semaforoV+' ':'')+nVenta+' barrio'+(nVenta===1?'':'s')+proTxtV+'</span></div>'
+    +' <span class="adm-badge" style="background:'+badgeBgV+'">'+(semaforoV?semaforoV+' ':'')+nVenta+' barrio'+(nVenta===1?'':'s')+proTxtV+'</span></div>'
     +badgePlataforma(v.plataforma)
     +'<div class="mt">'+esc(rubroLbCompleto(v))+' · vive en '+esc(v.barrio||'—')+(v.tel?' · 📱 '+esc(v.tel):'')+'</div>'
     +'<div class="mt" style="margin-top:4px;font-size:10.5px;color:var(--muted)">'+(v.acepto_terminos_en?'✓ Aceptó términos: '+new Date(v.acepto_terminos_en).toLocaleString('es-AR',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'}):'⚠️ Sin registro de aceptación')+'</div>'
@@ -5583,10 +5944,11 @@ function pintarAdmVecinos(){
       +'<div class="field"><label>Qué ofrece</label><textarea id="edv_que_'+v.id+'" style="min-height:70px">'+esc(v.que||'')+'</textarea></div>'
       +'<div class="field"><label>Link a catálogo/redes (opcional)</label><input id="edv_link_'+v.id+'" value="'+esc(v.link||'')+'"><small style="opacity:.7">Solo: Instagram, Facebook, TikTok, Drive/Docs/Fotos, iCloud, WhatsApp, Linktree o Mercado Libre.</small></div>'
       +'<div class="field"><label>Dirección del local <span style="font-weight:400;color:var(--muted);font-size:11px">(opcional)</span></label><input id="edv_dir_'+v.id+'" maxlength="90" value="'+esc(v.direccion||'')+'" placeholder="Ej: Av. Perón 1234, Pilar"></div>'
+      +'<div class="field"><label>Link de Google Maps <span style="font-weight:400;color:var(--muted);font-size:11px">(opcional)</span></label><input id="edv_mapa_'+v.id+'" value="'+esc(v.mapa||'')+'" placeholder="Pegá el link de Maps"><small style="opacity:.7">Buscalo en Google Maps, Compartir, y pegá el link.</small></div>'
       +'<div class="field"><label>CUIT (para la factura)</label><input id="edv_cuit_'+v.id+'" value="'+esc(v.cuit||'')+'" placeholder="20-12345678-9"><small style="opacity:.7">Si lo dejás vacío, la factura sale a consumidor final.</small></div>'
       +campoNovedadPanel(v,'edv_nov_'+v.id)
       +'<button class="mini dash" onclick="guardarEdicionVecino(\''+v.id+'\')">Guardar cambios</button>'
-    +'</div></div>';
+    +'</div></div></div>';
   }).join('');
 }
 const FOTOS_EDIT_VECINO={};
@@ -5641,7 +6003,8 @@ async function guardarEdicionVecino(id){
     que:document.getElementById('edv_que_'+id).value.trim(),
     link:document.getElementById('edv_link_'+id).value.trim(),
     cuit:document.getElementById('edv_cuit_'+id).value.trim()||null,
-    direccion:document.getElementById('edv_dir_'+id).value.trim()||null
+    direccion:document.getElementById('edv_dir_'+id).value.trim()||null,
+    mapa:linkMapaValido(document.getElementById('edv_mapa_'+id).value)
   };
   patchRubroEdit(patch,'v_',id,'otros');
   patchNovedadPanel(v,'edv_nov_'+id,patch);
@@ -5709,6 +6072,7 @@ async function destacar(id){
     const l=(S.vecinos||[]).find(x=>String(x.id)===String(id));if(l)Object.assign(l,patchDest);guardar();
   }
   Object.assign(v,patchDest);
+  await registrarCobro('v',v,PRECIO_DEST);
   pintarAdmVecinos();pintarLista();
   toast('Activado hasta el '+new Date(hasta).toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'2-digit'}));
 }
@@ -5729,6 +6093,27 @@ async function quitarDestaque(id){
   pintarAdmVecinos();pintarLista();
   toast('Se quitó el Plan Pro (volvió a '+vuelveA+')');
 }
+/* ===== EL REGISTRO DE COBROS =====
+   El "ingreso corriente" del tablero mira quien tiene el plan vigente HOY: es
+   una foto, no un historico. Para tener meses de verdad hay que anotar cada
+   cobro cuando se activa, y eso es lo que hace esto.
+   OJO: el historico arranca el dia que se corre el SQL. Agosto no se puede
+   reconstruir porque el dato nunca existio — prometerlo seria mentir.
+   Si falla, NO se corta la activacion: primero que el oficio tenga su plan, la
+   anotacion contable es secundaria. */
+async function registrarCobro(tipo,rec,monto){
+  if(!enLinea())return;
+  try{
+    await sbAdmin('cobros','POST',null,{
+      tipo, quien:(rec&&(rec.negocio||rec.nombre))||'', monto,
+      registro_id:String(rec&&rec.id||''), creado_en:new Date().toISOString()});
+  }catch(e){}
+}
+async function traerCobros(){
+  if(!enLinea())return [];
+  try{return await sbAdmin('cobros','GET','select=*&order=creado_en.desc&limit=500')||[];}
+  catch(e){return [];}
+}
 async function destacarOficio(id){
   const p=(CACHE||[]).find(x=>String(x.id)===String(id));if(!p)return;
   const nAprob=(p.barriosAprobados||'').split(',').map(x=>x.trim()).filter(Boolean).length;
@@ -5746,6 +6131,7 @@ async function destacarOficio(id){
     if(i>-1){Object.assign(S.prestadores[i],patch);guardar();}
   }
   Object.assign(p,patch);
+  await registrarCobro('o',p,PRECIO_PRO);
   toast('Activado hasta el '+d.toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'2-digit'}));
   await refrescar();
 }

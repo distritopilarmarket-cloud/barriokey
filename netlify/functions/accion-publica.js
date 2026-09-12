@@ -342,7 +342,12 @@ exports.handler = async (event) => {
         });
       }
 
-      return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: true, barrio, lote }) };
+      // Se devuelve tambien el nombre de la familia. Hasta el 12/9 no se devolvia, y
+      // el que entraba con el codigo de 6 digitos quedaba guardado sin nombre: en la
+      // pantalla del beneficio le salia "Lote 14 · San Eduardo" y nada mas. Como la
+      // mayoria de la casa entra por el codigo (hasta 12 dispositivos) y no por el
+      // link de invitacion, ese era el caso normal, no el raro.
+      return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: true, barrio, lote, nombre: fam.nombre || null }) };
     }
 
     if (accion === 'chequearRecuperacion') {

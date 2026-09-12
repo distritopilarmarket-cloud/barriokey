@@ -5314,10 +5314,19 @@ function diasParaVencer(fecha){
   if(!fecha)return null;
   return Math.ceil((new Date(fecha)-new Date())/86400000);
 }
+/* Cortesia = plan regalado. El usuario ve exactamente lo mismo; es una
+   anotacion interna para que los numeros de plata digan la verdad. */
+function esCortesia(rec){ return !!(rec&&rec.cortesia); }
 function datosTablero(){
   const of_=CACHE||[], ve=CACHEV||[];
-  const proOf=of_.filter(p=>esProPrestador(p));
-  const proVe=ve.filter(v=>destActivo(v));
+  /* proOf/proVe son los que PAGAN: de ahi salen la plata y "falta facturar".
+     Las cortesias siguen contando como plan activo mas abajo, porque el plan
+     esta activo de verdad — lo que no hicieron es dejar plata. */
+  const proOf=of_.filter(p=>esProPrestador(p)&&!esCortesia(p));
+  const proVe=ve.filter(v=>destActivo(v)&&!esCortesia(v));
+  const activosTotales=of_.filter(p=>esProPrestador(p)).length+ve.filter(v=>destActivo(v)).length;
+  const cortesias=of_.filter(p=>esProPrestador(p)&&esCortesia(p)).length
+                 +ve.filter(v=>destActivo(v)&&esCortesia(v)).length;
   const vencePronto=[
     ...proOf.map(p=>({t:'o',nombre:p.nombre,tel:p.tel,d:diasParaVencer(p.proHasta),monto:PRECIO_PRO})),
     ...proVe.map(v=>({t:'v',nombre:v.negocio||v.nombre,tel:v.tel,d:diasParaVencer(v.destacado_hasta),monto:PRECIO_DEST}))
@@ -5331,8 +5340,12 @@ function datosTablero(){
     ...ve.filter(v=>v.pro_pendiente&&!destActivo(v)).map(v=>({t:'v',nombre:v.negocio||v.nombre,tel:v.tel,monto:PRECIO_DEST}))
   ];
   return {
-    pendientes:of_.filter(p=>!p.verificado).length+ve.filter(v=>!v.aprobado).length,
-    proActivos:proOf.length+proVe.length,
+    /* Cuenta las altas nuevas Y los cambios que mandaron los ya aprobados.
+       Los dos piden lo mismo: que Julian entre y mire. Si el cambio pendiente
+       no suma aca, un prestador que cambio la foto espera para siempre. */
+    pendientes:of_.filter(p=>!p.verificado||p.cambio_pendiente).length
+               +ve.filter(v=>!v.aprobado||v.cambio_pendiente).length,
+    proActivos:activosTotales, cortesias,
     vencePronto, sinFacturar, pidieron,
     /* "Este mes" = lo que esta cobrado y vigente ahora. No es un historico:
        no guardamos los pagos viejos en ningun lado, asi que prometer un
@@ -5375,9 +5388,20 @@ function pintarTablero(){
     +item('facturar',d.sinFacturar.length,'🧾 Sin<br>facturar',true)
     +'</div>';
 
+  const meses=cobrosPorMes();
   html+='<div class="tb-plata"><div class="grande">'+pesos(d.delMes)+'</div>'
-    +'<div class="chico">Ingreso corriente · '+d.proActivos+' plan'+(d.proActivos===1?'':'es')+' activo'+(d.proActivos===1?'':'s')+'. '
-    +'No es un histórico: es lo que está cobrado y vigente hoy.</div></div>';
+    +'<div class="chico">Ingreso corriente · '+d.proActivos+' plan'+(d.proActivos===1?'':'es')+' activo'+(d.proActivos===1?'':'s')
+      +(d.cortesias?(', de los cuales '+d.cortesias+' '+(d.cortesias===1?'es de cortesía y no suma':'son de cortesía y no suman')+' plata'):'')
+      +'. Es lo que está cobrado y vigente hoy.</div>'
+    /* Abajo, el historico de verdad: lo que se anoto en `cobros`. Arranca el
+       12/9 — antes no se guardaba nada, asi que no hay como reconstruirlo. */
+    +(meses.length
+      ? '<div class="chico" style="margin-top:8px;border-top:1px solid rgba(255,255,255,.22);padding-top:8px">'
+        +meses.map(x=>'<div style="display:flex;justify-content:space-between;gap:10px">'
+          +'<span style="text-transform:capitalize">'+esc(x.nombre)+'</span><b>'+pesos(x.total)+'</b></div>').join('')
+        +'</div>'
+      : '<div class="chico" style="margin-top:6px;opacity:.75">El registro mensual arranca con la primera activación cobrada que hagas desde acá.</div>')
+    +'</div>';
 
   if(d.pidieron.length){
     html+='<div class="tb-lista"><h4>💳 Pidieron plan y falta el pago ('+d.pidieron.length+')</h4>'
@@ -5423,7 +5447,7 @@ function pintarAdmLista(){
     if(q&&!norm(p.nombre).includes(q)&&!norm(p.tel||'').includes(q))return false;
     if(barrioF&&!(p.barriosAprobados||'').split(',').map(x=>x.trim()).includes(barrioF)&&!((p.barriosAprobados||'').split(',').map(x=>x.trim()).length>3))return false;
     if(rubroF&&p.rubro!==rubroF)return false;
-    if(soloPend&&p.verificado)return false;
+    if(soloPend&&p.verificado&&!p.cambio_pendiente)return false;
     if(soloPro&&!((p.barriosAprobados||'').split(',').map(x=>x.trim()).filter(Boolean).length>3))return false;
     return true;
   });
@@ -5448,8 +5472,14 @@ function pintarAdmLista(){
       (!p.verificado?'⏳ a revisar':''),
       (pidioUpgradeO?'💳 pidió Pro':''),
       (porVencer?'🔴 vence ya':''),
-      (pago&&!p.facturado?'🧾 falta facturar':''),
+      (pago&&!p.facturado&&!esCortesia(p)?'🧾 falta facturar':''),
+      (esCortesia(p)?'🎁 cortesía':''),
       (p.foto_sin_revisar?'📷 foto sin revisar':''),
+      /* El cambio pendiente TIENE que verse con la ficha cerrada. Al compactar
+         las filas, `pintarCambiosPendientes` quedo adentro del detalle: si el
+         aviso no sube al renglon de arriba, el prestador manda una foto nueva y
+         espera para siempre sin que nadie se entere. */
+      (p.cambio_pendiente?'⏳ cambio a revisar':''),
       (posibleDup?'⚠️ repetido':'')
     ].filter(Boolean);
     return '<div class="adm-row" style="flex-wrap:wrap">'
@@ -5484,7 +5514,8 @@ function pintarAdmLista(){
     +'<button class="tg '+(pago?'si':'no')+'" onclick="destacarOficio(\''+p.id+'\')">'
     +(pago?'Renovar +30d':'Destacar Plan Pro')+'</button>'
     +(pago?'<button class="mini" style="color:#B3261E" onclick="quitarDestaqueOficio(\''+p.id+'\')">Quitar Plan Pro</button>':'')
-    +(pago?'<button class="tg '+(p.facturado?'si':'no')+'" onclick="toggleFacturado(\'o\',\''+p.id+'\')">'+(p.facturado?'🧾 Facturado':'🧾 Falta facturar')+'</button>':'')
+    +(pago&&!esCortesia(p)?'<button class="tg '+(p.facturado?'si':'no')+'" onclick="toggleFacturado(\'o\',\''+p.id+'\')">'+(p.facturado?'🧾 Facturado':'🧾 Falta facturar')+'</button>':'')
+    +(pago?'<button class="tg '+(esCortesia(p)?'si':'no')+'" onclick="toggleCortesia(\'o\',\''+p.id+'\')">'+(esCortesia(p)?'🎁 Cortesía':'🎁 Marcar cortesía')+'</button>':'')
     +(pidioUpgradeO?'<button class="mini" style="color:#B3261E" onclick="descartarPedidoPro(\'o\',\''+p.id+'\')">✕ Descartar pedido</button>':'')
     +(p.foto_sin_revisar?'<button class="mini" style="background:var(--warn-bg);color:var(--warn)" onclick="marcarFotoRevisada(\'prestadores\',\''+p.id+'\')">✓ Marcar foto revisada</button>':'')
     +'<button class="mini" onclick="duplicarEnVecinos(\''+p.id+'\')">👥 Publicar también en Vecinos</button>'
@@ -5568,6 +5599,26 @@ function quitarFoto2Oficio(id){
 }
 /* Marca si ya se emitio la factura de ese Plan Pro. Julian factura agrupado a
    fin de mes, y con diez pagos sueltos no se acuerda cual falta. */
+/* Marca/desmarca la cortesia. No cambia NADA de lo que ve el usuario: el plan
+   sigue activo igual. Lo unico que cambia son los numeros de plata del tablero. */
+async function toggleCortesia(t,id){
+  const arr=(t==='o')?(CACHE||[]):(CACHEV||[]);
+  const it=arr.find(x=>String(x.id)===String(id));
+  if(!it)return;
+  const nuevo=!it.cortesia;
+  const patch={cortesia:nuevo};
+  /* Un plan regalado no se factura: al marcarlo, se saca de la lista de
+     pendientes de facturar para que no quede ahi molestando para siempre. */
+  if(nuevo)patch.facturado=false;
+  const tabla=(t==='o')?'prestadores':'vecinos';
+  if(enLinea()){
+    try{await sbAdmin(tabla,'PATCH','id=eq.'+encodeURIComponent(id),patch);}
+    catch(e){toast('No se pudo guardar: '+(e&&e.message?e.message:'error de conexión'));return;}
+  }
+  Object.assign(it,patch);
+  toast(nuevo?'Marcado como cortesía — no suma a la plata':'Vuelve a contar como cobro');
+  pintarAdmLista();pintarAdmVecinos();
+}
 async function toggleFacturado(t,id){
   const arr=(t==='o')?(CACHE||[]):(CACHEV||[]);
   const it=arr.find(x=>String(x.id)===String(id));
@@ -5856,7 +5907,7 @@ function pintarAdmVecinos(){
     if(q&&!norm(v.nombre).includes(q)&&!norm(v.tel||'').includes(q)&&!norm(v.negocio||'').includes(q))return false;
     if(barrioF&&v.barrio!==barrioF&&!((v.barriosVenta||'').toLowerCase().includes('todos')))return false;
     if(rubroF&&v.rubro!==rubroF)return false;
-    if(soloPend&&v.aprobado)return false;
+    if(soloPend&&v.aprobado&&!v.cambio_pendiente)return false;
     if(soloPro&&!(destActivo(v)||(!v.aprobado&&!!v.pro_pendiente)))return false;
     return true;
   });
@@ -5879,8 +5930,10 @@ function pintarAdmVecinos(){
       (!v.aprobado?'⏳ a aprobar':''),
       (pidioUpgradeV?'💳 pidió Pro':''),
       (porVencerV||yaVencioV?'🔴 vence ya':''),
-      (destActivo(v)&&!v.facturado?'🧾 falta facturar':''),
+      (destActivo(v)&&!v.facturado&&!esCortesia(v)?'🧾 falta facturar':''),
+      (esCortesia(v)?'🎁 cortesía':''),
       (v.foto_sin_revisar?'📷 foto sin revisar':''),
+      (v.cambio_pendiente?'⏳ cambio a revisar':''),
       (posibleDup?'⚠️ repetido':'')
     ].filter(Boolean);
     /* El nombre duplicado ("El Buen Corte · El Buen Corte") era `nombre ·
@@ -5921,7 +5974,8 @@ function pintarAdmVecinos(){
     +'<button class="tg '+(destActivo(v)?'si':'no')+'" onclick="destacar(\''+v.id+'\')">'
     +(destActivo(v)?'Renovar +30d':'Destacar')+'</button>'
     +(destActivo(v)?'<button class="mini" style="color:#B3261E" onclick="quitarDestaque(\''+v.id+'\')">Quitar Plan Pro</button>':'')
-    +(destActivo(v)?'<button class="tg '+(v.facturado?'si':'no')+'" onclick="toggleFacturado(\'v\',\''+v.id+'\')">'+(v.facturado?'🧾 Facturado':'🧾 Falta facturar')+'</button>':'')
+    +(destActivo(v)&&!esCortesia(v)?'<button class="tg '+(v.facturado?'si':'no')+'" onclick="toggleFacturado(\'v\',\''+v.id+'\')">'+(v.facturado?'🧾 Facturado':'🧾 Falta facturar')+'</button>':'')
+    +(destActivo(v)?'<button class="tg '+(esCortesia(v)?'si':'no')+'" onclick="toggleCortesia(\'v\',\''+v.id+'\')">'+(esCortesia(v)?'🎁 Cortesía':'🎁 Marcar cortesía')+'</button>':'')
     +(pidioUpgradeV?'<button class="mini" style="color:#B3261E" onclick="descartarPedidoPro(\'v\',\''+v.id+'\')">✕ Descartar pedido</button>':'')
     +(v.foto_sin_revisar?'<button class="mini" style="background:var(--warn-bg);color:var(--warn)" onclick="marcarFotoRevisada(\'vecinos\',\''+v.id+'\')">✓ Marcar foto revisada</button>':'')
     +'<button class="mini" onclick="toggleEditarVecino(\''+v.id+'\')">✏️ Editar</button>'
@@ -6072,7 +6126,7 @@ async function destacar(id){
     const l=(S.vecinos||[]).find(x=>String(x.id)===String(id));if(l)Object.assign(l,patchDest);guardar();
   }
   Object.assign(v,patchDest);
-  await registrarCobro('v',v,PRECIO_DEST);
+  if(!esCortesia(v))await registrarCobro('v',v,PRECIO_DEST);
   pintarAdmVecinos();pintarLista();
   toast('Activado hasta el '+new Date(hasta).toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'2-digit'}));
 }
@@ -6131,7 +6185,7 @@ async function destacarOficio(id){
     if(i>-1){Object.assign(S.prestadores[i],patch);guardar();}
   }
   Object.assign(p,patch);
-  await registrarCobro('o',p,PRECIO_PRO);
+  if(!esCortesia(p))await registrarCobro('o',p,PRECIO_PRO);
   toast('Activado hasta el '+d.toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'2-digit'}));
   await refrescar();
 }

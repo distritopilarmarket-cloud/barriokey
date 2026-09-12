@@ -5541,7 +5541,17 @@ function pintarAdmLista(){
       +campoNovedadPanel(p,'ed_nov_'+p.id)
       +'<div class="field"><label>Cobertura — barrios (separados por coma)</label><input id="apr_'+p.id+'" value="'+esc(p.barriosAprobados||'')+'" placeholder="San Eduardo, San Ramón…"></div>'
       +'<div class="field"><label>Dirección del local <span style="font-weight:400;color:var(--muted);font-size:11px">(opcional)</span></label><input id="ed_dir_'+p.id+'" maxlength="90" value="'+esc(p.direccion||'')+'" placeholder="Ej: Av. Perón 1234, Pilar"></div>'
-      +'<div class="field"><label>Link de Google Maps <span style="font-weight:400;color:var(--muted);font-size:11px">(opcional)</span></label><input id="ed_mapa_'+p.id+'" value="'+esc(p.mapa||'')+'" placeholder="Pegá el link de Maps"><small style="opacity:.7">Buscalo en Google Maps, Compartir, y pegá el link.</small></div>'
+      /* El "✅ Cargado — probarlo" es para JULIAN, no para el vecino. Desde la
+         ficha no hay forma de saber si el boton "Cómo llegar" esta usando el
+         link pegado o la direccion escrita: los dos dibujan el mismo boton.
+         Aca se ve de un vistazo y se prueba sin salir del panel. */
+      +'<div class="field"><label>Link de Google Maps <span style="font-weight:400;color:var(--muted);font-size:11px">(opcional)</span></label><input id="ed_mapa_'+p.id+'" value="'+esc(p.mapa||'')+'" placeholder="Pegá el link de Maps">'
+        +(linkMapaValido(p.mapa)
+          ? '<small style="color:var(--ok);font-weight:600">✅ Cargado — <span style="text-decoration:underline;cursor:pointer" onclick="abrirMapa(\''+esc(p.mapa)+'\')">probarlo</span></small>'
+          : (p.direccion
+             ? '<small style="opacity:.7">Sin link: “Cómo llegar” busca por la dirección escrita.</small>'
+             : '<small style="opacity:.7">Sin link ni dirección: el botón “Cómo llegar” no se muestra.</small>'))
+      +'</div>'
       +'<div class="field"><label>Cuándo atiende</label><select id="ed_dias_'+p.id+'">'+DIAS_OF.map(x=>'<option value="'+esc(x)+'"'+((p.dias||'')===x?' selected':'')+'>'+(x||'— sin horario fijo —')+'</option>').join('')+'</select></div>'
       +'<div class="field"><label>CUIT (para la factura)</label><input id="ed_cuit_'+p.id+'" value="'+esc(p.cuit||'')+'" placeholder="20-12345678-9"><small style="opacity:.7">Si lo dejás vacío, la factura sale a consumidor final.</small></div>'
       +'<button class="mini dash" onclick="guardarEdicionOficio(\''+p.id+'\')">Guardar cambios</button>'
@@ -5998,7 +6008,13 @@ function pintarAdmVecinos(){
       +'<div class="field"><label>Qué ofrece</label><textarea id="edv_que_'+v.id+'" style="min-height:70px">'+esc(v.que||'')+'</textarea></div>'
       +'<div class="field"><label>Link a catálogo/redes (opcional)</label><input id="edv_link_'+v.id+'" value="'+esc(v.link||'')+'"><small style="opacity:.7">Solo: Instagram, Facebook, TikTok, Drive/Docs/Fotos, iCloud, WhatsApp, Linktree o Mercado Libre.</small></div>'
       +'<div class="field"><label>Dirección del local <span style="font-weight:400;color:var(--muted);font-size:11px">(opcional)</span></label><input id="edv_dir_'+v.id+'" maxlength="90" value="'+esc(v.direccion||'')+'" placeholder="Ej: Av. Perón 1234, Pilar"></div>'
-      +'<div class="field"><label>Link de Google Maps <span style="font-weight:400;color:var(--muted);font-size:11px">(opcional)</span></label><input id="edv_mapa_'+v.id+'" value="'+esc(v.mapa||'')+'" placeholder="Pegá el link de Maps"><small style="opacity:.7">Buscalo en Google Maps, Compartir, y pegá el link.</small></div>'
+      +'<div class="field"><label>Link de Google Maps <span style="font-weight:400;color:var(--muted);font-size:11px">(opcional)</span></label><input id="edv_mapa_'+v.id+'" value="'+esc(v.mapa||'')+'" placeholder="Pegá el link de Maps">'
+        +(linkMapaValido(v.mapa)
+          ? '<small style="color:var(--ok);font-weight:600">✅ Cargado — <span style="text-decoration:underline;cursor:pointer" onclick="abrirMapa(\''+esc(v.mapa)+'\')">probarlo</span></small>'
+          : (v.direccion
+             ? '<small style="opacity:.7">Sin link: “Cómo llegar” busca por la dirección escrita.</small>'
+             : '<small style="opacity:.7">Sin link ni dirección: el botón “Cómo llegar” no se muestra.</small>'))
+      +'</div>'
       +'<div class="field"><label>CUIT (para la factura)</label><input id="edv_cuit_'+v.id+'" value="'+esc(v.cuit||'')+'" placeholder="20-12345678-9"><small style="opacity:.7">Si lo dejás vacío, la factura sale a consumidor final.</small></div>'
       +campoNovedadPanel(v,'edv_nov_'+v.id)
       +'<button class="mini dash" onclick="guardarEdicionVecino(\''+v.id+'\')">Guardar cambios</button>'
